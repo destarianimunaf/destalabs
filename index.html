@@ -5,555 +5,373 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Illustration Portfolio — IT Professional & Market Learner</title>
 <meta name="description" content="Illustration portfolio of an IT professional and market enthusiast." />
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
-
-<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-
+<script crossorigin src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
 <style>
-  :root{
-    --bg:#F8F6FC;
-    --surface:#FFFFFF;
-    --ink:#2E2B45;
-    --ink-soft:#6B647F;
-    --line:#E7E1F5;
-    --lavender:#C9C3ED;
-    --periwinkle:#A8B5E8;
-    --mint:#BFE8D4;
-    --blush:#F7C9CB;
-    --butter:#FCEAB0;
-    --accent:#7C6FD1;
-    --accent-ink:#FFFFFF;
-    --up:#4FAE85;
-    --down:#D97F86;
-    --radius:18px;
-    --shadow:0 8px 24px rgba(60,50,110,0.08);
-  }
-  *{box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
-  body{
-    margin:0;
-    background:var(--bg);
-    color:var(--ink);
-    font-family:'Inter',sans-serif;
-    -webkit-font-smoothing:antialiased;
-  }
-  h1,h2,h3{
-    font-family:'Space Grotesk',sans-serif;
-    margin:0;
-    letter-spacing:-0.01em;
-  }
-  .mono{font-family:'IBM Plex Mono',monospace;}
-  a{color:inherit;}
-  button{font-family:inherit;cursor:pointer;}
-  .wrap{max-width:1120px;margin:0 auto;padding:0 24px;}
-
-  /* NAV */
-  .nav{
-    position:sticky;top:0;z-index:40;
-    background:rgba(248,246,252,0.85);
-    backdrop-filter:blur(8px);
-    border-bottom:1px solid var(--line);
-  }
-  .nav-inner{
-    display:flex;align-items:center;justify-content:space-between;
-    padding:16px 24px;max-width:1120px;margin:0 auto;
-  }
-  .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1.05rem;}
-  .brand-mark{
-    width:30px;height:30px;border-radius:9px;
-    background:linear-gradient(135deg,var(--periwinkle),var(--blush));
-    display:flex;align-items:center;justify-content:center;
-    font-family:'Space Grotesk',sans-serif;color:#fff;font-size:0.85rem;font-weight:700;
-  }
-  .nav-links{display:flex;align-items:center;gap:28px;font-size:0.92rem;font-weight:500;}
-  .nav-links a{text-decoration:none;color:var(--ink-soft);transition:color .15s;}
-  .nav-links a:hover{color:var(--ink);}
-  .btn{
-    border:none;border-radius:999px;padding:10px 20px;
-    font-weight:600;font-size:0.88rem;transition:transform .15s, box-shadow .15s;
-  }
-  .btn:focus-visible, a:focus-visible, input:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
-  .btn-primary{background:var(--accent);color:#fff;}
-  .btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(124,111,209,0.35);}
-  .btn-ghost{background:var(--surface);color:var(--ink);border:1px solid var(--line);}
-  .btn-ghost:hover{border-color:var(--accent);}
-  .btn-small{padding:7px 14px;font-size:0.8rem;}
-  .btn-danger{background:var(--blush);color:#7A2E33;}
-
-  /* HERO */
-  .hero{padding:64px 0 40px;}
-  .hero-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:48px;align-items:center;}
-  .eyebrow{
-    display:inline-flex;align-items:center;gap:8px;
-    background:var(--surface);border:1px solid var(--line);
-    padding:6px 14px;border-radius:999px;
-    font-size:0.78rem;font-weight:600;color:var(--ink-soft);
-    margin-bottom:20px;
-  }
-  .eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--mint);}
-  .hero h1{font-size:clamp(2.1rem,4vw,3.2rem);line-height:1.12;}
-  .hero h1 span{color:var(--accent);}
-  .hero p.lead{color:var(--ink-soft);font-size:1.05rem;line-height:1.6;max-width:46ch;margin:20px 0 28px;}
-  .hero-cta{display:flex;gap:12px;flex-wrap:wrap;}
-
-  .hero-art{position:relative;display:flex;align-items:center;justify-content:center;}
-  .hero-art svg{width:100%;max-width:400px;height:auto;}
-
-  /* TICKER */
-  .ticker-section{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--surface);}
-  .ticker-mask{overflow:hidden;padding:14px 0;}
-  .ticker-track{display:flex;width:max-content;animation:scroll 28s linear infinite;}
-  @media (prefers-reduced-motion: reduce){.ticker-track{animation:none;overflow-x:auto;}}
-  .ticker-item{
-    display:flex;align-items:center;gap:8px;
-    padding:0 22px;border-right:1px solid var(--line);
-    font-family:'IBM Plex Mono',monospace;font-size:0.82rem;white-space:nowrap;
-  }
-  .ticker-item .sym{font-weight:600;}
-  .ticker-item .up{color:var(--up);}
-  .ticker-item .down{color:var(--down);}
-  @keyframes scroll{
-    from{transform:translateX(0);}
-    to{transform:translateX(-50%);}
-  }
-
-  /* SECTION HEADERS */
-  .section{padding:64px 0;}
-  .section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:32px;flex-wrap:wrap;}
-  .section-head h2{font-size:clamp(1.5rem,2.6vw,2rem);}
-  .section-sub{color:var(--ink-soft);font-size:0.95rem;margin-top:6px;}
-
-  /* GRID */
-  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
-  .card{
-    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
-    overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column;
-  }
-  .card-media{
-    aspect-ratio:4/3;width:100%;object-fit:cover;display:block;background:#eee;
-  }
-  .card-media-placeholder{
-    aspect-ratio:4/3;width:100%;display:flex;align-items:center;justify-content:center;
-    font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:2rem;color:#fff;
-  }
-  .card-body{padding:16px 18px 18px;display:flex;flex-direction:column;gap:8px;flex:1;}
-  .card-body h3{font-size:1.02rem;}
-  .card-tags{display:flex;gap:6px;flex-wrap:wrap;}
-  .tag{
-    background:var(--bg);border:1px solid var(--line);border-radius:999px;
-    padding:3px 10px;font-size:0.72rem;color:var(--ink-soft);
-  }
-  .card-actions{display:flex;gap:8px;margin-top:auto;padding-top:10px;}
-  .empty-state{
-    grid-column:1/-1;text-align:center;padding:56px 24px;
-    border:1.5px dashed var(--line);border-radius:var(--radius);color:var(--ink-soft);
-  }
-
-  /* ADMIN */
-  .admin-panel{
-    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
-    padding:28px;box-shadow:var(--shadow);max-width:480px;
-  }
-  .field{margin-bottom:16px;}
-  .field label{display:block;font-size:0.82rem;font-weight:600;margin-bottom:6px;}
-  .field input{
-    width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--line);
-    font-family:inherit;font-size:0.92rem;background:var(--bg);
-  }
-  .field small{color:var(--ink-soft);font-size:0.76rem;}
-  .form-row{display:flex;gap:10px;margin-top:20px;}
-  .badge-admin{
-    background:var(--mint);color:#1F5C43;padding:5px 12px;border-radius:999px;
-    font-size:0.76rem;font-weight:700;display:inline-block;margin-bottom:16px;
-  }
-  .item-manage-row{
-    display:flex;align-items:center;justify-content:space-between;gap:12px;
-    padding:10px 0;border-bottom:1px solid var(--line);font-size:0.88rem;
-  }
-  .item-manage-row:last-child{border-bottom:none;}
-
-  /* ABOUT */
-  .about-grid{display:grid;grid-template-columns:0.8fr 1.2fr;gap:40px;align-items:center;}
-  .about-card{
-    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
-    padding:26px;box-shadow:var(--shadow);
-  }
-  .stat-row{display:flex;gap:24px;margin-top:18px;flex-wrap:wrap;}
-  .stat{}
-  .stat b{display:block;font-family:'Space Grotesk',sans-serif;font-size:1.4rem;}
-  .stat span{font-size:0.78rem;color:var(--ink-soft);}
-
-  /* FOOTER */
-  footer{border-top:1px solid var(--line);padding:36px 0;color:var(--ink-soft);font-size:0.86rem;}
-  .footer-inner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
-  .footer-inner a{text-decoration:none;font-weight:600;color:var(--accent);}
-
-  @media (max-width: 860px){
-    .hero-grid,.about-grid{grid-template-columns:1fr;}
-    .hero-art{order:-1;}
-    .grid{grid-template-columns:repeat(2,1fr);}
-    .nav-links{display:none;}
-  }
-  @media (max-width: 540px){
-    .grid{grid-template-columns:1fr;}
-  }
+:root{--bg:#F8F6FC;--surface:#FFFFFF;--ink:#2E2B45;--ink-soft:#6B647F;--line:#E7E1F5;--lavender:#C9C3ED;--periwinkle:#A8B5E8;--mint:#BFE8D4;--blush:#F7C9CB;--butter:#FCEAB0;--accent:#7C6FD1;--up:#4FAE85;--down:#D97F86;--radius:18px;--shadow:0 8px 24px rgba(60,50,110,0.08);}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;}
+h1,h2,h3{font-family:'Space Grotesk',sans-serif;margin:0;letter-spacing:-0.01em;}
+.mono{font-family:'IBM Plex Mono',monospace;}
+a{color:inherit;}
+button{font-family:inherit;cursor:pointer;}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px;}
+.nav{position:sticky;top:0;z-index:40;background:rgba(248,246,252,0.9);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);}
+.nav-inner{position:relative;display:flex;align-items:center;justify-content:space-between;padding:14px 20px;max-width:1120px;margin:0 auto;}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1rem;}
+.brand-mark{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--periwinkle),var(--blush));display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;color:#fff;font-size:0.8rem;font-weight:700;flex-shrink:0;}
+.nav-links{display:flex;align-items:center;gap:24px;font-size:0.9rem;font-weight:500;}
+.nav-links a{text-decoration:none;color:var(--ink-soft);transition:color .15s;}
+.nav-links a:hover{color:var(--ink);}
+.nav-toggle{display:none;background:none;border:none;font-size:1.3rem;color:var(--ink);padding:6px;}
+.btn{border:none;border-radius:999px;padding:10px 18px;font-weight:600;font-size:0.86rem;transition:transform .15s,box-shadow .15s;}
+.btn:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+.btn-primary{background:var(--accent);color:#fff;}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(124,111,209,0.35);}
+.btn-ghost{background:var(--surface);color:var(--ink);border:1px solid var(--line);}
+.btn-ghost:hover{border-color:var(--accent);}
+.btn-small{padding:7px 13px;font-size:0.78rem;}
+.btn-danger{background:var(--blush);color:#7A2E33;}
+.hero{padding:56px 0 36px;}
+.hero-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:40px;align-items:center;}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);padding:6px 14px;border-radius:999px;font-size:0.76rem;font-weight:600;color:var(--ink-soft);margin-bottom:18px;}
+.eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--mint);flex-shrink:0;}
+.hero h1{font-size:clamp(1.8rem,4.5vw,3.1rem);line-height:1.14;}
+.hero h1 span{color:var(--accent);}
+.hero p.lead{color:var(--ink-soft);font-size:1rem;line-height:1.6;max-width:46ch;margin:18px 0 26px;}
+.hero-cta{display:flex;gap:12px;flex-wrap:wrap;}
+.hero-art{display:flex;align-items:center;justify-content:center;}
+.hero-art svg{width:100%;max-width:380px;height:auto;}
+.ticker-section{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--surface);}
+.ticker-mask{overflow:hidden;padding:12px 0;}
+.ticker-track{display:flex;width:max-content;animation:scroll 28s linear infinite;}
+@media(prefers-reduced-motion:reduce){.ticker-track{animation:none;overflow-x:auto;}}
+.ticker-item{display:flex;align-items:center;gap:7px;padding:0 20px;border-right:1px solid var(--line);font-family:'IBM Plex Mono',monospace;font-size:0.78rem;white-space:nowrap;}
+.ticker-item .up{color:var(--up);}
+.ticker-item .down{color:var(--down);}
+@keyframes scroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+.section{padding:52px 0;}
+.section-head{margin-bottom:28px;}
+.section-head h2{font-size:clamp(1.4rem,2.6vw,2rem);}
+.section-sub{color:var(--ink-soft);font-size:0.92rem;margin-top:6px;}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column;}
+.card-media{aspect-ratio:4/3;width:100%;object-fit:cover;display:block;background:#eee;}
+.card-media-placeholder{aspect-ratio:4/3;width:100%;display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:2rem;color:#fff;}
+.card-body{padding:15px 16px 16px;display:flex;flex-direction:column;gap:8px;flex:1;}
+.card-body h3{font-size:1rem;}
+.card-tags{display:flex;gap:6px;flex-wrap:wrap;}
+.tag{background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:3px 10px;font-size:0.7rem;color:var(--ink-soft);}
+.card-actions{display:flex;gap:8px;margin-top:auto;padding-top:8px;}
+.empty-state{grid-column:1/-1;text-align:center;padding:48px 20px;border:1.5px dashed var(--line);border-radius:var(--radius);color:var(--ink-soft);}
+.admin-panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);}
+.field{margin-bottom:15px;}
+.field label{display:block;font-size:0.8rem;font-weight:600;margin-bottom:6px;}
+.field input{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--line);font-family:inherit;font-size:0.9rem;background:var(--bg);}
+.field small{color:var(--ink-soft);font-size:0.74rem;}
+.form-row{display:flex;gap:10px;margin-top:18px;}
+.badge-admin{background:var(--mint);color:#1F5C43;padding:5px 12px;border-radius:999px;font-size:0.74rem;font-weight:700;display:inline-block;margin-bottom:16px;}
+.item-manage-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);font-size:0.86rem;}
+.item-manage-row:last-child{border-bottom:none;}
+.admin-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;}
+.login-wrap{max-width:420px;}
+.about-grid{display:grid;grid-template-columns:0.8fr 1.2fr;gap:36px;align-items:center;}
+.about-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);}
+.stat-row{display:flex;gap:22px;margin-top:16px;flex-wrap:wrap;}
+.stat b{display:block;font-family:'Space Grotesk',sans-serif;font-size:1.3rem;}
+.stat span{font-size:0.76rem;color:var(--ink-soft);}
+footer{border-top:1px solid var(--line);padding:32px 0;color:var(--ink-soft);font-size:0.84rem;}
+.footer-inner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+.footer-inner a{text-decoration:none;font-weight:600;color:var(--accent);}
+@media(max-width:860px){
+.hero-grid,.about-grid{grid-template-columns:1fr;}
+.hero-art{order:-1;}
+.grid{grid-template-columns:repeat(2,1fr);}
+.nav-toggle{display:block;}
+.nav-links{display:none;position:absolute;top:56px;left:0;right:0;flex-direction:column;align-items:flex-start;gap:14px;background:var(--surface);border-bottom:1px solid var(--line);padding:18px 20px;box-shadow:var(--shadow);}
+.nav-links.open{display:flex;}
+.admin-grid{grid-template-columns:1fr;}
+}
+@media(max-width:540px){
+.grid{grid-template-columns:1fr;}
+.hero{padding:40px 0 28px;}
+.section{padding:40px 0;}
+}
 </style>
 </head>
 <body>
 <div id="root"></div>
+<script>
+var h = React.createElement;
 
-<script type="text/babel" data-presets="react">
-const { useState, useMemo } = React;
+var INSTAGRAM_URL = "https://instagram.com/yourhandle";
+var GITHUB_URL = "https://github.com/yourusername";
+var ADMIN_PASSCODE = "changeme123";
 
-/* ---------- config ---------- */
-const INSTAGRAM_URL = "https://instagram.com/yourhandle"; // TODO: replace with your Instagram
-const GITHUB_URL = "https://github.com/yourusername"; // TODO: replace with your GitHub
-const ADMIN_PASSCODE = "changeme123"; // TODO: change before publishing
+var PLACEHOLDER_COLORS = [["#C9C3ED","#A8B5E8"],["#F7C9CB","#FCEAB0"],["#BFE8D4","#A8B5E8"],["#FCEAB0","#F7C9CB"]];
 
-const PLACEHOLDER_COLORS = [
-  ["#C9C3ED","#A8B5E8"],
-  ["#F7C9CB","#FCEAB0"],
-  ["#BFE8D4","#A8B5E8"],
-  ["#FCEAB0","#F7C9CB"],
+var SKILLS = [
+  {sym:"REACT",label:"Frontend",trend:"up",change:"+2.4%"},
+  {sym:"ILLUS",label:"Illustration",trend:"up",change:"+1.1%"},
+  {sym:"UI/UX",label:"Product design",trend:"flat",change:"0.0%"},
+  {sym:"JS",label:"JavaScript",trend:"up",change:"+3.0%"},
+  {sym:"IDX",label:"Market watch",trend:"up",change:"+0.8%"},
+  {sym:"GIT",label:"Version control",trend:"flat",change:"0.0%"},
+  {sym:"FIGMA",label:"Prototyping",trend:"up",change:"+1.6%"}
 ];
 
-const SKILLS = [
-  { sym: "REACT", label: "Frontend", trend: "up", change: "+2.4%" },
-  { sym: "ILLUS", label: "Illustration", trend: "up", change: "+1.1%" },
-  { sym: "UI/UX", label: "Product design", trend: "flat", change: "0.0%" },
-  { sym: "JS", label: "JavaScript", trend: "up", change: "+3.0%" },
-  { sym: "IDX", label: "Market watch", trend: "up", change: "+0.8%" },
-  { sym: "GIT", label: "Version control", trend: "flat", change: "0.0%" },
-  { sym: "FIGMA", label: "Prototyping", trend: "up", change: "+1.6%" },
+var INITIAL_PORTFOLIO = [
+  {id:1,title:"Editorial Study I",tags:["Illustration","Editorial"],image:""},
+  {id:2,title:"Market Mood Board",tags:["Concept","Finance"],image:""},
+  {id:3,title:"System Icons Set",tags:["Icon","UI"],image:""},
+  {id:4,title:"Weekend Sketch",tags:["Sketch","Personal"],image:""}
 ];
 
-const INITIAL_PORTFOLIO = [
-  { id: 1, title: "Editorial Study I", tags: ["Illustration","Editorial"], image: "" },
-  { id: 2, title: "Market Mood Board", tags: ["Concept","Finance"], image: "" },
-  { id: 3, title: "System Icons Set", tags: ["Icon","UI"], image: "" },
-  { id: 4, title: "Weekend Sketch", tags: ["Sketch","Personal"], image: "" },
-];
-
-/* ---------- helpers ---------- */
-function normalizeDriveUrl(url) {
-  if (!url) return "";
-  const fileMatch = url.match(/drive\.google\.com\/file\/d\/([^/]+)/);
-  if (fileMatch) return `https://drive.google.com/uc?export=view&id=${fileMatch[1]}`;
-  const idMatch = url.match(/[?&]id=([^&]+)/);
-  if (idMatch && url.includes("drive.google.com")) return `https://drive.google.com/uc?export=view&id=${idMatch[1]}`;
-  return url;
+function normalizeDriveUrl(u){
+  if(!u) return "";
+  var m1 = u.match(/drive\.google\.com\/file\/d\/([^/]+)/);
+  if(m1) return "https://drive.google.com/uc?export=view&id=" + m1[1];
+  var m2 = u.match(/[?&]id=([^&]+)/);
+  if(m2 && u.indexOf("drive.google.com") !== -1) return "https://drive.google.com/uc?export=view&id=" + m2[1];
+  return u;
 }
+function initials(t){ return t.trim().split(/\s+/).slice(0,2).map(function(w){return w[0];}).join("").toUpperCase(); }
 
-function initials(title) {
-  return title.trim().split(/\s+/).slice(0,2).map(w => w[0]).join("").toUpperCase();
-}
-
-/* ---------- components ---------- */
-function HeroArt() {
-  return (
-    <svg viewBox="0 0 400 340" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="200" cy="170" r="150" fill="#EFE9FB" />
-      <circle cx="300" cy="80" r="34" fill="#F7C9CB" opacity="0.9" />
-      <circle cx="70" cy="250" r="26" fill="#BFE8D4" opacity="0.9" />
-      <rect x="90" y="130" width="220" height="140" rx="14" fill="#FFFFFF" stroke="#E7E1F5" strokeWidth="2" />
-      <rect x="90" y="130" width="220" height="26" rx="14" fill="#C9C3ED" />
-      <circle cx="104" cy="143" r="4" fill="#fff" />
-      <circle cx="116" cy="143" r="4" fill="#fff" />
-      <circle cx="128" cy="143" r="4" fill="#fff" />
-      <polyline points="112,240 150,200 178,222 214,168 250,190 288,150" fill="none" stroke="#7C6FD1" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
-      <circle cx="288" cy="150" r="6" fill="#4FAE85" />
-      <circle cx="214" cy="168" r="5" fill="#7C6FD1" />
-      <path d="M150 260 L170 232 L190 260 Z" fill="#FCEAB0" />
-      <rect x="60" y="260" width="60" height="10" rx="5" fill="#F7C9CB" />
-    </svg>
+function HeroArt(){
+  return h("svg",{viewBox:"0 0 400 340",fill:"none",xmlns:"http://www.w3.org/2000/svg"},
+    h("circle",{cx:200,cy:170,r:150,fill:"#EFE9FB"}),
+    h("circle",{cx:300,cy:80,r:34,fill:"#F7C9CB",opacity:0.9}),
+    h("circle",{cx:70,cy:250,r:26,fill:"#BFE8D4",opacity:0.9}),
+    h("rect",{x:90,y:130,width:220,height:140,rx:14,fill:"#FFFFFF",stroke:"#E7E1F5",strokeWidth:2}),
+    h("rect",{x:90,y:130,width:220,height:26,rx:14,fill:"#C9C3ED"}),
+    h("circle",{cx:104,cy:143,r:4,fill:"#fff"}),
+    h("circle",{cx:116,cy:143,r:4,fill:"#fff"}),
+    h("circle",{cx:128,cy:143,r:4,fill:"#fff"}),
+    h("polyline",{points:"112,240 150,200 178,222 214,168 250,190 288,150",fill:"none",stroke:"#7C6FD1",strokeWidth:4,strokeLinecap:"round",strokeLinejoin:"round"}),
+    h("circle",{cx:288,cy:150,r:6,fill:"#4FAE85"}),
+    h("circle",{cx:214,cy:168,r:5,fill:"#7C6FD1"}),
+    h("path",{d:"M150 260 L170 232 L190 260 Z",fill:"#FCEAB0"}),
+    h("rect",{x:60,y:260,width:60,height:10,rx:5,fill:"#F7C9CB"})
   );
 }
 
-function Ticker() {
-  const items = [...SKILLS, ...SKILLS];
-  return (
-    <div className="ticker-section">
-      <div className="ticker-mask">
-        <div className="ticker-track">
-          {items.map((s, i) => (
-            <div className="ticker-item" key={i}>
-              <span className="sym">{s.sym}</span>
-              <span>{s.label}</span>
-              <span className={s.trend === "down" ? "down" : s.trend === "up" ? "up" : ""}>
-                {s.trend === "up" ? "▲" : s.trend === "down" ? "▼" : "—"} {s.change}
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
+function Ticker(){
+  var items = SKILLS.concat(SKILLS);
+  return h("div",{className:"ticker-section"},
+    h("div",{className:"ticker-mask"},
+      h("div",{className:"ticker-track"},
+        items.map(function(s,i){
+          var arrow = s.trend==="up" ? "▲" : s.trend==="down" ? "▼" : "—";
+          var cls = s.trend==="up" ? "up" : s.trend==="down" ? "down" : "";
+          return h("div",{className:"ticker-item",key:i},
+            h("span",{style:{fontWeight:600}},s.sym),
+            h("span",null,s.label),
+            h("span",{className:cls},arrow + " " + s.change)
+          );
+        })
+      )
+    )
   );
 }
 
-function CardMedia({ item, index }) {
-  const [broken, setBroken] = useState(false);
-  const [g1, g2] = PLACEHOLDER_COLORS[index % PLACEHOLDER_COLORS.length];
-  if (!item.image || broken) {
-    return (
-      <div className="card-media-placeholder" style={{ background: `linear-gradient(135deg, ${g1}, ${g2})` }}>
-        {initials(item.title)}
-      </div>
-    );
+function CardMedia(props){
+  var item = props.item, index = props.index;
+  var state = React.useState(false), broken = state[0], setBroken = state[1];
+  var colors = PLACEHOLDER_COLORS[index % PLACEHOLDER_COLORS.length];
+  if(!item.image || broken){
+    return h("div",{className:"card-media-placeholder",style:{background:"linear-gradient(135deg,"+colors[0]+","+colors[1]+")"}}, initials(item.title));
   }
-  return (
-    <img
-      className="card-media"
-      src={item.image}
-      alt={item.title}
-      loading="lazy"
-      onError={() => setBroken(true)}
-    />
+  return h("img",{className:"card-media",src:item.image,alt:item.title,loading:"lazy",onError:function(){setBroken(true);}});
+}
+
+function PortfolioCard(props){
+  var item = props.item, index = props.index, isAdmin = props.isAdmin, onEdit = props.onEdit, onDelete = props.onDelete;
+  return h("div",{className:"card"},
+    h(CardMedia,{item:item,index:index}),
+    h("div",{className:"card-body"},
+      h("h3",null,item.title),
+      h("div",{className:"card-tags"}, item.tags.map(function(t){ return h("span",{className:"tag",key:t}, t); })),
+      isAdmin && h("div",{className:"card-actions"},
+        h("button",{className:"btn btn-ghost btn-small",onClick:function(){onEdit(item);}},"Edit"),
+        h("button",{className:"btn btn-danger btn-small",onClick:function(){onDelete(item.id);}},"Delete")
+      )
+    )
   );
 }
 
-function PortfolioCard({ item, index, isAdmin, onEdit, onDelete }) {
-  return (
-    <div className="card">
-      <CardMedia item={item} index={index} />
-      <div className="card-body">
-        <h3>{item.title}</h3>
-        <div className="card-tags">
-          {item.tags.map((t) => <span className="tag" key={t}>{t}</span>)}
-        </div>
-        {isAdmin && (
-          <div className="card-actions">
-            <button className="btn btn-ghost btn-small" onClick={() => onEdit(item)}>Edit</button>
-            <button className="btn btn-danger btn-small" onClick={() => onDelete(item.id)}>Delete</button>
-          </div>
-        )}
-      </div>
-    </div>
+function AdminForm(props){
+  var draft = props.draft, setDraft = props.setDraft, onSubmit = props.onSubmit, onCancel = props.onCancel;
+  return h("form",{className:"admin-panel",onSubmit:function(e){ e.preventDefault(); onSubmit(); }},
+    h("span",{className:"badge-admin"},"Admin mode"),
+    h("div",{className:"field"},
+      h("label",{htmlFor:"title"},"Title"),
+      h("input",{id:"title",required:true,value:draft.title,onChange:function(e){setDraft(Object.assign({},draft,{title:e.target.value}));},placeholder:"e.g. Rooftop Series No. 3"})
+    ),
+    h("div",{className:"field"},
+      h("label",{htmlFor:"tags"},"Tags (comma separated)"),
+      h("input",{id:"tags",value:draft.tagsInput,onChange:function(e){setDraft(Object.assign({},draft,{tagsInput:e.target.value}));},placeholder:"Illustration, Digital"})
+    ),
+    h("div",{className:"field"},
+      h("label",{htmlFor:"image"},"Google Drive image link"),
+      h("input",{id:"image",value:draft.image,onChange:function(e){setDraft(Object.assign({},draft,{image:e.target.value}));},placeholder:"https://drive.google.com/file/d/.../view"}),
+      h("small",null,'Set sharing to "Anyone with the link" — the link is converted automatically.')
+    ),
+    h("div",{className:"form-row"},
+      h("button",{type:"submit",className:"btn btn-primary"}, draft.id ? "Save changes" : "Add to portfolio"),
+      draft.id && h("button",{type:"button",className:"btn btn-ghost",onClick:onCancel},"Cancel")
+    )
   );
 }
 
-function AdminForm({ draft, setDraft, onSubmit, onCancel }) {
-  return (
-    <form
-      className="admin-panel"
-      onSubmit={(e) => { e.preventDefault(); onSubmit(); }}
-    >
-      <span className="badge-admin">Admin mode</span>
-      <div className="field">
-        <label htmlFor="title">Title</label>
-        <input id="title" required value={draft.title}
-          onChange={(e) => setDraft({ ...draft, title: e.target.value })}
-          placeholder="e.g. Rooftop Series No. 3" />
-      </div>
-      <div className="field">
-        <label htmlFor="tags">Tags (comma separated)</label>
-        <input id="tags" value={draft.tagsInput}
-          onChange={(e) => setDraft({ ...draft, tagsInput: e.target.value })}
-          placeholder="Illustration, Digital" />
-      </div>
-      <div className="field">
-        <label htmlFor="image">Google Drive image link</label>
-        <input id="image" value={draft.image}
-          onChange={(e) => setDraft({ ...draft, image: e.target.value })}
-          placeholder="https://drive.google.com/file/d/.../view" />
-        <small>Set sharing to "Anyone with the link" — the link is converted automatically.</small>
-      </div>
-      <div className="form-row">
-        <button type="submit" className="btn btn-primary">{draft.id ? "Save changes" : "Add to portfolio"}</button>
-        {draft.id && <button type="button" className="btn btn-ghost" onClick={onCancel}>Cancel</button>}
-      </div>
-    </form>
+function LoginForm(props){
+  var onLogin = props.onLogin, error = props.error;
+  var state = React.useState(""), pass = state[0], setPass = state[1];
+  return h("form",{className:"admin-panel login-wrap",onSubmit:function(e){ e.preventDefault(); onLogin(pass); }},
+    h("div",{className:"field"},
+      h("label",{htmlFor:"passcode"},"Admin passcode"),
+      h("input",{id:"passcode",type:"password",value:pass,onChange:function(e){setPass(e.target.value);},placeholder:"Enter passcode"}),
+      error && h("small",{style:{color:"#D97F86"}},"Incorrect passcode. Try again.")
+    ),
+    h("button",{type:"submit",className:"btn btn-primary"},"Log in")
   );
 }
 
-function LoginForm({ onLogin, error }) {
-  const [pass, setPass] = useState("");
-  return (
-    <form className="admin-panel" onSubmit={(e) => { e.preventDefault(); onLogin(pass); }}>
-      <div className="field">
-        <label htmlFor="passcode">Admin passcode</label>
-        <input id="passcode" type="password" value={pass}
-          onChange={(e) => setPass(e.target.value)} placeholder="Enter passcode" />
-        {error && <small style={{ color: "#D97F86" }}>Incorrect passcode. Try again.</small>}
-      </div>
-      <button type="submit" className="btn btn-primary">Log in</button>
-    </form>
+function Nav(){
+  var state = React.useState(false), open = state[0], setOpen = state[1];
+  return h("nav",{className:"nav"},
+    h("div",{className:"nav-inner"},
+      h("div",{className:"brand"}, h("span",{className:"brand-mark"},"IL"), "Illustration & Systems"),
+      h("button",{className:"nav-toggle","aria-label":"Toggle menu",onClick:function(){setOpen(!open);}}, open ? "✕" : "☰"),
+      h("div",{className:"nav-links" + (open?" open":"")},
+        h("a",{href:"#work",onClick:function(){setOpen(false);}},"Work"),
+        h("a",{href:"#about",onClick:function(){setOpen(false);}},"About"),
+        h("a",{href:"#admin",onClick:function(){setOpen(false);}},"Admin"),
+        h("a",{href:INSTAGRAM_URL,target:"_blank",rel:"noopener noreferrer"},"Instagram")
+      )
+    )
   );
 }
 
-function App() {
-  const [items, setItems] = useState(INITIAL_PORTFOLIO);
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [loginError, setLoginError] = useState(false);
-  const [draft, setDraft] = useState({ id: null, title: "", tagsInput: "", image: "" });
-  const nextId = useMemo(() => (items.length ? Math.max(...items.map(i => i.id)) + 1 : 1), [items]);
+function App(){
+  var itemsState = React.useState(INITIAL_PORTFOLIO), items = itemsState[0], setItems = itemsState[1];
+  var adminState = React.useState(false), isAdmin = adminState[0], setIsAdmin = adminState[1];
+  var errState = React.useState(false), loginError = errState[0], setLoginError = errState[1];
+  var draftState = React.useState({id:null,title:"",tagsInput:"",image:""}), draft = draftState[0], setDraft = draftState[1];
 
-  function handleLogin(pass) {
-    if (pass === ADMIN_PASSCODE) { setIsAdmin(true); setLoginError(false); }
-    else setLoginError(true);
-  }
-
-  function resetDraft() {
-    setDraft({ id: null, title: "", tagsInput: "", image: "" });
-  }
-
-  function handleSubmit() {
-    const tags = draft.tagsInput.split(",").map(t => t.trim()).filter(Boolean);
-    const image = normalizeDriveUrl(draft.image.trim());
-    if (draft.id) {
-      setItems(items.map(it => it.id === draft.id ? { ...it, title: draft.title, tags, image } : it));
+  function nextId(){ return items.length ? Math.max.apply(null, items.map(function(i){return i.id;})) + 1 : 1; }
+  function handleLogin(pass){ if(pass === ADMIN_PASSCODE){ setIsAdmin(true); setLoginError(false);} else setLoginError(true); }
+  function resetDraft(){ setDraft({id:null,title:"",tagsInput:"",image:""}); }
+  function handleSubmit(){
+    var tags = draft.tagsInput.split(",").map(function(t){return t.trim();}).filter(Boolean);
+    var image = normalizeDriveUrl(draft.image.trim());
+    if(draft.id){
+      setItems(items.map(function(it){ return it.id === draft.id ? Object.assign({},it,{title:draft.title,tags:tags,image:image}) : it; }));
     } else {
-      setItems([{ id: nextId, title: draft.title, tags, image }, ...items]);
+      setItems([{id:nextId(),title:draft.title,tags:tags,image:image}].concat(items));
     }
     resetDraft();
   }
-
-  function handleEdit(item) {
-    setDraft({ id: item.id, title: item.title, tagsInput: item.tags.join(", "), image: item.image });
-    document.getElementById("admin").scrollIntoView({ behavior: "smooth" });
+  function handleEdit(item){
+    setDraft({id:item.id,title:item.title,tagsInput:item.tags.join(", "),image:item.image});
+    var el = document.getElementById("admin");
+    if(el) el.scrollIntoView({behavior:"smooth"});
+  }
+  function handleDelete(id){
+    setItems(items.filter(function(it){return it.id !== id;}));
+    if(draft.id === id) resetDraft();
   }
 
-  function handleDelete(id) {
-    setItems(items.filter(it => it.id !== id));
-    if (draft.id === id) resetDraft();
-  }
-
-  return (
-    <React.Fragment>
-      <nav className="nav">
-        <div className="nav-inner">
-          <div className="brand">
-            <span className="brand-mark">IL</span>
-            Illustration & Systems
-          </div>
-          <div className="nav-links">
-            <a href="#work">Work</a>
-            <a href="#about">About</a>
-            <a href="#admin">Admin</a>
-            <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer">Instagram</a>
-          </div>
-        </div>
-      </nav>
-
-      <header className="hero">
-        <div className="wrap hero-grid">
-          <div>
-            <div className="eyebrow"><span className="dot"></span> IT professional · Illustrator · Market learner</div>
-            <h1>Illustration built with the same discipline as <span>clean code</span>.</h1>
-            <p className="lead">
-              I split my time between shipping frontend systems and drawing — with a side habit
-              of reading market charts the way most people scroll social media. This is where the
-              illustration work lives.
-            </p>
-            <div className="hero-cta">
-              <a className="btn btn-primary" href="#work">View portfolio</a>
-              <a className="btn btn-ghost" href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer">Follow on Instagram</a>
-            </div>
-          </div>
-          <div className="hero-art"><HeroArt /></div>
-        </div>
-      </header>
-
-      <Ticker />
-
-      <section className="section" id="work">
-        <div className="wrap">
-          <div className="section-head">
-            <div>
-              <h2>Portfolio</h2>
-              <p className="section-sub">Illustrations hosted on Google Drive, added through the admin panel below.</p>
-            </div>
-          </div>
-          <div className="grid">
-            {items.length === 0 && (
-              <div className="empty-state">No pieces yet — log in below and add the first one.</div>
-            )}
-            {items.map((item, i) => (
-              <PortfolioCard key={item.id} item={item} index={i} isAdmin={isAdmin}
-                onEdit={handleEdit} onDelete={handleDelete} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="section" id="about">
-        <div className="wrap about-grid">
-          <div className="about-card">
-            <h2 style={{fontSize:"1.3rem"}}>About</h2>
-            <p style={{color:"var(--ink-soft)", marginTop:"10px", lineHeight:1.6}}>
-              By day, a developer working across frontend systems. By habit, an illustrator and a
-              slow, steady market learner — more index-and-patience than day-trading.
-            </p>
-            <div className="stat-row">
-              <div className="stat"><b>{items.length}</b><span>Pieces published</span></div>
-              <div className="stat"><b>{SKILLS.length}</b><span>Active skills</span></div>
-              <div className="stat"><b>2</b><span>Worlds — code & ink</span></div>
-            </div>
-          </div>
-          <div>
-            <h3 style={{fontSize:"1.1rem", marginBottom:"10px"}}>How this site works</h3>
-            <p style={{color:"var(--ink-soft)", lineHeight:1.6}}>
-              This page is a single static React file, deployable on GitHub Pages. New pieces added
-              through the admin panel appear immediately for this session. For permanent additions,
-              edit the <code className="mono">INITIAL_PORTFOLIO</code> array in the source and push
-              the change to the repository — no backend required.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section className="section" id="admin">
-        <div className="wrap">
-          <div className="section-head">
-            <div>
-              <h2>Admin</h2>
-              <p className="section-sub">Log in to add, edit, or remove portfolio pieces.</p>
-            </div>
-          </div>
-
-          {!isAdmin ? (
-            <LoginForm onLogin={handleLogin} error={loginError} />
-          ) : (
-            <div style={{display:"grid", gap:"24px", gridTemplateColumns:"1fr 1fr", alignItems:"start"}}>
-              <AdminForm draft={draft} setDraft={setDraft} onSubmit={handleSubmit} onCancel={resetDraft} />
-              <div className="admin-panel">
-                <span className="badge-admin">Manage pieces</span>
-                {items.map(item => (
-                  <div className="item-manage-row" key={item.id}>
-                    <span>{item.title}</span>
-                    <div style={{display:"flex", gap:"8px"}}>
-                      <button className="btn btn-ghost btn-small" onClick={() => handleEdit(item)}>Edit</button>
-                      <button className="btn btn-danger btn-small" onClick={() => handleDelete(item.id)}>Delete</button>
-                    </div>
-                  </div>
-                ))}
-                <div style={{marginTop:"18px"}}>
-                  <button className="btn btn-ghost btn-small" onClick={() => setIsAdmin(false)}>Log out</button>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-      </section>
-
-      <footer>
-        <div className="wrap footer-inner">
-          <span>© {new Date().getFullYear()} — built with React, hosted on GitHub Pages.</span>
-          <span>
-            <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer">Instagram</a>
-            {" · "}
-            <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer">GitHub</a>
-          </span>
-        </div>
-      </footer>
-    </React.Fragment>
+  return h(React.Fragment,null,
+    h(Nav,null),
+    h("header",{className:"hero"},
+      h("div",{className:"wrap hero-grid"},
+        h("div",null,
+          h("div",{className:"eyebrow"}, h("span",{className:"dot"}), " IT professional · Illustrator · Market learner"),
+          h("h1",null,"Illustration built with the same discipline as ", h("span",null,"clean code"),"."),
+          h("p",{className:"lead"},"I split my time between shipping frontend systems and drawing — with a side habit of reading market charts the way most people scroll social media. This is where the illustration work lives."),
+          h("div",{className:"hero-cta"},
+            h("a",{className:"btn btn-primary",href:"#work"},"View portfolio"),
+            h("a",{className:"btn btn-ghost",href:INSTAGRAM_URL,target:"_blank",rel:"noopener noreferrer"},"Follow on Instagram")
+          )
+        ),
+        h("div",{className:"hero-art"}, h(HeroArt,null))
+      )
+    ),
+    h(Ticker,null),
+    h("section",{className:"section",id:"work"},
+      h("div",{className:"wrap"},
+        h("div",{className:"section-head"},
+          h("h2",null,"Portfolio"),
+          h("p",{className:"section-sub"},"Illustrations hosted on Google Drive, added through the admin panel below.")
+        ),
+        h("div",{className:"grid"},
+          items.length === 0 && h("div",{className:"empty-state"},"No pieces yet — log in below and add the first one."),
+          items.map(function(item,i){
+            return h(PortfolioCard,{key:item.id,item:item,index:i,isAdmin:isAdmin,onEdit:handleEdit,onDelete:handleDelete});
+          })
+        )
+      )
+    ),
+    h("section",{className:"section",id:"about"},
+      h("div",{className:"wrap about-grid"},
+        h("div",{className:"about-card"},
+          h("h2",{style:{fontSize:"1.25rem"}},"About"),
+          h("p",{style:{color:"var(--ink-soft)",marginTop:"10px",lineHeight:1.6}},"By day, a developer working across frontend systems. By habit, an illustrator and a slow, steady market learner — more index-and-patience than day-trading."),
+          h("div",{className:"stat-row"},
+            h("div",{className:"stat"}, h("b",null,items.length), h("span",null,"Pieces published")),
+            h("div",{className:"stat"}, h("b",null,SKILLS.length), h("span",null,"Active skills")),
+            h("div",{className:"stat"}, h("b",null,"2"), h("span",null,"Worlds — code & ink"))
+          )
+        ),
+        h("div",null,
+          h("h3",{style:{fontSize:"1.05rem",marginBottom:"10px"}},"How this site works"),
+          h("p",{style:{color:"var(--ink-soft)",lineHeight:1.6}},"This page is a single static React file, deployable on GitHub Pages. New pieces added through the admin panel appear immediately for this session. For permanent additions, edit the INITIAL_PORTFOLIO list in the source and push the change to the repository — no backend required.")
+        )
+      )
+    ),
+    h("section",{className:"section",id:"admin"},
+      h("div",{className:"wrap"},
+        h("div",{className:"section-head"},
+          h("h2",null,"Admin"),
+          h("p",{className:"section-sub"},"Log in to add, edit, or remove portfolio pieces.")
+        ),
+        !isAdmin
+          ? h(LoginForm,{onLogin:handleLogin,error:loginError})
+          : h("div",{className:"admin-grid"},
+              h(AdminForm,{draft:draft,setDraft:setDraft,onSubmit:handleSubmit,onCancel:resetDraft}),
+              h("div",{className:"admin-panel"},
+                h("span",{className:"badge-admin"},"Manage pieces"),
+                items.map(function(item){
+                  return h("div",{className:"item-manage-row",key:item.id},
+                    h("span",null,item.title),
+                    h("div",{style:{display:"flex",gap:"8px"}},
+                      h("button",{className:"btn btn-ghost btn-small",onClick:function(){handleEdit(item);}},"Edit"),
+                      h("button",{className:"btn btn-danger btn-small",onClick:function(){handleDelete(item.id);}},"Delete")
+                    )
+                  );
+                }),
+                h("div",{style:{marginTop:"16px"}}, h("button",{className:"btn btn-ghost btn-small",onClick:function(){setIsAdmin(false);}},"Log out"))
+              )
+            )
+      )
+    ),
+    h("footer",null,
+      h("div",{className:"wrap footer-inner"},
+        h("span",null,"© " + new Date().getFullYear() + " — built with React, hosted on GitHub Pages."),
+        h("span",null,
+          h("a",{href:INSTAGRAM_URL,target:"_blank",rel:"noopener noreferrer"},"Instagram"),
+          " · ",
+          h("a",{href:GITHUB_URL,target:"_blank",rel:"noopener noreferrer"},"GitHub")
+        )
+      )
+    )
   );
 }
 
-ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+ReactDOM.createRoot(document.getElementById("root")).render(h(App,null));
 </script>
 </body>
 </html>
