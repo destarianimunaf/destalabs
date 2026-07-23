@@ -3,23 +3,33 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Illustration Portfolio — IT Professional & Market Learner</title>
-<meta name="description" content="Illustration portfolio of an IT professional and market enthusiast." />
+<title>Illustration Portfolio — Desta Riani</title>
+<meta name="description" content="Illustration portfolio by Desta Riani." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
 <script crossorigin src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
 <script crossorigin src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
 <style>
-:root{--bg:#F8F6FC;--surface:#FFFFFF;--ink:#2E2B45;--ink-soft:#6B647F;--line:#E7E1F5;--lavender:#C9C3ED;--periwinkle:#A8B5E8;--mint:#BFE8D4;--blush:#F7C9CB;--butter:#FCEAB0;--accent:#7C6FD1;--up:#4FAE85;--down:#D97F86;--radius:18px;--shadow:0 8px 24px rgba(60,50,110,0.08);}
+:root{--bg:#F8F6FC;--surface:#FFFFFF;--ink:#2E2B45;--ink-soft:#6B647F;--line:#E7E1F5;--lavender:#C9C3ED;--periwinkle:#A8B5E8;--mint:#BFE8D4;--blush:#F7C9CB;--butter:#FCEAB0;--accent:#7C6FD1;--up:#4FAE85;--down:#D97F86;--radius:20px;--shadow:0 8px 32px rgba(60,50,110,0.12);}
 *{box-sizing:border-box;}
 html{scroll-behavior:smooth;}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;position:relative;overflow-x:hidden;}
 h1,h2,h3{font-family:'Space Grotesk',sans-serif;margin:0;letter-spacing:-0.01em;}
 .mono{font-family:'IBM Plex Mono',monospace;}
 a{color:inherit;}
 button{font-family:inherit;cursor:pointer;}
-.wrap{max-width:1120px;margin:0 auto;padding:0 20px;}
-.nav{position:sticky;top:0;z-index:40;background:rgba(248,246,252,0.9);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px;position:relative;z-index:1;}
+
+/* liquid glass backdrop */
+.bg-blob{position:fixed;border-radius:50%;filter:blur(95px);pointer-events:none;z-index:0;opacity:0.32;}
+.bg-blob.b1{width:440px;height:440px;background:#AFC2FF;top:-140px;right:-100px;}
+.bg-blob.b2{width:400px;height:400px;background:#FFC2C8;top:560px;left:-160px;}
+.bg-blob.b3{width:360px;height:360px;background:#A8EFC9;bottom:-100px;right:8%;}
+.bg-blob.b4{width:300px;height:300px;background:#FFE38A;top:1150px;right:-90px;opacity:0.26;}
+
+.glass{background:rgba(255,255,255,0.78);-webkit-backdrop-filter:blur(18px) saturate(160%);backdrop-filter:blur(18px) saturate(160%);border:1px solid rgba(255,255,255,0.9);box-shadow:var(--shadow), inset 0 1px 0 rgba(255,255,255,0.8);}
+
+.nav{position:sticky;top:0;z-index:40;background:rgba(255,255,255,0.78);-webkit-backdrop-filter:blur(16px) saturate(160%);backdrop-filter:blur(16px) saturate(160%);border-bottom:1px solid rgba(255,255,255,0.7);}
 .nav-inner{position:relative;display:flex;align-items:center;justify-content:space-between;padding:14px 20px;max-width:1120px;margin:0 auto;}
 .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1rem;}
 .brand-mark{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--periwinkle),var(--blush));display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;color:#fff;font-size:0.8rem;font-weight:700;flex-shrink:0;}
@@ -29,23 +39,23 @@ button{font-family:inherit;cursor:pointer;}
 .nav-toggle{display:none;background:none;border:none;font-size:1.3rem;color:var(--ink);padding:6px;}
 .btn{border:none;border-radius:999px;padding:10px 18px;font-weight:600;font-size:0.86rem;transition:transform .15s,box-shadow .15s;}
 .btn:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
-.btn-primary{background:var(--accent);color:#fff;}
-.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(124,111,209,0.35);}
-.btn-ghost{background:var(--surface);color:var(--ink);border:1px solid var(--line);}
+.btn-primary{background:var(--accent);color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,0.35);}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(124,111,209,0.35), inset 0 1px 0 rgba(255,255,255,0.35);}
+.btn-ghost{background:rgba(255,255,255,0.55);color:var(--ink);border:1px solid rgba(255,255,255,0.8);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);}
 .btn-ghost:hover{border-color:var(--accent);}
 .btn-small{padding:7px 13px;font-size:0.78rem;}
-.btn-danger{background:var(--blush);color:#7A2E33;}
+.btn-danger{background:rgba(247,201,203,0.7);color:#7A2E33;}
 .hero{padding:56px 0 36px;}
 .hero-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:40px;align-items:center;}
-.eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);padding:6px 14px;border-radius:999px;font-size:0.76rem;font-weight:600;color:var(--ink-soft);margin-bottom:18px;}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.6);border:1px solid rgba(255,255,255,0.8);padding:6px 14px;border-radius:999px;font-size:0.76rem;font-weight:600;color:var(--ink-soft);margin-bottom:18px;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);}
 .eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--mint);flex-shrink:0;}
 .hero h1{font-size:clamp(1.8rem,4.5vw,3.1rem);line-height:1.14;}
 .hero h1 span{color:var(--accent);}
 .hero p.lead{color:var(--ink-soft);font-size:1rem;line-height:1.6;max-width:46ch;margin:18px 0 26px;}
 .hero-cta{display:flex;gap:12px;flex-wrap:wrap;}
-.hero-art{display:flex;align-items:center;justify-content:center;}
-.hero-art svg{width:100%;max-width:380px;height:auto;}
-.ticker-section{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--surface);}
+.hero-art{display:flex;align-items:center;justify-content:center;padding:28px;border-radius:28px;}
+.hero-art svg{width:100%;max-width:360px;height:auto;}
+.ticker-section{border-top:1px solid rgba(255,255,255,0.7);border-bottom:1px solid rgba(255,255,255,0.7);background:rgba(255,255,255,0.7);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);}
 .ticker-mask{overflow:hidden;padding:12px 0;}
 .ticker-track{display:flex;width:max-content;animation:scroll 28s linear infinite;}
 @media(prefers-reduced-motion:reduce){.ticker-track{animation:none;overflow-x:auto;}}
@@ -53,56 +63,69 @@ button{font-family:inherit;cursor:pointer;}
 .ticker-item .up{color:var(--up);}
 .ticker-item .down{color:var(--down);}
 @keyframes scroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
-.section{padding:52px 0;}
+.section{padding:52px 0;position:relative;z-index:1;}
 .section-head{margin-bottom:28px;}
 .section-head h2{font-size:clamp(1.4rem,2.6vw,2rem);}
 .section-sub{color:var(--ink-soft);font-size:0.92rem;margin-top:6px;}
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column;}
+.card{border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;transition:transform .2s;}
+.card:hover{transform:translateY(-3px);}
 .card-media{aspect-ratio:4/3;width:100%;object-fit:cover;display:block;background:#eee;}
 .card-media-placeholder{aspect-ratio:4/3;width:100%;display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:2rem;color:#fff;}
 .card-body{padding:15px 16px 16px;display:flex;flex-direction:column;gap:8px;flex:1;}
 .card-body h3{font-size:1rem;}
 .card-tags{display:flex;gap:6px;flex-wrap:wrap;}
-.tag{background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:3px 10px;font-size:0.7rem;color:var(--ink-soft);}
+.tag{background:rgba(255,255,255,0.6);border:1px solid var(--line);border-radius:999px;padding:3px 10px;font-size:0.7rem;color:var(--ink-soft);}
 .card-actions{display:flex;gap:8px;margin-top:auto;padding-top:8px;}
-.empty-state{grid-column:1/-1;text-align:center;padding:48px 20px;border:1.5px dashed var(--line);border-radius:var(--radius);color:var(--ink-soft);}
-.admin-panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);}
+.empty-state{grid-column:1/-1;text-align:center;padding:48px 20px;border:1.5px dashed rgba(255,255,255,0.8);border-radius:var(--radius);color:var(--ink-soft);}
+.drive-embed-wrap{border-radius:var(--radius);overflow:hidden;margin-top:22px;}
+.drive-embed-wrap iframe{width:100%;height:520px;border:0;display:block;}
+.drive-embed-label{font-size:0.8rem;color:var(--ink-soft);margin-bottom:10px;}
+.admin-panel{border-radius:var(--radius);padding:24px;}
 .field{margin-bottom:15px;}
 .field label{display:block;font-size:0.8rem;font-weight:600;margin-bottom:6px;}
-.field input{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--line);font-family:inherit;font-size:0.9rem;background:var(--bg);}
+.field input{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--line);font-family:inherit;font-size:0.9rem;background:rgba(255,255,255,0.7);}
 .field small{color:var(--ink-soft);font-size:0.74rem;}
 .form-row{display:flex;gap:10px;margin-top:18px;}
-.badge-admin{background:var(--mint);color:#1F5C43;padding:5px 12px;border-radius:999px;font-size:0.74rem;font-weight:700;display:inline-block;margin-bottom:16px;}
+.badge-admin{background:rgba(191,232,212,0.8);color:#1F5C43;padding:5px 12px;border-radius:999px;font-size:0.74rem;font-weight:700;display:inline-block;margin-bottom:16px;}
 .item-manage-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);font-size:0.86rem;}
 .item-manage-row:last-child{border-bottom:none;}
 .admin-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;}
 .login-wrap{max-width:420px;}
 .about-grid{display:grid;grid-template-columns:0.8fr 1.2fr;gap:36px;align-items:center;}
-.about-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);}
+.about-card{border-radius:var(--radius);padding:24px;}
 .stat-row{display:flex;gap:22px;margin-top:16px;flex-wrap:wrap;}
 .stat b{display:block;font-family:'Space Grotesk',sans-serif;font-size:1.3rem;}
 .stat span{font-size:0.76rem;color:var(--ink-soft);}
-footer{border-top:1px solid var(--line);padding:32px 0;color:var(--ink-soft);font-size:0.84rem;}
+.bio-card{border-radius:var(--radius);padding:24px;}
+footer{border-top:1px solid rgba(255,255,255,0.7);padding:32px 0;color:var(--ink-soft);font-size:0.84rem;background:rgba(255,255,255,0.6);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);position:relative;z-index:1;}
 .footer-inner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
 .footer-inner a{text-decoration:none;font-weight:600;color:var(--accent);}
+.footer-credit{font-size:0.78rem;opacity:0.85;}
 @media(max-width:860px){
 .hero-grid,.about-grid{grid-template-columns:1fr;}
 .hero-art{order:-1;}
 .grid{grid-template-columns:repeat(2,1fr);}
 .nav-toggle{display:block;}
-.nav-links{display:none;position:absolute;top:56px;left:0;right:0;flex-direction:column;align-items:flex-start;gap:14px;background:var(--surface);border-bottom:1px solid var(--line);padding:18px 20px;box-shadow:var(--shadow);}
+.nav-links{display:none;position:absolute;top:56px;left:0;right:0;flex-direction:column;align-items:flex-start;gap:14px;background:rgba(255,255,255,0.85);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,0.6);padding:18px 20px;box-shadow:var(--shadow);}
 .nav-links.open{display:flex;}
 .admin-grid{grid-template-columns:1fr;}
+.drive-embed-wrap iframe{height:420px;}
 }
 @media(max-width:540px){
 .grid{grid-template-columns:1fr;}
 .hero{padding:40px 0 28px;}
 .section{padding:40px 0;}
+.drive-embed-wrap iframe{height:360px;}
+.bg-blob{opacity:0.22;}
 }
 </style>
 </head>
 <body>
+<div class="bg-blob b1"></div>
+<div class="bg-blob b2"></div>
+<div class="bg-blob b3"></div>
+<div class="bg-blob b4"></div>
 <div id="root"></div>
 <script>
 var h = React.createElement;
@@ -110,6 +133,7 @@ var h = React.createElement;
 var INSTAGRAM_URL = "https://instagram.com/destarianimunaf";
 var GITHUB_URL = "https://github.com/destarianimunaf";
 var ADMIN_PASSCODE = "changeme123";
+var DRIVE_FOLDER_ID = "1ZcH24TTfnV39kNLNp00V0ATDERa1iV4M";
 
 var PLACEHOLDER_COLORS = [["#C9C3ED","#A8B5E8"],["#F7C9CB","#FCEAB0"],["#BFE8D4","#A8B5E8"],["#FCEAB0","#F7C9CB"]];
 
@@ -124,10 +148,9 @@ var SKILLS = [
 ];
 
 var INITIAL_PORTFOLIO = [
-  {id:1,title:"Editorial Study I",tags:["Illustration","Editorial"],image:""},
-  {id:2,title:"Market Mood Board",tags:["Concept","Finance"],image:""},
-  {id:3,title:"System Icons Set",tags:["Icon","UI"],image:""},
-  {id:4,title:"Weekend Sketch",tags:["Sketch","Personal"],image:""}
+  {id:1,title:"Illustration I",tags:["Illustration"],image:"https://drive.google.com/uc?export=view&id=1OXTlKpP8r_Jy6T7Vtb_m6lU3vIn27FFB"},
+  {id:2,title:"Illustration II",tags:["Illustration"],image:"https://drive.google.com/uc?export=view&id=18nWVWSZpbualJwmwxvtWfTSmN4x0ifrd"},
+  {id:3,title:"Illustration III",tags:["Illustration"],image:"https://drive.google.com/uc?export=view&id=1-3CwrrZhpsOtj9_NBe4pBGo1vmd9fg2C"}
 ];
 
 function normalizeDriveUrl(u){
@@ -142,10 +165,10 @@ function initials(t){ return t.trim().split(/\s+/).slice(0,2).map(function(w){re
 
 function HeroArt(){
   return h("svg",{viewBox:"0 0 400 340",fill:"none",xmlns:"http://www.w3.org/2000/svg"},
-    h("circle",{cx:200,cy:170,r:150,fill:"#EFE9FB"}),
+    h("circle",{cx:200,cy:170,r:150,fill:"rgba(255,255,255,0.5)"}),
     h("circle",{cx:300,cy:80,r:34,fill:"#F7C9CB",opacity:0.9}),
     h("circle",{cx:70,cy:250,r:26,fill:"#BFE8D4",opacity:0.9}),
-    h("rect",{x:90,y:130,width:220,height:140,rx:14,fill:"#FFFFFF",stroke:"#E7E1F5",strokeWidth:2}),
+    h("rect",{x:90,y:130,width:220,height:140,rx:14,fill:"rgba(255,255,255,0.7)",stroke:"#E7E1F5",strokeWidth:2}),
     h("rect",{x:90,y:130,width:220,height:26,rx:14,fill:"#C9C3ED"}),
     h("circle",{cx:104,cy:143,r:4,fill:"#fff"}),
     h("circle",{cx:116,cy:143,r:4,fill:"#fff"}),
@@ -189,7 +212,7 @@ function CardMedia(props){
 
 function PortfolioCard(props){
   var item = props.item, index = props.index, isAdmin = props.isAdmin, onEdit = props.onEdit, onDelete = props.onDelete;
-  return h("div",{className:"card"},
+  return h("div",{className:"card glass"},
     h(CardMedia,{item:item,index:index}),
     h("div",{className:"card-body"},
       h("h3",null,item.title),
@@ -204,7 +227,7 @@ function PortfolioCard(props){
 
 function AdminForm(props){
   var draft = props.draft, setDraft = props.setDraft, onSubmit = props.onSubmit, onCancel = props.onCancel;
-  return h("form",{className:"admin-panel",onSubmit:function(e){ e.preventDefault(); onSubmit(); }},
+  return h("form",{className:"admin-panel glass",onSubmit:function(e){ e.preventDefault(); onSubmit(); }},
     h("span",{className:"badge-admin"},"Admin mode"),
     h("div",{className:"field"},
       h("label",{htmlFor:"title"},"Title"),
@@ -229,7 +252,7 @@ function AdminForm(props){
 function LoginForm(props){
   var onLogin = props.onLogin, error = props.error;
   var state = React.useState(""), pass = state[0], setPass = state[1];
-  return h("form",{className:"admin-panel login-wrap",onSubmit:function(e){ e.preventDefault(); onLogin(pass); }},
+  return h("form",{className:"admin-panel glass login-wrap",onSubmit:function(e){ e.preventDefault(); onLogin(pass); }},
     h("div",{className:"field"},
       h("label",{htmlFor:"passcode"},"Admin passcode"),
       h("input",{id:"passcode",type:"password",value:pass,onChange:function(e){setPass(e.target.value);},placeholder:"Enter passcode"}),
@@ -243,7 +266,7 @@ function Nav(){
   var state = React.useState(false), open = state[0], setOpen = state[1];
   return h("nav",{className:"nav"},
     h("div",{className:"nav-inner"},
-      h("div",{className:"brand"}, h("span",{className:"brand-mark"},"IL"), "Illustration & Systems"),
+      h("div",{className:"brand"}, h("span",{className:"brand-mark"},"DR"), "Desta Riani"),
       h("button",{className:"nav-toggle","aria-label":"Toggle menu",onClick:function(){setOpen(!open);}}, open ? "✕" : "☰"),
       h("div",{className:"nav-links" + (open?" open":"")},
         h("a",{href:"#work",onClick:function(){setOpen(false);}},"Work"),
@@ -289,15 +312,15 @@ function App(){
     h("header",{className:"hero"},
       h("div",{className:"wrap hero-grid"},
         h("div",null,
-          h("div",{className:"eyebrow"}, h("span",{className:"dot"}), " IT professional · Illustrator · Market learner"),
+          h("div",{className:"eyebrow"}, h("span",{className:"dot"}), " Computer Science & Management · Illustrator · Market learner"),
           h("h1",null,"Illustration built with the same discipline as ", h("span",null,"clean code"),"."),
-          h("p",{className:"lead"},"I split my time between shipping frontend systems and drawing — with a side habit of reading market charts the way most people scroll social media. This is where the illustration work lives."),
+          h("p",{className:"lead"},"I split my time between technology, markets, and drawing — with a habit of reading charts the way most people scroll social media. This is where the illustration work lives."),
           h("div",{className:"hero-cta"},
             h("a",{className:"btn btn-primary",href:"#work"},"View portfolio"),
             h("a",{className:"btn btn-ghost",href:INSTAGRAM_URL,target:"_blank",rel:"noopener noreferrer"},"Follow on Instagram")
           )
         ),
-        h("div",{className:"hero-art"}, h(HeroArt,null))
+        h("div",{className:"hero-art glass"}, h(HeroArt,null))
       )
     ),
     h(Ticker,null),
@@ -305,30 +328,34 @@ function App(){
       h("div",{className:"wrap"},
         h("div",{className:"section-head"},
           h("h2",null,"Portfolio"),
-          h("p",{className:"section-sub"},"Illustrations hosted on Google Drive, added through the admin panel below.")
+          h("p",{className:"section-sub"},"Illustrations loaded directly from Google Drive.")
         ),
         h("div",{className:"grid"},
           items.length === 0 && h("div",{className:"empty-state"},"No pieces yet — log in below and add the first one."),
           items.map(function(item,i){
             return h(PortfolioCard,{key:item.id,item:item,index:i,isAdmin:isAdmin,onEdit:handleEdit,onDelete:handleDelete});
           })
+        ),
+        h("p",{className:"drive-embed-label"},"Full folder, live from Google Drive:"),
+        h("div",{className:"drive-embed-wrap glass"},
+          h("iframe",{src:"https://drive.google.com/embeddedfolderview?id="+DRIVE_FOLDER_ID+"#grid",loading:"lazy",title:"Illustration folder on Google Drive"})
         )
       )
     ),
     h("section",{className:"section",id:"about"},
       h("div",{className:"wrap about-grid"},
-        h("div",{className:"about-card"},
+        h("div",{className:"about-card glass"},
           h("h2",{style:{fontSize:"1.25rem"}},"About"),
-          h("p",{style:{color:"var(--ink-soft)",marginTop:"10px",lineHeight:1.6}},"By day, a developer working across frontend systems. By habit, an illustrator and a slow, steady market learner — more index-and-patience than day-trading."),
+          h("p",{style:{color:"var(--ink-soft)",marginTop:"10px",lineHeight:1.6}},"By habit, a slow, steady market learner — more index-and-patience than day-trading. By training, someone who likes taking things apart, whether it's a codebase or a chart."),
           h("div",{className:"stat-row"},
             h("div",{className:"stat"}, h("b",null,items.length), h("span",null,"Pieces published")),
             h("div",{className:"stat"}, h("b",null,SKILLS.length), h("span",null,"Active skills")),
-            h("div",{className:"stat"}, h("b",null,"2"), h("span",null,"Worlds — code & ink"))
+            h("div",{className:"stat"}, h("b",null,"2"), h("span",null,"Worlds — markets & ink"))
           )
         ),
-        h("div",null,
-          h("h3",{style:{fontSize:"1.05rem",marginBottom:"10px"}},"How this site works"),
-          h("p",{style:{color:"var(--ink-soft)",lineHeight:1.6}},"This page is a single static React file, deployable on GitHub Pages. New pieces added through the admin panel appear immediately for this session. For permanent additions, edit the INITIAL_PORTFOLIO list in the source and push the change to the repository — no backend required.")
+        h("div",{className:"bio-card glass"},
+          h("h3",{style:{fontSize:"1.05rem",marginBottom:"10px"}},"Desta Riani"),
+          h("p",{style:{color:"var(--ink-soft)",lineHeight:1.6}},"Background in Computer Science and Management, with a steady interest in technology and the stock market. Illustration sits alongside both — a slower, quieter way of thinking through ideas, sketch by sketch, the same patient way a good position gets built.")
         )
       )
     ),
@@ -336,13 +363,13 @@ function App(){
       h("div",{className:"wrap"},
         h("div",{className:"section-head"},
           h("h2",null,"Admin"),
-          h("p",{className:"section-sub"},"Log in to add, edit, or remove portfolio pieces.")
+          h("p",{className:"section-sub"},"Optional — log in if you ever want to manually add or adjust a piece.")
         ),
         !isAdmin
           ? h(LoginForm,{onLogin:handleLogin,error:loginError})
           : h("div",{className:"admin-grid"},
               h(AdminForm,{draft:draft,setDraft:setDraft,onSubmit:handleSubmit,onCancel:resetDraft}),
-              h("div",{className:"admin-panel"},
+              h("div",{className:"admin-panel glass"},
                 h("span",{className:"badge-admin"},"Manage pieces"),
                 items.map(function(item){
                   return h("div",{className:"item-manage-row",key:item.id},
@@ -360,7 +387,7 @@ function App(){
     ),
     h("footer",null,
       h("div",{className:"wrap footer-inner"},
-        h("span",null,"© " + new Date().getFullYear() + " — built with React, hosted on GitHub Pages."),
+        h("span",{className:"footer-credit"},"Made by Desta Riani"),
         h("span",null,
           h("a",{href:INSTAGRAM_URL,target:"_blank",rel:"noopener noreferrer"},"Instagram"),
           " · ",
