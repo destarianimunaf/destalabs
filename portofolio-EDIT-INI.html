@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<!--
+  =====================================================================
+  PORTOFOLIO GAMBAR — file sumber (versi mudah dibaca & diedit)
+  =====================================================================
+  CARA PAKAI SINGKAT:
+  1. Isi CONFIG di bawah (nama, tagline, bio, link sosial - opsional).
+  2. Isi array ARTWORKS dengan karya kamu. Untuk setiap gambar butuh
+     "driveId" yaitu ID file Google Drive.
+     Cara ambil ID: buka file di Drive > klik kanan > "Get link" >
+     pastikan aksesnya "Anyone with the link - Viewer".
+     Link akan berbentuk:
+       https://drive.google.com/file/d/1AbCdEfGhIjKlMnOpQr/view
+     Bagian tebal itu adalah ID-nya:
+       1AbCdEfGhIjKlMnOpQr
+  3. Simpan file ini sebagai index.html lalu upload ke repo GitHub,
+     aktifkan GitHub Pages (Settings > Pages > Deploy from branch).
+     Selesai — tidak perlu hosting/server/build tool apapun.
+
+  CATATAN PENTING soal Drive:
+  - Folder/file HARUS di-share "Anyone with the link" agar gambar
+    muncul untuk pengunjung lain (bukan cuma kamu).
+  - Google kadang membatasi jumlah request per file dalam waktu
+    singkat. Untuk portofolio pribadi dengan trafik wajar biasanya
+    aman, tapi kalau nanti viral, pertimbangkan pindah gambar ke
+    hosting gambar biasa (Cloudinary, imgur, dst).
+  =====================================================================
+-->
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portofolio</title>
+<meta name="description" content="Portofolio gambar">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://lh3.googleusercontent.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:#14181a;
+    --panel:#1b201f;
+    --paper:#efe9df;
+    --ink:#e9e5db;
+    --muted:#8b948c;
+    --accent:#c9a227;
+    --accent-soft:rgba(201,162,39,.14);
+    --line:rgba(233,229,219,.12);
+    --font-display:'Fraunces',serif;
+    --font-body:'Inter',system-ui,sans-serif;
+    --font-mono:'IBM Plex Mono',monospace;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--font-body);
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--accent-soft);color:var(--accent);}
+
+  /* ---------- header ---------- */
+  header{
+    position:sticky;top:0;z-index:20;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:18px 5vw;
+    background:rgba(20,24,26,.85);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .brand{
+    font-family:var(--font-mono);
+    font-size:13px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--muted);
+  }
+  .brand b{color:var(--ink);font-weight:500;}
+  nav a{
+    color:var(--muted);text-decoration:none;font-size:13px;
+    margin-left:24px;font-family:var(--font-mono);letter-spacing:.05em;
+    transition:color .2s;
+  }
+  nav a:hover,nav a:focus-visible{color:var(--accent);}
+
+  /* ---------- hero ---------- */
+  .hero{
+    padding:min(14vw,120px) 5vw 64px;
+    max-width:980px;
+  }
+  .hero .eyebrow{
+    font-family:var(--font-mono);font-size:12px;letter-spacing:.15em;
+    text-transform:uppercase;color:var(--accent);margin:0 0 18px;
+  }
+  .hero h1{
+    font-family:var(--font-display);
+    font-weight:600;
+    font-size:clamp(40px,7vw,84px);
+    line-height:1.02;
+    margin:0 0 22px;
+    color:var(--paper);
+  }
+  .hero p{
+    max-width:56ch;
+    font-size:17px;line-height:1.65;color:var(--muted);
+    margin:0;
+  }
+
+  /* ---------- filter chips ---------- */
+  .filters{
+    display:flex;flex-wrap:wrap;gap:10px;
+    padding:0 5vw 40px;
+  }
+  .chip{
+    font-family:var(--font-mono);font-size:12px;letter-spacing:.05em;
+    padding:8px 16px;border:1px solid var(--line);background:transparent;
+    color:var(--muted);cursor:pointer;border-radius:999px;
+    transition:all .2s;
+  }
+  .chip:hover{border-color:var(--accent);color:var(--accent);}
+  .chip.active{background:var(--accent);border-color:var(--accent);color:#1a1500;}
+
+  /* ---------- gallery ---------- */
+  .gallery{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+    gap:2px;
+    padding:0 5vw 100px;
+  }
+  .card{
+    position:relative;
+    aspect-ratio:4/5;
+    overflow:hidden;
+    background:var(--panel);
+    cursor:pointer;
+  }
+  .card img{
+    width:100%;height:100%;object-fit:cover;display:block;
+    opacity:0;transform:scale(1.03);
+    transition:opacity .5s ease, transform .6s ease;
+  }
+  .card img.loaded{opacity:1;transform:scale(1);}
+  .card:hover img{transform:scale(1.06);}
+  .card .tag{
+    position:absolute;top:12px;left:12px;
+    font-family:var(--font-mono);font-size:11px;color:var(--paper);
+    background:rgba(20,24,26,.55);padding:3px 8px;
+    letter-spacing:.05em;
+  }
+  .card .info{
+    position:absolute;left:0;right:0;bottom:0;
+    padding:14px;
+    background:linear-gradient(0deg,rgba(0,0,0,.75),transparent);
+    opacity:0;transform:translateY(6px);
+    transition:opacity .25s ease, transform .25s ease;
+  }
+  .card:hover .info,.card:focus-visible .info{opacity:1;transform:translateY(0);}
+  .card .info .t{font-family:var(--font-display);font-size:16px;color:var(--paper);}
+  .card .info .m{font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:2px;}
+
+  /* ---------- lightbox ---------- */
+  .lightbox{
+    position:fixed;inset:0;z-index:50;
+    background:rgba(10,12,13,.94);
+    display:flex;align-items:center;justify-content:center;
+    padding:5vw;
+  }
+  .lightbox img{
+    max-width:100%;max-height:78vh;object-fit:contain;
+    box-shadow:0 30px 80px rgba(0,0,0,.5);
+  }
+  .lightbox-caption{
+    position:absolute;left:0;right:0;bottom:28px;
+    text-align:center;
+  }
+  .lightbox-caption .t{font-family:var(--font-display);font-size:20px;color:var(--paper);}
+  .lightbox-caption .m{font-family:var(--font-mono);font-size:12px;color:var(--muted);margin-top:4px;}
+  .lb-close,.lb-nav{
+    position:absolute;background:transparent;border:1px solid var(--line);
+    color:var(--paper);cursor:pointer;font-family:var(--font-mono);
+    width:44px;height:44px;display:flex;align-items:center;justify-content:center;
+    border-radius:999px;transition:all .2s;font-size:18px;
+  }
+  .lb-close:hover,.lb-nav:hover{border-color:var(--accent);color:var(--accent);}
+  .lb-close{top:24px;right:24px;}
+  .lb-nav.prev{left:24px;top:50%;transform:translateY(-50%);}
+  .lb-nav.next{right:24px;top:50%;transform:translateY(-50%);}
+
+  /* ---------- footer ---------- */
+  footer{
+    padding:40px 5vw 60px;
+    border-top:1px solid var(--line);
+    display:flex;flex-wrap:wrap;gap:12px 24px;
+    align-items:center;justify-content:space-between;
+  }
+  footer .note{font-family:var(--font-mono);font-size:12px;color:var(--muted);}
+  footer .links a{color:var(--muted);text-decoration:none;font-size:13px;margin-left:18px;font-family:var(--font-mono);}
+  footer .links a:hover{color:var(--accent);}
+
+  .empty{
+    padding:60px 5vw;color:var(--muted);font-family:var(--font-mono);font-size:13px;
+  }
+
+  @media (max-width:640px){
+    header{padding:14px 6vw;}
+    nav a{margin-left:14px;}
+    .hero{padding:80px 6vw 40px;}
+    .filters{padding:0 6vw 28px;}
+    .gallery{padding:0 6vw 70px;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));}
+    .lb-nav{width:38px;height:38px;font-size:15px;}
+    .lb-close{top:14px;right:14px;}
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none !important;animation:none !important;}
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+
+<script>
+/* =====================================================================
+   1) KONFIGURASI UMUM — edit bagian ini
+   ===================================================================== */
+const CONFIG = {
+  name: "Nama Kamu",
+  eyebrow: "Portofolio Gambar",
+  tagline: "Kumpulan sketsa dan ilustrasi yang dibuat di luar jam kerja.",
+  bio: "Sehari-hari bekerja di bidang IT, tapi selalu menyempatkan waktu untuk menggambar. Halaman ini adalah kumpulan karya pribadi — mulai dari sketsa cepat sampai ilustrasi yang lebih serius.",
+  links: [
+    { label: "Instagram", href: "#" },
+    { label: "Email", href: "#" }
+  ]
+};
+
+/* =====================================================================
+   2) DAFTAR KARYA — tambah / hapus / edit sesuka hati
+   driveId  : ID file Google Drive (lihat instruksi di atas file ini)
+   title    : judul karya
+   year     : tahun (opsional, boleh kosong "")
+   medium   : media, misal "Pensil di kertas", "Digital", dst (opsional)
+   category : dipakai untuk filter chip di atas galeri
+   ===================================================================== */
+const ARTWORKS = [
+  { driveId: "GANTI_DENGAN_ID_FILE_1", title: "Judul Karya 1", year: "2026", medium: "Pensil di kertas", category: "Sketsa" },
+  { driveId: "GANTI_DENGAN_ID_FILE_2", title: "Judul Karya 2", year: "2026", medium: "Digital", category: "Digital" },
+  { driveId: "GANTI_DENGAN_ID_FILE_3", title: "Judul Karya 3", year: "2025", medium: "Cat air", category: "Cat Air" },
+  { driveId: "GANTI_DENGAN_ID_FILE_4", title: "Judul Karya 4", year: "2025", medium: "Digital", category: "Digital" },
+  { driveId: "GANTI_DENGAN_ID_FILE_5", title: "Judul Karya 5", year: "2025", medium: "Pensil di kertas", category: "Sketsa" },
+  { driveId: "GANTI_DENGAN_ID_FILE_6", title: "Judul Karya 6", year: "2024", medium: "Cat air", category: "Cat Air" }
+];
+
+/* =====================================================================
+   3) LOGIKA APLIKASI — tidak wajib diedit
+   ===================================================================== */
+const e = React.createElement;
+
+function driveUrl(id, width) {
+  return "https://lh3.googleusercontent.com/d/" + id + "=w" + width;
+}
+
+function Header(){
+  return e("header", null,
+    e("div", {className:"brand"}, e("b", null, CONFIG.name)),
+    e("nav", null,
+      e("a", {href:"#karya"}, "Karya"),
+      e("a", {href:"#tentang"}, "Tentang")
+    )
+  );
+}
+
+function Hero(){
+  return e("section", {className:"hero"},
+    e("p", {className:"eyebrow"}, CONFIG.eyebrow),
+    e("h1", null, CONFIG.name),
+    e("p", null, CONFIG.tagline)
+  );
+}
+
+function Filters({categories, active, onChange}){
+  return e("div", {className:"filters"},
+    ["Semua", ...categories].map(cat =>
+      e("button", {
+        key: cat,
+        className: "chip" + (active === cat ? " active" : ""),
+        onClick: () => onChange(cat)
+      }, cat)
+    )
+  );
+}
+
+function Card({item, index, onOpen}){
+  const [loaded, setLoaded] = React.useState(false);
+  return e("div", {
+      className:"card",
+      tabIndex:0,
+      onClick:()=>onOpen(index),
+      onKeyDown:(ev)=>{ if(ev.key==="Enter") onOpen(index); }
+    },
+    e("span", {className:"tag"}, "No. " + String(index+1).padStart(2,"0")),
+    e("img", {
+      src: driveUrl(item.driveId, 800),
+      alt: item.title,
+      loading:"lazy",
+      decoding:"async",
+      className: loaded ? "loaded" : "",
+      onLoad:()=>setLoaded(true)
+    }),
+    e("div", {className:"info"},
+      e("div", {className:"t"}, item.title),
+      e("div", {className:"m"}, [item.medium, item.year].filter(Boolean).join(" · "))
+    )
+  );
+}
+
+function Lightbox({item, index, total, onClose, onPrev, onNext}){
+  React.useEffect(()=>{
+    function onKey(ev){
+      if(ev.key === "Escape") onClose();
+      if(ev.key === "ArrowLeft") onPrev();
+      if(ev.key === "ArrowRight") onNext();
+    }
+    window.addEventListener("keydown", onKey);
+    return ()=> window.removeEventListener("keydown", onKey);
+  }, [onClose, onPrev, onNext]);
+
+  return e("div", {className:"lightbox", onClick:onClose},
+    e("button", {className:"lb-close", onClick:onClose, "aria-label":"Tutup"}, "✕"),
+    e("button", {
+      className:"lb-nav prev",
+      "aria-label":"Sebelumnya",
+      onClick:(ev)=>{ev.stopPropagation(); onPrev();}
+    }, "‹"),
+    e("img", {
+      src: driveUrl(item.driveId, 1600),
+      alt: item.title,
+      onClick:(ev)=>ev.stopPropagation()
+    }),
+    e("button", {
+      className:"lb-nav next",
+      "aria-label":"Berikutnya",
+      onClick:(ev)=>{ev.stopPropagation(); onNext();}
+    }, "›"),
+    e("div", {className:"lightbox-caption"},
+      e("div", {className:"t"}, item.title),
+      e("div", {className:"m"},
+        [item.medium, item.year].filter(Boolean).join(" · ") + "  —  " + (index+1) + " / " + total
+      )
+    )
+  );
+}
+
+function Footer(){
+  return e("footer", {id:"tentang"},
+    e("p", {className:"note", style:{maxWidth:"46ch"}}, CONFIG.bio),
+    e("div", {className:"links"},
+      CONFIG.links.map(l => e("a", {key:l.label, href:l.href}, l.label))
+    )
+  );
+}
+
+function App(){
+  const categories = React.useMemo(()=>{
+    return [...new Set(ARTWORKS.map(a => a.category).filter(Boolean))];
+  }, []);
+  const [active, setActive] = React.useState("Semua");
+  const [openIndex, setOpenIndex] = React.useState(null);
+
+  const filtered = React.useMemo(()=>{
+    return active === "Semua" ? ARTWORKS : ARTWORKS.filter(a => a.category === active);
+  }, [active]);
+
+  function openAt(i){ setOpenIndex(i); }
+  function close(){ setOpenIndex(null); }
+  function prev(){ setOpenIndex(i => (i - 1 + filtered.length) % filtered.length); }
+  function next(){ setOpenIndex(i => (i + 1) % filtered.length); }
+
+  return e(React.Fragment, null,
+    e(Header),
+    e(Hero),
+    e("div", {id:"karya"}),
+    categories.length > 0 && e(Filters, {categories, active, onChange:setActive}),
+    filtered.length === 0
+      ? e("p", {className:"empty"}, "Belum ada karya di kategori ini.")
+      : e("div", {className:"gallery"},
+          filtered.map((item, i) => e(Card, {key:item.driveId + i, item, index:i, onOpen:openAt}))
+        ),
+    openIndex !== null && e(Lightbox, {
+      item: filtered[openIndex],
+      index: openIndex,
+      total: filtered.length,
+      onClose: close,
+      onPrev: prev,
+      onNext: next
+    }),
+    e(Footer)
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(e(App));
+</script>
+</body>
+</html>
