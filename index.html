@@ -22,10 +22,14 @@ button{font-family:inherit;cursor:pointer;}
 
 /* liquid glass backdrop */
 .bg-blob{position:fixed;border-radius:50%;filter:blur(95px);pointer-events:none;z-index:0;opacity:0.32;}
-.bg-blob.b1{width:440px;height:440px;background:#AFC2FF;top:-140px;right:-100px;}
-.bg-blob.b2{width:400px;height:400px;background:#FFC2C8;top:560px;left:-160px;}
-.bg-blob.b3{width:360px;height:360px;background:#A8EFC9;bottom:-100px;right:8%;}
-.bg-blob.b4{width:300px;height:300px;background:#FFE38A;top:1150px;right:-90px;opacity:0.26;}
+.bg-blob.b1{width:440px;height:440px;background:#AFC2FF;top:-140px;right:-100px;animation:floatA 19s ease-in-out infinite;}
+.bg-blob.b2{width:400px;height:400px;background:#FFC2C8;top:560px;left:-160px;animation:floatB 23s ease-in-out infinite;}
+.bg-blob.b3{width:360px;height:360px;background:#A8EFC9;bottom:-100px;right:8%;animation:floatC 21s ease-in-out infinite;}
+.bg-blob.b4{width:300px;height:300px;background:#FFE38A;top:1150px;right:-90px;opacity:0.26;animation:floatA 17s ease-in-out infinite reverse;}
+@keyframes floatA{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(35px,45px) scale(1.08);}}
+@keyframes floatB{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(-45px,30px) scale(1.05);}}
+@keyframes floatC{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(25px,-35px) scale(1.1);}}
+@media(prefers-reduced-motion:reduce){.bg-blob{animation:none !important;}}
 
 .glass{background:rgba(255,255,255,0.78);-webkit-backdrop-filter:blur(18px) saturate(160%);backdrop-filter:blur(18px) saturate(160%);border:1px solid rgba(255,255,255,0.9);box-shadow:var(--shadow), inset 0 1px 0 rgba(255,255,255,0.8);}
 
@@ -53,7 +57,10 @@ button{font-family:inherit;cursor:pointer;}
 .hero h1 span{color:var(--accent);}
 .hero p.lead{color:var(--ink-soft);font-size:1rem;line-height:1.6;max-width:46ch;margin:18px 0 26px;}
 .hero-cta{display:flex;gap:12px;flex-wrap:wrap;}
-.hero-art{display:flex;align-items:center;justify-content:center;padding:28px;border-radius:28px;}
+.hero-art{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:28px;border-radius:28px;}
+.hero-art::after{content:"";position:absolute;top:-60%;left:-60%;width:60%;height:220%;background:linear-gradient(120deg,transparent,rgba(255,255,255,0.65),transparent);transform:rotate(18deg);animation:sheen 7s ease-in-out infinite;}
+@keyframes sheen{0%{left:-60%;}45%{left:130%;}100%{left:130%;}}
+@media(prefers-reduced-motion:reduce){.hero-art::after{animation:none;display:none;}}
 .hero-art svg{width:100%;max-width:360px;height:auto;}
 .ticker-section{border-top:1px solid rgba(255,255,255,0.7);border-bottom:1px solid rgba(255,255,255,0.7);background:rgba(255,255,255,0.7);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);}
 .ticker-mask{overflow:hidden;padding:12px 0;}
@@ -71,7 +78,10 @@ button{font-family:inherit;cursor:pointer;}
 .card{border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;transition:transform .2s;}
 .card:hover{transform:translateY(-3px);}
 .card-media{aspect-ratio:4/3;width:100%;object-fit:cover;display:block;background:#eee;}
-.card-media-placeholder{aspect-ratio:4/3;width:100%;display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:2rem;color:#fff;}
+.card-media,.card-media-placeholder svg{transition:transform .5s ease;}
+.card:hover .card-media,.card:hover .card-media-placeholder svg{transform:scale(1.06);}
+.card-media-placeholder{aspect-ratio:4/3;width:100%;overflow:hidden;display:block;}
+.card-media-placeholder svg{width:100%;height:100%;display:block;}
 .card-body{padding:15px 16px 16px;display:flex;flex-direction:column;gap:8px;flex:1;}
 .card-body h3{font-size:1rem;}
 .card-tags{display:flex;gap:6px;flex-wrap:wrap;}
@@ -135,8 +145,6 @@ var GITHUB_URL = "https://github.com/destarianimunaf";
 var ADMIN_PASSCODE = "changeme123";
 var DRIVE_FOLDER_ID = "1ZcH24TTfnV39kNLNp00V0ATDERa1iV4M";
 
-var PLACEHOLDER_COLORS = [["#C9C3ED","#A8B5E8"],["#F7C9CB","#FCEAB0"],["#BFE8D4","#A8B5E8"],["#FCEAB0","#F7C9CB"]];
-
 var SKILLS = [
   {sym:"REACT",label:"Frontend",trend:"up",change:"+2.4%"},
   {sym:"ILLUS",label:"Illustration",trend:"up",change:"+1.1%"},
@@ -161,7 +169,6 @@ function normalizeDriveUrl(u){
   if(m2 && u.indexOf("drive.google.com") !== -1) return "https://drive.google.com/uc?export=view&id=" + m2[1];
   return u;
 }
-function initials(t){ return t.trim().split(/\s+/).slice(0,2).map(function(w){return w[0];}).join("").toUpperCase(); }
 
 function HeroArt(){
   return h("svg",{viewBox:"0 0 400 340",fill:"none",xmlns:"http://www.w3.org/2000/svg"},
@@ -200,12 +207,60 @@ function Ticker(){
   );
 }
 
+function ArtMarket(props){
+  var uid = "m" + props.uid;
+  return h("svg",{viewBox:"0 0 400 300",preserveAspectRatio:"xMidYMid slice",xmlns:"http://www.w3.org/2000/svg"},
+    h("defs",null, h("linearGradient",{id:"grad"+uid,x1:"0",y1:"0",x2:"1",y2:"1"}, h("stop",{offset:"0%",stopColor:"#C9C3ED"}), h("stop",{offset:"100%",stopColor:"#A8B5E8"}))),
+    h("rect",{width:400,height:300,fill:"url(#grad"+uid+")"}),
+    h("rect",{x:70,y:190,width:30,height:70,rx:6,fill:"#FFFFFF",opacity:0.85}),
+    h("rect",{x:120,y:150,width:30,height:110,rx:6,fill:"#FFFFFF",opacity:0.85}),
+    h("rect",{x:170,y:170,width:30,height:90,rx:6,fill:"#FFFFFF",opacity:0.9}),
+    h("rect",{x:220,y:110,width:30,height:150,rx:6,fill:"#FFFFFF",opacity:0.95}),
+    h("rect",{x:270,y:80,width:30,height:180,rx:6,fill:"#FFFFFF"}),
+    h("polyline",{points:"85,185 135,145 185,165 235,105 285,75",fill:"none",stroke:"#4FAE85",strokeWidth:4,strokeLinecap:"round",strokeLinejoin:"round"}),
+    h("path",{d:"M275 75 L295 75 L295 95",fill:"none",stroke:"#4FAE85",strokeWidth:4,strokeLinecap:"round",strokeLinejoin:"round"}),
+    h("circle",{cx:335,cy:55,r:22,fill:"#FCEAB0",opacity:0.9})
+  );
+}
+function ArtCode(props){
+  var uid = "c" + props.uid;
+  return h("svg",{viewBox:"0 0 400 300",preserveAspectRatio:"xMidYMid slice",xmlns:"http://www.w3.org/2000/svg"},
+    h("defs",null, h("linearGradient",{id:"grad"+uid,x1:"0",y1:"0",x2:"1",y2:"1"}, h("stop",{offset:"0%",stopColor:"#F7C9CB"}), h("stop",{offset:"100%",stopColor:"#FCEAB0"}))),
+    h("rect",{width:400,height:300,fill:"url(#grad"+uid+")"}),
+    h("rect",{x:60,y:55,width:280,height:190,rx:16,fill:"#FFFFFF",opacity:0.92}),
+    h("rect",{x:60,y:55,width:280,height:34,rx:16,fill:"#7C6FD1",opacity:0.9}),
+    h("circle",{cx:78,cy:72,r:5,fill:"#fff"}),
+    h("circle",{cx:94,cy:72,r:5,fill:"#fff"}),
+    h("circle",{cx:110,cy:72,r:5,fill:"#fff"}),
+    h("path",{d:"M115 150 L90 175 L115 200",fill:"none",stroke:"#7C6FD1",strokeWidth:7,strokeLinecap:"round",strokeLinejoin:"round"}),
+    h("path",{d:"M225 150 L250 175 L225 200",fill:"none",stroke:"#7C6FD1",strokeWidth:7,strokeLinecap:"round",strokeLinejoin:"round"}),
+    h("line",{x1:195,y1:140,x2:175,y2:210,stroke:"#4FAE85",strokeWidth:7,strokeLinecap:"round"})
+  );
+}
+function ArtPalette(props){
+  var uid = "p" + props.uid;
+  return h("svg",{viewBox:"0 0 400 300",preserveAspectRatio:"xMidYMid slice",xmlns:"http://www.w3.org/2000/svg"},
+    h("defs",null, h("linearGradient",{id:"grad"+uid,x1:"0",y1:"0",x2:"1",y2:"1"}, h("stop",{offset:"0%",stopColor:"#BFE8D4"}), h("stop",{offset:"100%",stopColor:"#A8B5E8"}))),
+    h("rect",{width:400,height:300,fill:"url(#grad"+uid+")"}),
+    h("ellipse",{cx:190,cy:160,rx:115,ry:82,fill:"#FFFFFF",opacity:0.92}),
+    h("ellipse",{cx:250,cy:160,rx:26,ry:20,fill:"url(#grad"+uid+")"}),
+    h("circle",{cx:140,cy:120,r:14,fill:"#F7C9CB"}),
+    h("circle",{cx:182,cy:104,r:14,fill:"#FCEAB0"}),
+    h("circle",{cx:224,cy:112,r:14,fill:"#BFE8D4"}),
+    h("circle",{cx:140,cy:192,r:14,fill:"#A8B5E8"}),
+    h("circle",{cx:178,cy:208,r:14,fill:"#C9C3ED"}),
+    h("path",{d:"M300 90 L344 46",stroke:"#7C6FD1",strokeWidth:11,strokeLinecap:"round"}),
+    h("path",{d:"M340 42 L358 24 L368 34 L350 52 Z",fill:"#7C6FD1"})
+  );
+}
+var PLACEHOLDER_ARTS = [ArtMarket, ArtCode, ArtPalette];
+
 function CardMedia(props){
   var item = props.item, index = props.index;
   var state = React.useState(false), broken = state[0], setBroken = state[1];
-  var colors = PLACEHOLDER_COLORS[index % PLACEHOLDER_COLORS.length];
   if(!item.image || broken){
-    return h("div",{className:"card-media-placeholder",style:{background:"linear-gradient(135deg,"+colors[0]+","+colors[1]+")"}}, initials(item.title));
+    var Art = PLACEHOLDER_ARTS[index % PLACEHOLDER_ARTS.length];
+    return h("div",{className:"card-media-placeholder"}, h(Art,{uid:item.id}));
   }
   return h("img",{className:"card-media",src:item.image,alt:item.title,loading:"lazy",onError:function(){setBroken(true);}});
 }
