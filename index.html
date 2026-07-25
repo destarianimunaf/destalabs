@@ -10,7 +10,7 @@
 <script crossorigin src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
 <script crossorigin src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
 <style>
-:root{--bg:#F8F6FC;--surface:#FFFFFF;--ink:#2E2B45;--ink-soft:#6B647F;--line:#E7E1F5;--lavender:#C9C3ED;--periwinkle:#A8B5E8;--mint:#BFE8D4;--blush:#F7C9CB;--butter:#FCEAB0;--accent:#7C6FD1;--up:#4FAE85;--down:#D97F86;--radius:20px;--shadow:0 8px 32px rgba(60,50,110,0.12);}
+:root{--bg:#FBF8FF;--surface:#FFFFFF;--ink:#332452;--ink-soft:#786A9C;--line:#E8DFFA;--lavender:#D9C7FA;--periwinkle:#B79CF2;--mint:#FFE38A;--blush:#FFD966;--butter:#FDE9A0;--accent:#7C3AED;--up:#4FAE85;--down:#D97F86;--radius:20px;--shadow:0 8px 32px rgba(90,50,170,0.14);}
 *{box-sizing:border-box;}
 html{scroll-behavior:smooth;}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;position:relative;overflow-x:hidden;}
@@ -22,9 +22,9 @@ button{font-family:inherit;cursor:pointer;}
 
 /* liquid glass backdrop */
 .bg-blob{position:fixed;border-radius:50%;filter:blur(95px);pointer-events:none;z-index:0;opacity:0.32;}
-.bg-blob.b1{width:440px;height:440px;background:#AFC2FF;top:-140px;right:-100px;animation:floatA 19s ease-in-out infinite;}
-.bg-blob.b2{width:400px;height:400px;background:#FFC2C8;top:560px;left:-160px;animation:floatB 23s ease-in-out infinite;}
-.bg-blob.b3{width:360px;height:360px;background:#A8EFC9;bottom:-100px;right:8%;animation:floatC 21s ease-in-out infinite;}
+.bg-blob.b1{width:440px;height:440px;background:#C4A8FA;top:-140px;right:-100px;animation:floatA 19s ease-in-out infinite;}
+.bg-blob.b2{width:400px;height:400px;background:#FFD966;top:560px;left:-160px;animation:floatB 23s ease-in-out infinite;}
+.bg-blob.b3{width:360px;height:360px;background:#9B6FF0;bottom:-100px;right:8%;animation:floatC 21s ease-in-out infinite;}
 .bg-blob.b4{width:300px;height:300px;background:#FFE38A;top:1150px;right:-90px;opacity:0.26;animation:floatA 17s ease-in-out infinite reverse;}
 @keyframes floatA{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(35px,45px) scale(1.08);}}
 @keyframes floatB{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(-45px,30px) scale(1.05);}}
@@ -119,6 +119,29 @@ button{font-family:inherit;cursor:pointer;}
 .stat b{display:block;font-family:'Space Grotesk',sans-serif;font-size:1.3rem;}
 .stat span{font-size:0.76rem;color:var(--ink-soft);}
 .bio-card{border-radius:var(--radius);padding:24px;}
+.calc-card{border-radius:var(--radius);padding:24px;}
+.calc-subhead{font-size:1rem;font-family:'Space Grotesk',sans-serif;margin-bottom:14px;}
+.calc-subhead-spaced{margin-top:28px;padding-top:24px;border-top:1px solid var(--line);}
+.calc-row{display:grid;grid-template-columns:1.1fr 1.3fr 1fr 1fr auto;gap:16px;align-items:start;padding:16px 0;border-bottom:1px solid var(--line);}
+.calc-row:first-of-type{padding-top:0;}
+.calc-row .field{margin-bottom:0;}
+.calc-row .field small{display:block;margin-top:4px;color:var(--ink-soft);font-size:0.76rem;}
+input.slider{-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:999px;background:var(--line);outline:none;margin-top:8px;}
+input.slider::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--accent);cursor:pointer;box-shadow:0 2px 8px rgba(124,58,237,0.45);}
+input.slider::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--accent);border:none;cursor:pointer;box-shadow:0 2px 8px rgba(124,58,237,0.45);}
+.proj-card{padding:16px 0;border-bottom:1px solid var(--line);}
+.proj-card:last-of-type{border-bottom:none;}
+.proj-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:8px;}
+.proj-name{font-weight:700;font-family:'Space Grotesk',sans-serif;}
+.proj-numbers{display:flex;gap:18px;flex-wrap:wrap;font-size:0.82rem;color:var(--ink-soft);}
+.proj-numbers b{color:var(--ink);}
+.chart-label{font-size:0.74rem;color:var(--ink-soft);margin:6px 0 6px;}
+.growth-chart{width:100%;height:100px;display:block;}
+.calc-total{margin-top:18px;padding-top:16px;border-top:1px solid var(--line);font-size:1rem;color:var(--ink-soft);}
+.calc-total b{color:var(--accent);font-family:'Space Grotesk',sans-serif;font-size:1.1rem;}
+.calc-disclaimer{margin-top:12px;font-size:0.76rem;color:var(--ink-soft);}
+@media(max-width:760px){.calc-row{grid-template-columns:1fr 1fr;}}
+@media(max-width:540px){.calc-row{grid-template-columns:1fr;}}
 footer{border-top:1px solid rgba(255,255,255,0.7);padding:32px 0;color:var(--ink-soft);font-size:0.84rem;background:rgba(255,255,255,0.6);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);position:relative;z-index:1;}
 .footer-inner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
 .footer-inner a{text-decoration:none;font-weight:600;color:var(--accent);}
@@ -155,6 +178,7 @@ var INSTAGRAM_URL = "https://instagram.com/destarianimunaf";
 var GITHUB_URL = "https://github.com/destarianimunaf";
 var ADMIN_PASSCODE = "changeme123";
 var DRIVE_FOLDER_ID = "1ZcH24TTfnV39kNLNp00V0ATDERa1iV4M";
+var SHEET_CSV_URL = "";
 
 var SKILLS = [
   {sym:"REACT",label:"Frontend",trend:"up",change:"+2.4%"},
@@ -181,21 +205,116 @@ function normalizeDriveUrl(u){
   return u;
 }
 
+function parseCSV(text){
+  var rows = [], row = [], field = "", inQuotes = false;
+  for(var i = 0; i < text.length; i++){
+    var c = text[i];
+    if(inQuotes){
+      if(c === '"'){ if(text[i+1] === '"'){ field += '"'; i++; } else { inQuotes = false; } }
+      else field += c;
+    } else if(c === '"'){ inQuotes = true; }
+    else if(c === ','){ row.push(field); field = ""; }
+    else if(c === '\n' || c === '\r'){
+      if(c === '\r' && text[i+1] === '\n') i++;
+      row.push(field); field = ""; rows.push(row); row = [];
+    } else field += c;
+  }
+  if(field.length || row.length){ row.push(field); rows.push(row); }
+  return rows.filter(function(r){ return r.length > 1 || (r.length === 1 && r[0] !== ""); });
+}
+
+function loadFromSheet(setItems){
+  if(!SHEET_CSV_URL) return;
+  fetch(SHEET_CSV_URL).then(function(r){ return r.text(); }).then(function(text){
+    var rows = parseCSV(text);
+    if(rows.length < 2) return;
+    var header = rows[0].map(function(x){ return x.trim().toLowerCase(); });
+    var ti = header.indexOf("title"), ta = header.indexOf("tags"), im = header.indexOf("image");
+    if(ti === -1 || im === -1) return;
+    var parsed = rows.slice(1).filter(function(r){ return r[ti]; }).map(function(r, i){
+      return {
+        id: 5000 + i,
+        title: r[ti],
+        tags: (ta !== -1 && r[ta]) ? r[ta].split("|").map(function(t){ return t.trim(); }).filter(Boolean) : ["Illustration"],
+        image: normalizeDriveUrl((r[im] || "").trim())
+      };
+    });
+    if(parsed.length) setItems(parsed);
+  }).catch(function(){});
+}
+
+function formatRupiah(n){
+  if(!isFinite(n)) return "Rp0";
+  return "Rp" + Math.round(n).toLocaleString("id-ID");
+}
+
+function computeChildResult(child){
+  var inflation = 0.08;
+  var years = Number(child.years) || 0;
+  var cost = Number(child.cost) || 0;
+  var rate = Number(child.rate) || 0;
+  var futureCost = cost * Math.pow(1 + inflation, years);
+  var months = years * 12;
+  var monthlyRate = rate / 100 / 12;
+  var requiredMonthly;
+  if(months <= 0) requiredMonthly = futureCost;
+  else if(monthlyRate > 0) requiredMonthly = futureCost * monthlyRate / (Math.pow(1 + monthlyRate, months) - 1);
+  else requiredMonthly = futureCost / months;
+  return { futureCost: futureCost, requiredMonthly: requiredMonthly };
+}
+
+function buildGrowthSeries(child){
+  var years = Math.max(1, Number(child.years) || 1);
+  var rate = Number(child.rate) || 0;
+  var monthlyRate = rate / 100 / 12;
+  var monthly = computeChildResult(child).requiredMonthly;
+  var balance = 0;
+  var series = [0];
+  for(var y = 1; y <= years; y++){
+    for(var m = 0; m < 12; m++){ balance = balance * (1 + monthlyRate) + monthly; }
+    series.push(balance);
+  }
+  return series;
+}
+
+function GrowthChart(props){
+  var points = props.points, uid = "gc" + props.uid;
+  var vw = 400, vh = 110, pad = 8;
+  var maxVal = Math.max.apply(null, points) || 1;
+  var stepX = (vw - 2 * pad) / (points.length - 1 || 1);
+  var coords = points.map(function(v, i){
+    var x = pad + i * stepX;
+    var y = vh - pad - (v / maxVal) * (vh - 2 * pad);
+    return x + "," + y;
+  }).join(" ");
+  var areaPoints = coords + " " + (vw - pad) + "," + (vh - pad) + " " + pad + "," + (vh - pad);
+  return h("svg",{viewBox:"0 0 " + vw + " " + vh, preserveAspectRatio:"none", className:"growth-chart"},
+    h("defs",null,
+      h("linearGradient",{id:uid,x1:"0",y1:"0",x2:"0",y2:"1"},
+        h("stop",{offset:"0%",stopColor:"#7C3AED",stopOpacity:0.4}),
+        h("stop",{offset:"100%",stopColor:"#7C3AED",stopOpacity:0.03})
+      )
+    ),
+    h("polygon",{points:areaPoints,fill:"url(#" + uid + ")"}),
+    h("polyline",{points:coords,fill:"none",stroke:"#7C3AED",strokeWidth:3,strokeLinecap:"round",strokeLinejoin:"round"})
+  );
+}
+
 function HeroArt(){
   return h("svg",{viewBox:"0 0 400 340",fill:"none",xmlns:"http://www.w3.org/2000/svg"},
     h("circle",{cx:200,cy:170,r:150,fill:"rgba(255,255,255,0.5)"}),
-    h("circle",{cx:300,cy:80,r:34,fill:"#F7C9CB",opacity:0.9}),
-    h("circle",{cx:70,cy:250,r:26,fill:"#BFE8D4",opacity:0.9}),
+    h("circle",{cx:300,cy:80,r:34,fill:"#FFD966",opacity:0.9}),
+    h("circle",{cx:70,cy:250,r:26,fill:"#B79CF2",opacity:0.9}),
     h("rect",{x:90,y:130,width:220,height:140,rx:14,fill:"rgba(255,255,255,0.7)",stroke:"#E7E1F5",strokeWidth:2}),
-    h("rect",{x:90,y:130,width:220,height:26,rx:14,fill:"#C9C3ED"}),
+    h("rect",{x:90,y:130,width:220,height:26,rx:14,fill:"#D9C7FA"}),
     h("circle",{cx:104,cy:143,r:4,fill:"#fff"}),
     h("circle",{cx:116,cy:143,r:4,fill:"#fff"}),
     h("circle",{cx:128,cy:143,r:4,fill:"#fff"}),
-    h("polyline",{points:"112,240 150,200 178,222 214,168 250,190 288,150",fill:"none",stroke:"#7C6FD1",strokeWidth:4,strokeLinecap:"round",strokeLinejoin:"round"}),
+    h("polyline",{points:"112,240 150,200 178,222 214,168 250,190 288,150",fill:"none",stroke:"#7C3AED",strokeWidth:4,strokeLinecap:"round",strokeLinejoin:"round"}),
     h("circle",{cx:288,cy:150,r:6,fill:"#4FAE85"}),
-    h("circle",{cx:214,cy:168,r:5,fill:"#7C6FD1"}),
-    h("path",{d:"M150 260 L170 232 L190 260 Z",fill:"#FCEAB0"}),
-    h("rect",{x:60,y:260,width:60,height:10,rx:5,fill:"#F7C9CB"})
+    h("circle",{cx:214,cy:168,r:5,fill:"#7C3AED"}),
+    h("path",{d:"M150 260 L170 232 L190 260 Z",fill:"#FFE38A"}),
+    h("rect",{x:60,y:260,width:60,height:10,rx:5,fill:"#FFD966"})
   );
 }
 
@@ -221,7 +340,7 @@ function Ticker(){
 function ArtMarket(props){
   var uid = "m" + props.uid;
   return h("svg",{viewBox:"0 0 400 300",preserveAspectRatio:"xMidYMid slice",xmlns:"http://www.w3.org/2000/svg"},
-    h("defs",null, h("linearGradient",{id:"grad"+uid,x1:"0",y1:"0",x2:"1",y2:"1"}, h("stop",{offset:"0%",stopColor:"#C9C3ED"}), h("stop",{offset:"100%",stopColor:"#A8B5E8"}))),
+    h("defs",null, h("linearGradient",{id:"grad"+uid,x1:"0",y1:"0",x2:"1",y2:"1"}, h("stop",{offset:"0%",stopColor:"#D9C7FA"}), h("stop",{offset:"100%",stopColor:"#B79CF2"}))),
     h("rect",{width:400,height:300,fill:"url(#grad"+uid+")"}),
     h("rect",{x:70,y:190,width:30,height:70,rx:6,fill:"#FFFFFF",opacity:0.85}),
     h("rect",{x:120,y:150,width:30,height:110,rx:6,fill:"#FFFFFF",opacity:0.85}),
@@ -230,38 +349,38 @@ function ArtMarket(props){
     h("rect",{x:270,y:80,width:30,height:180,rx:6,fill:"#FFFFFF"}),
     h("polyline",{points:"85,185 135,145 185,165 235,105 285,75",fill:"none",stroke:"#4FAE85",strokeWidth:4,strokeLinecap:"round",strokeLinejoin:"round"}),
     h("path",{d:"M275 75 L295 75 L295 95",fill:"none",stroke:"#4FAE85",strokeWidth:4,strokeLinecap:"round",strokeLinejoin:"round"}),
-    h("circle",{cx:335,cy:55,r:22,fill:"#FCEAB0",opacity:0.9})
+    h("circle",{cx:335,cy:55,r:22,fill:"#FFE38A",opacity:0.9})
   );
 }
 function ArtCode(props){
   var uid = "c" + props.uid;
   return h("svg",{viewBox:"0 0 400 300",preserveAspectRatio:"xMidYMid slice",xmlns:"http://www.w3.org/2000/svg"},
-    h("defs",null, h("linearGradient",{id:"grad"+uid,x1:"0",y1:"0",x2:"1",y2:"1"}, h("stop",{offset:"0%",stopColor:"#F7C9CB"}), h("stop",{offset:"100%",stopColor:"#FCEAB0"}))),
+    h("defs",null, h("linearGradient",{id:"grad"+uid,x1:"0",y1:"0",x2:"1",y2:"1"}, h("stop",{offset:"0%",stopColor:"#FFD966"}), h("stop",{offset:"100%",stopColor:"#FFE38A"}))),
     h("rect",{width:400,height:300,fill:"url(#grad"+uid+")"}),
     h("rect",{x:60,y:55,width:280,height:190,rx:16,fill:"#FFFFFF",opacity:0.92}),
-    h("rect",{x:60,y:55,width:280,height:34,rx:16,fill:"#7C6FD1",opacity:0.9}),
+    h("rect",{x:60,y:55,width:280,height:34,rx:16,fill:"#7C3AED",opacity:0.9}),
     h("circle",{cx:78,cy:72,r:5,fill:"#fff"}),
     h("circle",{cx:94,cy:72,r:5,fill:"#fff"}),
     h("circle",{cx:110,cy:72,r:5,fill:"#fff"}),
-    h("path",{d:"M115 150 L90 175 L115 200",fill:"none",stroke:"#7C6FD1",strokeWidth:7,strokeLinecap:"round",strokeLinejoin:"round"}),
-    h("path",{d:"M225 150 L250 175 L225 200",fill:"none",stroke:"#7C6FD1",strokeWidth:7,strokeLinecap:"round",strokeLinejoin:"round"}),
+    h("path",{d:"M115 150 L90 175 L115 200",fill:"none",stroke:"#7C3AED",strokeWidth:7,strokeLinecap:"round",strokeLinejoin:"round"}),
+    h("path",{d:"M225 150 L250 175 L225 200",fill:"none",stroke:"#7C3AED",strokeWidth:7,strokeLinecap:"round",strokeLinejoin:"round"}),
     h("line",{x1:195,y1:140,x2:175,y2:210,stroke:"#4FAE85",strokeWidth:7,strokeLinecap:"round"})
   );
 }
 function ArtPalette(props){
   var uid = "p" + props.uid;
   return h("svg",{viewBox:"0 0 400 300",preserveAspectRatio:"xMidYMid slice",xmlns:"http://www.w3.org/2000/svg"},
-    h("defs",null, h("linearGradient",{id:"grad"+uid,x1:"0",y1:"0",x2:"1",y2:"1"}, h("stop",{offset:"0%",stopColor:"#BFE8D4"}), h("stop",{offset:"100%",stopColor:"#A8B5E8"}))),
+    h("defs",null, h("linearGradient",{id:"grad"+uid,x1:"0",y1:"0",x2:"1",y2:"1"}, h("stop",{offset:"0%",stopColor:"#B79CF2"}), h("stop",{offset:"100%",stopColor:"#B79CF2"}))),
     h("rect",{width:400,height:300,fill:"url(#grad"+uid+")"}),
     h("ellipse",{cx:190,cy:160,rx:115,ry:82,fill:"#FFFFFF",opacity:0.92}),
     h("ellipse",{cx:250,cy:160,rx:26,ry:20,fill:"url(#grad"+uid+")"}),
-    h("circle",{cx:140,cy:120,r:14,fill:"#F7C9CB"}),
-    h("circle",{cx:182,cy:104,r:14,fill:"#FCEAB0"}),
-    h("circle",{cx:224,cy:112,r:14,fill:"#BFE8D4"}),
-    h("circle",{cx:140,cy:192,r:14,fill:"#A8B5E8"}),
-    h("circle",{cx:178,cy:208,r:14,fill:"#C9C3ED"}),
-    h("path",{d:"M300 90 L344 46",stroke:"#7C6FD1",strokeWidth:11,strokeLinecap:"round"}),
-    h("path",{d:"M340 42 L358 24 L368 34 L350 52 Z",fill:"#7C6FD1"})
+    h("circle",{cx:140,cy:120,r:14,fill:"#FFD966"}),
+    h("circle",{cx:182,cy:104,r:14,fill:"#FFE38A"}),
+    h("circle",{cx:224,cy:112,r:14,fill:"#B79CF2"}),
+    h("circle",{cx:140,cy:192,r:14,fill:"#B79CF2"}),
+    h("circle",{cx:178,cy:208,r:14,fill:"#D9C7FA"}),
+    h("path",{d:"M300 90 L344 46",stroke:"#7C3AED",strokeWidth:11,strokeLinecap:"round"}),
+    h("path",{d:"M340 42 L358 24 L368 34 L350 52 Z",fill:"#7C3AED"})
   );
 }
 var PLACEHOLDER_ARTS = [ArtMarket, ArtCode, ArtPalette];
@@ -352,6 +471,7 @@ function Nav(){
       h("div",{className:"nav-links" + (open?" open":"")},
         h("a",{href:"#work",onClick:function(){setOpen(false);}},"Work"),
         h("a",{href:"#about",onClick:function(){setOpen(false);}},"About"),
+        h("a",{href:"#calculator",onClick:function(){setOpen(false);}},"Kalkulator"),
         h("a",{href:"#admin",onClick:function(){setOpen(false);}},"Admin"),
         h("a",{href:INSTAGRAM_URL,target:"_blank",rel:"noopener noreferrer"},"Instagram")
       )
@@ -365,6 +485,19 @@ function App(){
   var errState = React.useState(false), loginError = errState[0], setLoginError = errState[1];
   var draftState = React.useState({id:null,title:"",tagsInput:"",image:""}), draft = draftState[0], setDraft = draftState[1];
   var lightboxState = React.useState(null), lightboxItem = lightboxState[0], setLightboxItem = lightboxState[1];
+  var childrenState = React.useState([{id:1,name:"Child 1",cost:20000000,years:10,rate:8}]), children = childrenState[0], setChildren = childrenState[1];
+
+  React.useEffect(function(){ loadFromSheet(setItems); }, []);
+
+  function addChild(){
+    setChildren(children.concat([{id:Date.now(),name:"Child "+(children.length+1),cost:20000000,years:10,rate:8}]));
+  }
+  function updateChild(id,field,value){
+    setChildren(children.map(function(c){ return c.id === id ? Object.assign({},c,{[field]:value}) : c; }));
+  }
+  function removeChild(id){
+    setChildren(children.filter(function(c){ return c.id !== id; }));
+  }
 
   function nextId(){ return items.length ? Math.max.apply(null, items.map(function(i){return i.id;})) + 1 : 1; }
   function handleLogin(pass){ if(pass === ADMIN_PASSCODE){ setIsAdmin(true); setLoginError(false);} else setLoginError(true); }
@@ -438,6 +571,73 @@ function App(){
         h("div",{className:"bio-card glass"},
           h("h3",{style:{fontSize:"1.05rem",marginBottom:"10px"}},"Desta Riani"),
           h("p",{style:{color:"var(--ink-soft)",lineHeight:1.6}},"Background in Computer Science and Management, with a steady interest in technology and the stock market. Illustration sits alongside both — a slower, quieter way of thinking through ideas, sketch by sketch, the same patient way a good position gets built.")
+        )
+      ),
+      h("div",{className:"wrap"},
+        h("div",{className:"about-card glass",style:{marginTop:"22px"}},
+          h("h3",{style:{fontSize:"1rem",marginBottom:"8px"}},"A note on how this is built"),
+          h("p",{style:{color:"var(--ink-soft)",lineHeight:1.6}},"This portfolio is deliberately static — no server, no hosting bill, no backend to patch or keep alive. It's plain HTML, CSS, and JavaScript served directly from GitHub Pages. For a page that only needs to display and occasionally update content, a stateless build is simpler to reason about and cheaper to run — the same logic that favors a well-chosen index fund over a portfolio that demands constant rebalancing.")
+        )
+      )
+    ),
+    h("section",{className:"section",id:"calculator"},
+      h("div",{className:"wrap"},
+        h("div",{className:"section-head"},
+          h("div",{className:"eyebrow"}, h("span",{className:"dot"}), " Perencanaan Keuangan Keluarga"),
+          h("h2",null,"Kalkulator Dana Pendidikan"),
+          h("p",{className:"section-sub"},"Hasil terupdate otomatis setiap kamu mengubah angka — geser slider, ketik nominal, atau coba skenario imbal hasil di bawah.")
+        ),
+        h("div",{className:"calc-card glass"},
+          h("h3",{className:"calc-subhead"},"Data anak"),
+          children.map(function(child){
+            return h("div",{className:"calc-row",key:child.id},
+              h("div",{className:"field"},
+                h("label",null,"Nama"),
+                h("input",{value:child.name,onChange:function(e){updateChild(child.id,"name",e.target.value);}})
+              ),
+              h("div",{className:"field"},
+                h("label",null,"Biaya tahunan saat ini"),
+                h("input",{type:"range",className:"slider",min:5000000,max:200000000,step:1000000,value:child.cost,onChange:function(e){updateChild(child.id,"cost",e.target.value);}}),
+                h("small",null, formatRupiah(child.cost) + " / tahun")
+              ),
+              h("div",{className:"field"},
+                h("label",null,"Jangka waktu"),
+                h("input",{type:"range",className:"slider",min:1,max:20,step:1,value:child.years,onChange:function(e){updateChild(child.id,"years",e.target.value);}}),
+                h("small",null, child.years + " tahun")
+              ),
+              h("div",{className:"field"},
+                h("label",null,"Estimasi imbal hasil"),
+                h("input",{type:"range",className:"slider",min:0,max:20,step:0.5,value:child.rate,onChange:function(e){updateChild(child.id,"rate",e.target.value);}}),
+                h("small",null, child.rate + "% / tahun")
+              ),
+              children.length > 1 && h("button",{type:"button",className:"btn btn-danger btn-small",onClick:function(){removeChild(child.id);}},"Hapus")
+            );
+          }),
+          h("div",{className:"form-row"},
+            h("button",{type:"button",className:"btn btn-ghost btn-small",onClick:addChild},"+ Tambah")
+          ),
+
+          h("h3",{className:"calc-subhead calc-subhead-spaced"},"Proyeksi"),
+          children.map(function(child){
+            var result = computeChildResult(child);
+            var series = buildGrowthSeries(child);
+            return h("div",{className:"proj-card",key:"p"+child.id},
+              h("div",{className:"proj-head"},
+                h("span",{className:"proj-name"}, child.name),
+                h("span",{className:"proj-numbers"},
+                  h("span",null, "Target: ", h("b",null,formatRupiah(result.futureCost))),
+                  h("span",null, "Investasi/bulan: ", h("b",null,formatRupiah(result.requiredMonthly)))
+                )
+              ),
+              h("div",{className:"chart-label"},"Kurva pertumbuhan dana"),
+              h(GrowthChart,{points:series,uid:child.id})
+            );
+          }),
+          h("div",{className:"calc-total"},
+            "Total investasi bulanan untuk semua anak: ",
+            h("b",null, formatRupiah(children.reduce(function(sum,c){ return sum + computeChildResult(c).requiredMonthly; },0)))
+          ),
+          h("p",{className:"calc-disclaimer"},"Perhitungan bersifat estimasi berdasarkan asumsi inflasi dan imbal hasil yang kamu masukkan. Hasil investasi aktual dapat berbeda.")
         )
       )
     ),
