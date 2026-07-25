@@ -1,16 +1,65 @@
 <!DOCTYPE html>
+<!--
+  =====================================================================
+  FIELD LOG — file sumber (versi mudah dibaca & diedit)
+  =====================================================================
+  APA YANG BERUBAH DARI VERSI SEBELUMNYA:
+  - Tema visual: dark "mission control" — grid blueprint, sudut bracket
+    ala HUD, aksen cyan/amber, readout monospace.
+  - Urutan konten sekarang diawali narasi finance/market-observer, baru
+    disusul tools, baru bagian visual (sketsa).
+  - Galeri portofolio dari Google Drive DIHAPUS. Gambar diganti ilustrasi
+    SVG custom bertema investasi/craft/ketekunan (lihat bagian 3), dan
+    ada kartu CTA yang mengarahkan ke Instagram @artestroke2 untuk lihat
+    portofolio ilustrasi asli.
+  - Panel Admin (login + CRUD gambar dari Drive) DIHAPUS total, karena
+    setelah galeri Drive dicabut, tidak ada lagi yang perlu di-manage
+    dari situ. Form contact tetap ada (submit ke Google Form kalau kamu
+    isi CONTACT_FORM_ACTION_URL). Kalau mau lihat balasan form, buka
+    langsung Google Forms / Sheets kamu — nggak perlu viewer duplikat
+    di halaman ini.
+  - Kalkulator finance (dana anak, dana darurat, dana pensiun) logikanya
+    TIDAK diubah sama sekali, cuma di-restyle + copy-nya disesuaikan.
+
+  BAGIAN YANG BISA/PERLU KAMU EDIT:
+  1. CONFIG di bagian atas <script> (nama, IG, GitHub, form target).
+  2. TICKER_ITEMS — daftar "sinyal" kecil di strip berjalan.
+  3. Isi teks di komponen Hero / FieldLog / kalau mau ubah gaya bahasa.
+  4. Warna di :root kalau mau ganti palet.
+
+  SOAL "SEMBUNYIKAN KODE":
+  Versi yang di-deploy (index.html) akan di-encode base64 lagi seperti
+  sebelumnya. Ingat ya — ini cuma bikin orang males lirik sekilas di
+  view-source, BUKAN keamanan sungguhan. Kode tetap jalan di browser
+  pengunjung, jadi tetap bisa dibaca lewat DevTools kalau ada yang niat.
+  =====================================================================
+-->
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Desta Riani — Illustration, Investment & Finance</title>
-<meta name="description" content="Illustration portfolio and financial planning tools by Desta Riani." />
+<title>Field Log — notes on markets, ink, and showing up</title>
+<meta name="description" content="A running log on investing, patience, and drawing — by a market observer still figuring it out." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <script crossorigin src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
 <script crossorigin src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
 <style>
-:root{--bg:#FBF8FF;--surface:#FFFFFF;--ink:#332452;--ink-soft:#786A9C;--line:#E8DFFA;--lavender:#D9C7FA;--periwinkle:#B79CF2;--mint:#FFE38A;--blush:#FFD966;--butter:#FDE9A0;--accent:#7C3AED;--up:#4FAE85;--down:#D97F86;--radius:20px;--shadow:0 8px 32px rgba(90,50,170,0.14);}
+:root{
+  --bg:#0A0E15;
+  --panel:#111826;
+  --panel-2:#0D1420;
+  --ink:#E9EEF7;
+  --ink-soft:#8996AC;
+  --line:rgba(140,170,220,0.14);
+  --cyan:#54E4DA;
+  --amber:#FFB454;
+  --up:#5EEAD4;
+  --down:#FF7A6B;
+  --radius:12px;
+  --shadow:0 20px 60px rgba(0,0,0,0.5);
+}
 *{box-sizing:border-box;}
 html{scroll-behavior:smooth;}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;position:relative;overflow-x:hidden;}
@@ -20,268 +69,196 @@ a{color:inherit;}
 button{font-family:inherit;cursor:pointer;}
 .wrap{max-width:1120px;margin:0 auto;padding:0 20px;position:relative;z-index:1;}
 
-.bg-blob{position:fixed;border-radius:50%;filter:blur(95px);pointer-events:none;z-index:0;opacity:0.32;}
-.bg-blob.b1{width:440px;height:440px;background:#C4A8FA;top:-140px;right:-100px;animation:floatA 19s ease-in-out infinite;}
-.bg-blob.b2{width:400px;height:400px;background:#FFD966;top:560px;left:-160px;animation:floatB 23s ease-in-out infinite;}
-.bg-blob.b3{width:360px;height:360px;background:#9B6FF0;bottom:-100px;right:8%;animation:floatC 21s ease-in-out infinite;}
-.bg-blob.b4{width:300px;height:300px;background:#FFE38A;top:1150px;right:-90px;opacity:0.26;animation:floatA 17s ease-in-out infinite reverse;}
-@keyframes floatA{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(35px,45px) scale(1.08);}}
-@keyframes floatB{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(-45px,30px) scale(1.05);}}
-@keyframes floatC{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(25px,-35px) scale(1.1);}}
-@media(prefers-reduced-motion:reduce){.bg-blob{animation:none !important;}}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:
+    linear-gradient(rgba(130,170,230,0.055) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(130,170,230,0.055) 1px,transparent 1px);
+  background-size:44px 44px;
+  mask-image:radial-gradient(ellipse 80% 60% at 50% 0%,#000 40%,transparent 100%);
+}
+.glow{position:fixed;border-radius:50%;filter:blur(110px);pointer-events:none;z-index:0;}
+.glow.g1{width:460px;height:460px;background:var(--cyan);opacity:0.10;top:-160px;right:-120px;}
+.glow.g2{width:420px;height:420px;background:var(--amber);opacity:0.07;bottom:-140px;left:-140px;}
 
-.glass{background:rgba(255,255,255,0.78);-webkit-backdrop-filter:blur(18px) saturate(160%);backdrop-filter:blur(18px) saturate(160%);border:1px solid rgba(255,255,255,0.9);box-shadow:var(--shadow), inset 0 1px 0 rgba(255,255,255,0.8);}
+.corner{position:absolute;width:11px;height:11px;border:2px solid var(--cyan);opacity:0.75;pointer-events:none;}
+.corner.tl{top:-1px;left:-1px;border-right:none;border-bottom:none;}
+.corner.tr{top:-1px;right:-1px;border-left:none;border-bottom:none;}
+.corner.bl{bottom:-1px;left:-1px;border-right:none;border-top:none;}
+.corner.br{bottom:-1px;right:-1px;border-left:none;border-top:none;}
 
-.nav{position:sticky;top:0;z-index:40;background:rgba(255,255,255,0.78);-webkit-backdrop-filter:blur(16px) saturate(160%);backdrop-filter:blur(16px) saturate(160%);border-bottom:1px solid rgba(255,255,255,0.7);}
+.panel{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);}
+
+.tag-eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:'IBM Plex Mono',monospace;font-size:0.72rem;font-weight:700;letter-spacing:0.09em;text-transform:uppercase;color:var(--cyan);border:1px solid rgba(84,228,218,0.35);background:rgba(84,228,218,0.06);padding:6px 12px;border-radius:999px;margin-bottom:16px;}
+.tag-eyebrow .blip{width:6px;height:6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan);flex-shrink:0;animation:blip 2.2s ease-in-out infinite;}
+@keyframes blip{0%,100%{opacity:1;}50%{opacity:0.25;}}
+@media(prefers-reduced-motion:reduce){.tag-eyebrow .blip{animation:none;}}
+
+.nav{position:sticky;top:0;z-index:40;background:rgba(10,14,21,0.82);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);}
 .nav-inner{position:relative;display:flex;align-items:center;justify-content:space-between;padding:14px 20px;max-width:1120px;margin:0 auto;}
 .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1rem;}
-.brand-mark{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--periwinkle),var(--blush));display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;color:#fff;font-size:0.8rem;font-weight:700;flex-shrink:0;}
-.nav-links{display:flex;align-items:center;gap:22px;font-size:0.9rem;font-weight:500;}
-.nav-links > a{text-decoration:none;color:var(--ink-soft);transition:color .15s;}
-.nav-links > a:hover{color:var(--ink);}
-.nav-toggle{display:none;background:none;border:none;font-size:1.3rem;color:var(--ink);padding:6px;}
-.nav-dropdown{position:relative;}
-.nav-dropdown-trigger{background:none;border:none;color:var(--ink-soft);font-family:inherit;font-size:0.9rem;font-weight:500;display:flex;align-items:center;gap:5px;padding:0;}
-.nav-dropdown-trigger:hover{color:var(--ink);}
-.nav-dropdown-trigger .caret{font-size:0.65rem;transition:transform .15s;}
-.nav-dropdown.open .caret{transform:rotate(180deg);}
-.nav-dropdown-menu{display:none;position:absolute;top:calc(100% + 12px);left:0;min-width:230px;background:rgba(255,255,255,0.95);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.9);border-radius:14px;padding:8px;box-shadow:var(--shadow);flex-direction:column;gap:2px;}
-.nav-dropdown.open .nav-dropdown-menu{display:flex;}
-.nav-dropdown-menu a{padding:9px 12px;border-radius:9px;font-size:0.85rem;color:var(--ink);text-decoration:none;}
-.nav-dropdown-menu a:hover{background:var(--bg);color:var(--accent);}
-.btn{border:none;border-radius:999px;padding:10px 18px;font-weight:600;font-size:0.86rem;transition:transform .15s,box-shadow .15s;}
-.btn:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
-.btn-primary{background:var(--accent);color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,0.35);}
-.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(124,111,209,0.35), inset 0 1px 0 rgba(255,255,255,0.35);}
-.btn-primary:disabled{opacity:0.6;cursor:not-allowed;transform:none;}
-.btn-ghost{background:rgba(255,255,255,0.55);color:var(--ink);border:1px solid rgba(255,255,255,0.8);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);}
-.btn-ghost:hover{border-color:var(--accent);}
-.btn-small{padding:7px 13px;font-size:0.78rem;}
-.btn-danger{background:rgba(247,201,203,0.7);color:#7A2E33;}
-.hero{padding:56px 0 36px;}
-.hero-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:40px;align-items:center;}
-.eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.6);border:1px solid rgba(255,255,255,0.8);padding:6px 14px;border-radius:999px;font-size:0.76rem;font-weight:600;color:var(--ink-soft);margin-bottom:18px;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);}
-.eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--mint);flex-shrink:0;}
-.hero h1{font-size:clamp(1.8rem,4.5vw,3.1rem);line-height:1.14;}
-.hero h1 span{color:var(--accent);}
-.hero p.lead{color:var(--ink-soft);font-size:1rem;line-height:1.6;max-width:46ch;margin:18px 0 26px;}
+.brand-mark{width:28px;height:28px;border-radius:7px;background:linear-gradient(135deg,var(--cyan),var(--amber));display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;color:#08121a;font-size:0.78rem;font-weight:700;flex-shrink:0;}
+.nav-links{display:flex;align-items:center;gap:22px;font-size:0.88rem;font-weight:500;}
+.nav-links>a{text-decoration:none;color:var(--ink-soft);transition:color .15s;}
+.nav-links>a:hover{color:var(--cyan);}
+.nav-toggle{display:none;background:none;border:1px solid var(--line);border-radius:8px;font-size:1.1rem;color:var(--ink);padding:6px 10px;}
+.btn{border:none;border-radius:999px;padding:10px 18px;font-weight:600;font-size:0.85rem;transition:transform .15s,box-shadow .15s;font-family:'IBM Plex Mono',monospace;}
+.btn:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--cyan);outline-offset:2px;}
+.btn-primary{background:var(--cyan);color:#08121a;}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 8px 22px rgba(84,228,218,0.28);}
+.btn-primary:disabled{opacity:0.55;cursor:not-allowed;transform:none;}
+.btn-ghost{background:transparent;color:var(--ink);border:1px solid var(--line);}
+.btn-ghost:hover{border-color:var(--cyan);color:var(--cyan);}
+
+.hero{padding:64px 0 40px;position:relative;}
+.hero-grid{display:grid;grid-template-columns:1.15fr 0.85fr;gap:44px;align-items:center;}
+.hero h1{font-size:clamp(1.9rem,4.6vw,3.2rem);line-height:1.1;}
+.hero h1 .hl{color:var(--cyan);}
+.hero p.lead{color:var(--ink-soft);font-size:1.02rem;line-height:1.65;max-width:48ch;margin:18px 0 26px;}
 .hero-cta{display:flex;gap:12px;flex-wrap:wrap;}
-.hero-art{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:28px;border-radius:28px;}
-.hero-art::after{content:"";position:absolute;top:-60%;left:-60%;width:60%;height:220%;background:linear-gradient(120deg,transparent,rgba(255,255,255,0.65),transparent);transform:rotate(18deg);animation:sheen 7s ease-in-out infinite;}
-@keyframes sheen{0%{left:-60%;}45%{left:130%;}100%{left:130%;}}
-@media(prefers-reduced-motion:reduce){.hero-art::after{animation:none;display:none;}}
-.hero-art svg{width:100%;max-width:360px;height:auto;}
-.ticker-section{border-top:1px solid rgba(255,255,255,0.7);border-bottom:1px solid rgba(255,255,255,0.7);background:rgba(255,255,255,0.7);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);}
-.ticker-mask{overflow:hidden;padding:12px 0;}
-.ticker-track{display:flex;width:max-content;animation:scroll 28s linear infinite;}
+.hero-art{position:relative;overflow:hidden;padding:26px;aspect-ratio:1/0.92;display:flex;align-items:center;justify-content:center;}
+.hero-art svg{width:100%;max-width:360px;height:auto;position:relative;z-index:1;}
+.scanline{position:absolute;left:6%;right:6%;height:1px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);opacity:0.55;animation:scan 5.5s linear infinite;z-index:2;}
+@keyframes scan{0%{top:8%;}100%{top:92%;}}
+@media(prefers-reduced-motion:reduce){.scanline{animation:none;top:50%;}}
+
+.ticker-section{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--panel-2);}
+.ticker-mask{overflow:hidden;padding:11px 0;}
+.ticker-track{display:flex;width:max-content;animation:scroll 30s linear infinite;}
 @media(prefers-reduced-motion:reduce){.ticker-track{animation:none;overflow-x:auto;}}
-.ticker-item{display:flex;align-items:center;gap:7px;padding:0 20px;border-right:1px solid var(--line);font-family:'IBM Plex Mono',monospace;font-size:0.78rem;white-space:nowrap;}
+.ticker-item{display:flex;align-items:center;gap:7px;padding:0 20px;border-right:1px dashed var(--line);font-family:'IBM Plex Mono',monospace;font-size:0.76rem;white-space:nowrap;color:var(--ink-soft);}
+.ticker-item b{color:var(--ink);font-weight:600;}
 .ticker-item .up{color:var(--up);}
 .ticker-item .down{color:var(--down);}
 @keyframes scroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
-.section{padding:52px 0;position:relative;z-index:1;}
-.section-head{margin-bottom:28px;}
-.section-head h2{font-size:clamp(1.4rem,2.6vw,2rem);}
-.section-sub{color:var(--ink-soft);font-size:0.92rem;margin-top:6px;max-width:60ch;}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
-.card{border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;transition:transform .2s;}
-.card:hover{transform:translateY(-3px);}
-.card-media,.card-media-placeholder svg{transition:transform .5s ease;}
-.card:hover .card-media,.card:hover .card-media-placeholder svg{transform:scale(1.06);}
-.card-media-wrap{position:relative;aspect-ratio:4/3;width:100%;overflow:hidden;cursor:pointer;}
-.card-media{width:100%;height:100%;object-fit:cover;display:block;background:#eee;}
-.expand-hint{position:absolute;right:10px;bottom:10px;background:rgba(46,43,69,0.55);color:#fff;font-size:0.72rem;font-weight:600;padding:5px 10px;border-radius:999px;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);opacity:0;transition:opacity .2s;}
-.card-media-wrap:hover .expand-hint{opacity:1;}
-@media(max-width:860px){.expand-hint{opacity:1;}}
-.card-media-placeholder{aspect-ratio:4/3;width:100%;overflow:hidden;display:block;}
-.card-media-placeholder svg{width:100%;height:100%;display:block;}
-.lightbox-overlay{position:fixed;inset:0;background:rgba(46,43,69,0.6);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);z-index:100;display:flex;align-items:center;justify-content:center;padding:24px;animation:fadeIn .2s ease;}
-@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
-.lightbox-inner{position:relative;max-width:min(92vw,900px);}
-.lightbox-img{display:block;width:100%;max-height:82vh;object-fit:contain;border-radius:18px;box-shadow:0 20px 60px rgba(0,0,0,0.35);}
-.lightbox-caption{color:#fff;text-align:center;margin-top:14px;font-weight:600;font-size:0.95rem;}
-.lightbox-close{position:absolute;top:-46px;right:0;background:rgba(255,255,255,0.85);border:none;width:36px;height:36px;border-radius:50%;font-size:1rem;color:var(--ink);}
-@media(max-width:540px){.lightbox-close{top:-40px;}}
-.card-body{padding:15px 16px 16px;display:flex;flex-direction:column;gap:8px;flex:1;}
-.card-body h3{font-size:1rem;}
-.card-tags{display:flex;gap:6px;flex-wrap:wrap;}
-.tag{background:rgba(255,255,255,0.6);border:1px solid var(--line);border-radius:999px;padding:3px 10px;font-size:0.7rem;color:var(--ink-soft);}
-.card-actions{display:flex;gap:8px;margin-top:auto;padding-top:8px;}
-.empty-state{grid-column:1/-1;text-align:center;padding:48px 20px;border:1.5px dashed rgba(255,255,255,0.8);border-radius:var(--radius);color:var(--ink-soft);}
-.drive-embed-wrap{border-radius:var(--radius);overflow:hidden;margin-top:22px;}
-.drive-embed-wrap iframe{width:100%;height:520px;border:0;display:block;}
-.drive-embed-label{font-size:0.8rem;color:var(--ink-soft);margin-bottom:10px;}
-.admin-panel{border-radius:var(--radius);padding:24px;}
-.field{margin-bottom:15px;}
-.field label{display:block;font-size:0.8rem;font-weight:600;margin-bottom:6px;}
-.field input,.field textarea{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--line);font-family:inherit;font-size:0.9rem;background:rgba(255,255,255,0.7);}
-.field textarea{resize:vertical;min-height:90px;}
-.field small{color:var(--ink-soft);font-size:0.74rem;}
-.form-row{display:flex;gap:10px;margin-top:18px;align-items:center;flex-wrap:wrap;}
-.badge-admin{background:rgba(191,232,212,0.8);color:#1F5C43;padding:5px 12px;border-radius:999px;font-size:0.74rem;font-weight:700;display:inline-block;margin-bottom:16px;}
-.item-manage-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);font-size:0.86rem;}
-.item-manage-row:last-child{border-bottom:none;}
-.admin-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;}
-.login-wrap{max-width:420px;}
-.about-grid{display:grid;grid-template-columns:0.8fr 1.2fr;gap:36px;align-items:center;}
-.about-card{border-radius:var(--radius);padding:24px;}
-.stat-row{display:flex;gap:22px;margin-top:16px;flex-wrap:wrap;}
-.stat b{display:block;font-family:'Space Grotesk',sans-serif;font-size:1.3rem;}
-.stat span{font-size:0.76rem;color:var(--ink-soft);}
-.bio-card{border-radius:var(--radius);padding:24px;}
-.why-card{border-radius:var(--radius);padding:26px;margin-top:22px;}
-.why-card p{margin:0;}
-.why-card p + p{margin-top:14px;}
-.calc-card{border-radius:var(--radius);padding:24px;}
-.calc-subhead{font-size:1rem;font-family:'Space Grotesk',sans-serif;margin-bottom:14px;}
-.calc-subhead-spaced{margin-top:28px;padding-top:24px;border-top:1px solid var(--line);}
+
+.section{padding:56px 0;position:relative;z-index:1;}
+.section-head{margin-bottom:26px;}
+.section-head h2{font-size:clamp(1.35rem,2.5vw,1.9rem);}
+.section-sub{color:var(--ink-soft);font-size:0.94rem;margin-top:8px;max-width:62ch;line-height:1.6;}
+
+.log-grid{display:grid;grid-template-columns:0.85fr 1.15fr;gap:24px;align-items:start;}
+.log-card{padding:24px;}
+.log-card p{color:var(--ink-soft);line-height:1.7;font-size:0.95rem;}
+.log-card p+p{margin-top:14px;}
+.stat-row{display:flex;gap:20px;margin-top:18px;flex-wrap:wrap;}
+.stat b{display:block;font-family:'Space Grotesk',sans-serif;font-size:1.25rem;color:var(--cyan);}
+.stat span{font-size:0.74rem;color:var(--ink-soft);}
+
+.calc-card{padding:24px;margin-bottom:20px;}
+.calc-card:last-child{margin-bottom:0;}
+.calc-kicker{font-family:'IBM Plex Mono',monospace;font-size:0.7rem;color:var(--amber);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;}
+.calc-subhead{font-size:1.05rem;margin-bottom:4px;}
+.calc-note{color:var(--ink-soft);font-size:0.84rem;margin-bottom:16px;}
 .calc-row{display:grid;grid-template-columns:1.1fr 1.3fr 1fr 1fr auto;gap:16px;align-items:start;padding:16px 0;border-bottom:1px solid var(--line);}
 .calc-row:first-of-type{padding-top:0;}
-.calc-row .field{margin-bottom:0;}
-.calc-row .field small{display:block;margin-top:4px;color:var(--ink-soft);font-size:0.76rem;}
-input.slider{-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:999px;background:var(--line);outline:none;margin-top:8px;}
-input.slider::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--accent);cursor:pointer;box-shadow:0 2px 8px rgba(124,58,237,0.45);}
-input.slider::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--accent);border:none;cursor:pointer;box-shadow:0 2px 8px rgba(124,58,237,0.45);}
+.field{margin-bottom:0;}
+.field label{display:block;font-size:0.78rem;font-weight:600;margin-bottom:6px;color:var(--ink-soft);}
+.field input,.field textarea{width:100%;padding:10px 12px;border-radius:9px;border:1px solid var(--line);font-family:inherit;font-size:0.9rem;background:var(--panel-2);color:var(--ink);}
+.field textarea{resize:vertical;min-height:90px;}
+.field small{color:var(--ink-soft);font-size:0.74rem;}
+input.slider{-webkit-appearance:none;appearance:none;width:100%;height:5px;border-radius:999px;background:var(--line);outline:none;margin-top:8px;}
+input.slider::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--cyan);cursor:pointer;box-shadow:0 0 0 4px rgba(84,228,218,0.18);}
+input.slider::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--cyan);border:none;cursor:pointer;box-shadow:0 0 0 4px rgba(84,228,218,0.18);}
+.form-row{display:flex;gap:10px;margin-top:18px;align-items:center;flex-wrap:wrap;}
 .proj-card{padding:16px 0;border-bottom:1px solid var(--line);}
 .proj-card:last-of-type{border-bottom:none;}
 .proj-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:8px;}
 .proj-name{font-weight:700;font-family:'Space Grotesk',sans-serif;}
 .proj-numbers{display:flex;gap:18px;flex-wrap:wrap;font-size:0.82rem;color:var(--ink-soft);}
 .proj-numbers b{color:var(--ink);}
-.chart-label{font-size:0.74rem;color:var(--ink-soft);margin:6px 0 6px;}
+.chart-label{font-size:0.74rem;color:var(--ink-soft);margin:6px 0;}
 .growth-chart{width:100%;height:100px;display:block;}
 .calc-total{margin-top:18px;padding-top:16px;border-top:1px solid var(--line);font-size:1rem;color:var(--ink-soft);}
-.calc-total b{color:var(--accent);font-family:'Space Grotesk',sans-serif;font-size:1.1rem;}
+.calc-total b{color:var(--cyan);font-family:'Space Grotesk',sans-serif;font-size:1.1rem;}
 .calc-disclaimer{margin-top:12px;font-size:0.76rem;color:var(--ink-soft);}
-.progress-track{width:100%;height:14px;border-radius:999px;background:var(--line);overflow:hidden;margin-top:6px;}
-.progress-fill{height:100%;background:linear-gradient(90deg,#7C3AED,#FFD966);border-radius:999px;transition:width .4s ease;}
+.progress-track{width:100%;height:12px;border-radius:999px;background:var(--panel-2);overflow:hidden;margin-top:6px;border:1px solid var(--line);}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--cyan),var(--amber));border-radius:999px;transition:width .4s ease;}
 .progress-caption{display:flex;justify-content:space-between;font-size:0.78rem;color:var(--ink-soft);margin-top:6px;}
-.contact-card{border-radius:var(--radius);padding:26px;max-width:520px;}
-.contact-status{margin-top:14px;font-size:0.85rem;padding:10px 14px;border-radius:10px;}
-.contact-status.sent{background:rgba(191,232,212,0.6);color:#1F5C43;}
-.contact-status.error{background:rgba(247,201,203,0.6);color:#7A2E33;}
-.submissions-table{width:100%;border-collapse:collapse;font-size:0.8rem;margin-top:12px;}
-.submissions-table th,.submissions-table td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);}
-.submissions-table th{color:var(--ink-soft);font-weight:600;}
+
+.sketch-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.sketch-card{padding:20px;text-align:center;}
+.sketch-card .porthole{width:100%;aspect-ratio:1/1;border-radius:50%;overflow:hidden;background:var(--panel-2);border:1px solid var(--line);margin-bottom:16px;}
+.sketch-card .porthole svg{width:100%;height:100%;display:block;}
+.sketch-card .k{font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--amber);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:6px;}
+.sketch-card h3{font-size:1rem;margin-bottom:6px;}
+.sketch-card p{color:var(--ink-soft);font-size:0.86rem;line-height:1.5;margin:0;}
+.sketch-cta{margin-top:22px;padding:22px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.sketch-cta p{margin:0;color:var(--ink-soft);font-size:0.9rem;}
+.sketch-cta strong{color:var(--ink);}
+
+.contact-card{padding:26px;max-width:520px;}
+.contact-status{margin-top:14px;font-size:0.85rem;padding:10px 14px;border-radius:9px;}
+.contact-status.sent{background:rgba(94,234,212,0.12);color:var(--up);border:1px solid rgba(94,234,212,0.3);}
+.contact-status.error{background:rgba(255,122,107,0.12);color:var(--down);border:1px solid rgba(255,122,107,0.3);}
+
+footer{padding:36px 0 50px;border-top:1px solid var(--line);position:relative;z-index:1;}
+.footer-inner{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;justify-content:space-between;font-size:0.82rem;color:var(--ink-soft);}
+.footer-inner a{text-decoration:none;color:var(--ink-soft);}
+.footer-inner a:hover{color:var(--cyan);}
+
 @media(max-width:860px){
-.hero-grid,.about-grid{grid-template-columns:1fr;}
-.hero-art{order:-1;}
-.grid{grid-template-columns:repeat(2,1fr);}
-.nav-toggle{display:block;}
-.nav-links{display:none;position:absolute;top:56px;left:0;right:0;flex-direction:column;align-items:flex-start;gap:6px;background:rgba(255,255,255,0.9);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,0.6);padding:14px 20px 18px;box-shadow:var(--shadow);}
-.nav-links.open{display:flex;}
-.nav-links > a{padding:8px 0;}
-.nav-dropdown{width:100%;}
-.nav-dropdown-trigger{padding:8px 0;width:100%;justify-content:space-between;}
-.nav-dropdown-menu{position:static;display:none;box-shadow:none;border:none;background:none;-webkit-backdrop-filter:none;backdrop-filter:none;padding:0 0 4px 10px;min-width:0;}
-.nav-dropdown.open .nav-dropdown-menu{display:flex;}
-.admin-grid{grid-template-columns:1fr;}
-.drive-embed-wrap iframe{height:420px;}
-.calc-row{grid-template-columns:1fr 1fr;}
+  .hero-grid,.log-grid{grid-template-columns:1fr;}
+  .hero-art{order:-1;}
+  .sketch-grid{grid-template-columns:1fr 1fr;}
+  .nav-toggle{display:block;}
+  .nav-links{display:none;position:absolute;top:54px;left:0;right:0;flex-direction:column;align-items:flex-start;gap:4px;background:rgba(10,14,21,0.97);border-bottom:1px solid var(--line);padding:14px 20px 18px;}
+  .nav-links.open{display:flex;}
+  .nav-links>a{padding:8px 0;}
+  .calc-row{grid-template-columns:1fr 1fr;}
 }
 @media(max-width:540px){
-.grid{grid-template-columns:1fr;}
-.hero{padding:40px 0 28px;}
-.section{padding:40px 0;}
-.drive-embed-wrap iframe{height:360px;}
-.bg-blob{opacity:0.22;}
-.calc-row{grid-template-columns:1fr;}
+  .sketch-grid{grid-template-columns:1fr;}
+  .hero{padding:44px 0 26px;}
+  .section{padding:42px 0;}
+  .calc-row{grid-template-columns:1fr;}
+  .glow{opacity:0.55;}
 }
+@media(prefers-reduced-motion:reduce){.ticker-track{animation:none;}}
 </style>
 </head>
 <body>
-<div class="bg-blob b1"></div>
-<div class="bg-blob b2"></div>
-<div class="bg-blob b3"></div>
-<div class="bg-blob b4"></div>
+<div class="glow g1"></div>
+<div class="glow g2"></div>
 <div id="root"></div>
 <script>
 var h = React.createElement;
 
-var INSTAGRAM_URL = "https://instagram.com/destarianimunaf";
-var GITHUB_URL = "https://github.com/destarianimunaf";
-var ADMIN_PASSCODE = "changeme123";
-var DRIVE_FOLDER_ID = "1ZcH24TTfnV39kNLNp00V0ATDERa1iV4M";
-var SHEET_CSV_URL = "";
-var CONTACT_FORM_ACTION_URL = "";
-var CONTACT_FORM_EMAIL_ENTRY = "";
-var CONTACT_FORM_MESSAGE_ENTRY = "";
-var CONTACT_SHEET_CSV_URL = "";
+/* =====================================================================
+   1) KONFIGURASI — edit di sini
+   ===================================================================== */
+var CONFIG = {
+  name: "Desta Riani",
+  brandInitials: "DR",
+  instagramArt: "https://instagram.com/artestroke2",
+  instagramArtHandle: "@artestroke2",
+  github: "https://github.com/destarianimunaf",
+  contactFormActionUrl: "",
+  contactFormEmailEntry: "",
+  contactFormMessageEntry: ""
+};
 
-var SKILLS = [
-  {sym:"REACT",label:"Frontend",trend:"up",change:"+2.4%"},
-  {sym:"ILLUS",label:"Illustration",trend:"up",change:"+1.1%"},
-  {sym:"UI/UX",label:"Product design",trend:"flat",change:"0.0%"},
-  {sym:"JS",label:"JavaScript",trend:"up",change:"+3.0%"},
-  {sym:"IDX",label:"Market watch",trend:"up",change:"+0.8%"},
-  {sym:"GIT",label:"Version control",trend:"flat",change:"0.0%"},
-  {sym:"FIGMA",label:"Prototyping",trend:"up",change:"+1.6%"}
+var TICKER_ITEMS = [
+  {sym:"IDX", label:"Index funds", trend:"up", change:"steady drip"},
+  {sym:"DCA", label:"Dollar-cost avg", trend:"up", change:"every payday"},
+  {sym:"INK", label:"Sketching", trend:"up", change:"most nights"},
+  {sym:"10-K", label:"Reading filings", trend:"flat", change:"slowly"},
+  {sym:"FOMO", label:"Resisting it", trend:"down", change:"work in progress"},
+  {sym:"PATIENCE", label:"Compounding", trend:"up", change:"long game"}
 ];
 
-var INITIAL_PORTFOLIO = [
-  {id:1,title:"Illustration I",tags:["Illustration"],image:"https://drive.google.com/uc?export=view&id=1OXTlKpP8r_Jy6T7Vtb_m6lU3vIn27FFB"},
-  {id:2,title:"Illustration II",tags:["Illustration"],image:"https://drive.google.com/uc?export=view&id=18nWVWSZpbualJwmwxvtWfTSmN4x0ifrd"},
-  {id:3,title:"Illustration III",tags:["Illustration"],image:"https://drive.google.com/uc?export=view&id=1-3CwrrZhpsOtj9_NBe4pBGo1vmd9fg2C"}
-];
-
-function normalizeDriveUrl(u){
-  if(!u) return "";
-  var m1 = u.match(/drive\.google\.com\/file\/d\/([^/]+)/);
-  if(m1) return "https://drive.google.com/uc?export=view&id=" + m1[1];
-  var m2 = u.match(/[?&]id=([^&]+)/);
-  if(m2 && u.indexOf("drive.google.com") !== -1) return "https://drive.google.com/uc?export=view&id=" + m2[1];
-  return u;
-}
-
-function parseCSV(text){
-  var rows = [], row = [], field = "", inQuotes = false;
-  for(var i = 0; i < text.length; i++){
-    var c = text[i];
-    if(inQuotes){
-      if(c === '"'){ if(text[i+1] === '"'){ field += '"'; i++; } else { inQuotes = false; } }
-      else field += c;
-    } else if(c === '"'){ inQuotes = true; }
-    else if(c === ','){ row.push(field); field = ""; }
-    else if(c === '\n' || c === '\r'){
-      if(c === '\r' && text[i+1] === '\n') i++;
-      row.push(field); field = ""; rows.push(row); row = [];
-    } else field += c;
-  }
-  if(field.length || row.length){ row.push(field); rows.push(row); }
-  return rows.filter(function(r){ return r.length > 1 || (r.length === 1 && r[0] !== ""); });
-}
-
-function loadFromSheet(setItems){
-  if(!SHEET_CSV_URL) return;
-  fetch(SHEET_CSV_URL).then(function(r){ return r.text(); }).then(function(text){
-    var rows = parseCSV(text);
-    if(rows.length < 2) return;
-    var header = rows[0].map(function(x){ return x.trim().toLowerCase(); });
-    var ti = header.indexOf("title"), ta = header.indexOf("tags"), im = header.indexOf("image");
-    if(ti === -1 || im === -1) return;
-    var parsed = rows.slice(1).filter(function(r){ return r[ti]; }).map(function(r, i){
-      return {
-        id: 5000 + i,
-        title: r[ti],
-        tags: (ta !== -1 && r[ta]) ? r[ta].split("|").map(function(t){ return t.trim(); }).filter(Boolean) : ["Illustration"],
-        image: normalizeDriveUrl((r[im] || "").trim())
-      };
-    });
-    if(parsed.length) setItems(parsed);
-  }).catch(function(){});
-}
-
+/* =====================================================================
+   2) UTIL — kalkulator finance (logika tidak diubah dari versi awal)
+   ===================================================================== */
 function formatRupiah(n){
   if(!isFinite(n)) return "Rp0";
   return "Rp" + Math.round(n).toLocaleString("id-ID");
 }
-
 function requiredMonthlyForTarget(target, monthlyRate, months){
   if(months <= 0) return target;
   if(monthlyRate > 0) return target * monthlyRate / (Math.pow(1 + monthlyRate, months) - 1);
   return target / months;
 }
-
 function buildSeries(startBalance, monthly, monthlyRate, years){
   var balance = startBalance;
   var series = [balance];
@@ -292,7 +269,6 @@ function buildSeries(startBalance, monthly, monthlyRate, years){
   }
   return series;
 }
-
 function computeChildResult(child){
   var inflation = 0.08;
   var years = Number(child.years) || 0;
@@ -303,7 +279,6 @@ function computeChildResult(child){
   var months = years * 12;
   return { futureCost: futureCost, requiredMonthly: requiredMonthlyForTarget(futureCost, monthlyRate, months) };
 }
-
 function computeEmergencyResult(e){
   var monthlyExpenses = Number(e.monthlyExpenses) || 0;
   var months = Number(e.months) || 0;
@@ -315,7 +290,6 @@ function computeEmergencyResult(e){
   var pct = target > 0 ? Math.min(100, (currentSavings / target) * 100) : 0;
   return { target: target, gap: gap, monthsToGoal: monthsToGoal, pct: pct };
 }
-
 function computeRetirementResult(r){
   var inflation = 0.05;
   var currentAge = Number(r.currentAge) || 0;
@@ -335,6 +309,89 @@ function computeRetirementResult(r){
   return { yearsToRetire: yearsToRetire, inflatedMonthlyExpense: inflatedMonthlyExpense, totalPotNeeded: totalPotNeeded, requiredMonthly: requiredMonthly };
 }
 
+/* =====================================================================
+   3) ILUSTRASI SVG — pengganti gambar Drive (bukan file eksternal,
+      jadi tidak akan pernah "broken link" dan super ringan)
+   ===================================================================== */
+function Corners(){
+  return h(React.Fragment,null,
+    h("i",{className:"corner tl"}), h("i",{className:"corner tr"}),
+    h("i",{className:"corner bl"}), h("i",{className:"corner br"})
+  );
+}
+
+function HeroArt(){
+  return h("svg",{viewBox:"0 0 400 340",fill:"none",xmlns:"http://www.w3.org/2000/svg"},
+    h("defs",null,
+      h("linearGradient",{id:"hg1",x1:"0",y1:"0",x2:"1",y2:"1"},
+        h("stop",{offset:"0%",stopColor:"#54E4DA"}), h("stop",{offset:"100%",stopColor:"#FFB454"})
+      )
+    ),
+    h("circle",{cx:200,cy:170,r:148,stroke:"rgba(84,228,218,0.35)",strokeWidth:1,strokeDasharray:"3 6",fill:"none"}),
+    h("circle",{cx:200,cy:170,r:110,stroke:"rgba(84,228,218,0.18)",strokeWidth:1,fill:"none"}),
+    [0,30,60,90,120,150,180,210,240,270,300,330].map(function(deg,i){
+      var rad = deg * Math.PI/180, x1=200+140*Math.cos(rad), y1=170+140*Math.sin(rad), x2=200+150*Math.cos(rad), y2=170+150*Math.sin(rad);
+      return h("line",{key:i,x1:x1,y1:y1,x2:x2,y2:y2,stroke:"rgba(84,228,218,0.3)",strokeWidth:1});
+    }),
+    h("rect",{x:96,y:216,width:16,height:38,rx:2,fill:"rgba(94,234,212,0.5)"}),
+    h("rect",{x:126,y:196,width:16,height:58,rx:2,fill:"rgba(94,234,212,0.5)"}),
+    h("rect",{x:156,y:206,width:16,height:48,rx:2,fill:"rgba(255,122,107,0.45)"}),
+    h("rect",{x:186,y:170,width:16,height:84,rx:2,fill:"rgba(94,234,212,0.6)"}),
+    h("rect",{x:216,y:140,width:16,height:114,rx:2,fill:"rgba(94,234,212,0.7)"}),
+    h("polyline",{points:"104,214 134,192 164,202 194,166 224,136 254,104",fill:"none",stroke:"url(#hg1)",strokeWidth:3.5,strokeLinecap:"round",strokeLinejoin:"round"}),
+    h("g",{transform:"translate(254,104) rotate(28)"},
+      h("path",{d:"M0 -13 L10 8 L0 3 L-10 8 Z",fill:"#FFB454"})
+    ),
+    h("circle",{cx:104,cy:214,r:3.5,fill:"#54E4DA"}),
+    h("circle",{cx:164,cy:202,r:3.5,fill:"#54E4DA"}),
+    h("circle",{cx:224,cy:136,r:3.5,fill:"#54E4DA"})
+  );
+}
+
+function ArtMarkets(){
+  return h("svg",{viewBox:"0 0 200 200",xmlns:"http://www.w3.org/2000/svg"},
+    h("rect",{width:200,height:200,fill:"#0D1420"}),
+    h("circle",{cx:100,cy:100,r:88,stroke:"rgba(84,228,218,0.22)",strokeDasharray:"2 5",fill:"none"}),
+    h("rect",{x:56,y:118,width:12,height:32,rx:2,fill:"rgba(255,122,107,0.55)"}),
+    h("rect",{x:76,y:104,width:12,height:46,rx:2,fill:"rgba(94,234,212,0.55)"}),
+    h("rect",{x:96,y:86,width:12,height:64,rx:2,fill:"rgba(94,234,212,0.7)"}),
+    h("rect",{x:116,y:64,width:12,height:86,rx:2,fill:"rgba(94,234,212,0.85)"}),
+    h("polyline",{points:"62,116 82,102 102,84 122,62 138,48",fill:"none",stroke:"#FFB454",strokeWidth:3,strokeLinecap:"round",strokeLinejoin:"round"})
+  );
+}
+
+function ArtCraft(){
+  return h("svg",{viewBox:"0 0 200 200",xmlns:"http://www.w3.org/2000/svg"},
+    h("rect",{width:200,height:200,fill:"#0D1420"}),
+    [0,1,2,3,4,5].map(function(i){ return h("line",{key:i,x1:40+i*22,y1:40,x2:20+i*22,y2:160,stroke:"rgba(84,228,218,0.10)",strokeWidth:1}); }),
+    h("path",{d:"M60 140 C 80 110, 110 100, 150 60",stroke:"#54E4DA",strokeWidth:3,fill:"none",strokeLinecap:"round"}),
+    h("g",{transform:"translate(150,60) rotate(-40)"},
+      h("path",{d:"M0 0 L18 -6 L18 6 Z",fill:"#FFB454"})
+    ),
+    h("circle",{cx:60,cy:140,r:4,fill:"#FFB454"})
+  );
+}
+
+function ArtGrit(){
+  return h("svg",{viewBox:"0 0 200 200",xmlns:"http://www.w3.org/2000/svg"},
+    h("rect",{width:200,height:200,fill:"#0D1420"}),
+    h("rect",{x:44,y:146,width:20,height:14,fill:"rgba(94,234,212,0.35)"}),
+    h("rect",{x:68,y:126,width:20,height:34,fill:"rgba(94,234,212,0.5)"}),
+    h("rect",{x:92,y:104,width:20,height:56,fill:"rgba(94,234,212,0.65)"}),
+    h("rect",{x:116,y:80,width:20,height:80,fill:"rgba(94,234,212,0.8)"}),
+    h("g",{transform:"translate(126,80)"},
+      h("line",{x1:0,y1:0,x2:0,y2:-26,stroke:"#FFB454",strokeWidth:2}),
+      h("path",{d:"M0 -26 L20 -20 L0 -14 Z",fill:"#FFB454"})
+    ),
+    h("circle",{cx:54,cy:146,r:3,fill:"#54E4DA"}),
+    h("circle",{cx:78,cy:126,r:3,fill:"#54E4DA"}),
+    h("circle",{cx:102,cy:104,r:3,fill:"#54E4DA"})
+  );
+}
+
+/* =====================================================================
+   4) KOMPONEN KECIL
+   ===================================================================== */
 function GrowthChart(props){
   var points = props.points, uid = "gc" + props.uid;
   var vw = 400, vh = 110, pad = 8;
@@ -349,40 +406,20 @@ function GrowthChart(props){
   return h("svg",{viewBox:"0 0 " + vw + " " + vh, preserveAspectRatio:"none", className:"growth-chart"},
     h("defs",null,
       h("linearGradient",{id:uid,x1:"0",y1:"0",x2:"0",y2:"1"},
-        h("stop",{offset:"0%",stopColor:"#7C3AED",stopOpacity:0.4}),
-        h("stop",{offset:"100%",stopColor:"#7C3AED",stopOpacity:0.03})
+        h("stop",{offset:"0%",stopColor:"#54E4DA",stopOpacity:0.35}),
+        h("stop",{offset:"100%",stopColor:"#54E4DA",stopOpacity:0.02})
       )
     ),
     h("polygon",{points:areaPoints,fill:"url(#" + uid + ")"}),
-    h("polyline",{points:coords,fill:"none",stroke:"#7C3AED",strokeWidth:3,strokeLinecap:"round",strokeLinejoin:"round"})
+    h("polyline",{points:coords,fill:"none",stroke:"#54E4DA",strokeWidth:3,strokeLinecap:"round",strokeLinejoin:"round"})
   );
 }
-
 function ProgressBar(props){
   var pct = Math.max(0, Math.min(100, props.pct || 0));
   return h("div",{className:"progress-track"}, h("div",{className:"progress-fill",style:{width:pct + "%"}}));
 }
-
-function HeroArt(){
-  return h("svg",{viewBox:"0 0 400 340",fill:"none",xmlns:"http://www.w3.org/2000/svg"},
-    h("circle",{cx:200,cy:170,r:150,fill:"rgba(255,255,255,0.5)"}),
-    h("circle",{cx:300,cy:80,r:34,fill:"#FFD966",opacity:0.9}),
-    h("circle",{cx:70,cy:250,r:26,fill:"#B79CF2",opacity:0.9}),
-    h("rect",{x:90,y:130,width:220,height:140,rx:14,fill:"rgba(255,255,255,0.7)",stroke:"#E7E1F5",strokeWidth:2}),
-    h("rect",{x:90,y:130,width:220,height:26,rx:14,fill:"#D9C7FA"}),
-    h("circle",{cx:104,cy:143,r:4,fill:"#fff"}),
-    h("circle",{cx:116,cy:143,r:4,fill:"#fff"}),
-    h("circle",{cx:128,cy:143,r:4,fill:"#fff"}),
-    h("polyline",{points:"112,240 150,200 178,222 214,168 250,190 288,150",fill:"none",stroke:"#7C3AED",strokeWidth:4,strokeLinecap:"round",strokeLinejoin:"round"}),
-    h("circle",{cx:288,cy:150,r:6,fill:"#4FAE85"}),
-    h("circle",{cx:214,cy:168,r:5,fill:"#7C3AED"}),
-    h("path",{d:"M150 260 L170 232 L190 260 Z",fill:"#FFE38A"}),
-    h("rect",{x:60,y:260,width:60,height:10,rx:5,fill:"#FFD966"})
-  );
-}
-
 function Ticker(){
-  var items = SKILLS.concat(SKILLS);
+  var items = TICKER_ITEMS.concat(TICKER_ITEMS);
   return h("div",{className:"ticker-section"},
     h("div",{className:"ticker-mask"},
       h("div",{className:"ticker-track"},
@@ -390,220 +427,43 @@ function Ticker(){
           var arrow = s.trend==="up" ? "▲" : s.trend==="down" ? "▼" : "—";
           var cls = s.trend==="up" ? "up" : s.trend==="down" ? "down" : "";
           return h("div",{className:"ticker-item",key:i},
-            h("span",{style:{fontWeight:600}},s.sym),
-            h("span",null,s.label),
-            h("span",{className:cls},arrow + " " + s.change)
+            h("b",null,s.sym), h("span",null,s.label), h("span",{className:cls},arrow + " " + s.change)
           );
         })
       )
     )
   );
 }
-
-function ArtMarket(props){
-  var uid = "m" + props.uid;
-  return h("svg",{viewBox:"0 0 400 300",preserveAspectRatio:"xMidYMid slice",xmlns:"http://www.w3.org/2000/svg"},
-    h("defs",null, h("linearGradient",{id:"grad"+uid,x1:"0",y1:"0",x2:"1",y2:"1"}, h("stop",{offset:"0%",stopColor:"#D9C7FA"}), h("stop",{offset:"100%",stopColor:"#B79CF2"}))),
-    h("rect",{width:400,height:300,fill:"url(#grad"+uid+")"}),
-    h("rect",{x:70,y:190,width:30,height:70,rx:6,fill:"#FFFFFF",opacity:0.85}),
-    h("rect",{x:120,y:150,width:30,height:110,rx:6,fill:"#FFFFFF",opacity:0.85}),
-    h("rect",{x:170,y:170,width:30,height:90,rx:6,fill:"#FFFFFF",opacity:0.9}),
-    h("rect",{x:220,y:110,width:30,height:150,rx:6,fill:"#FFFFFF",opacity:0.95}),
-    h("rect",{x:270,y:80,width:30,height:180,rx:6,fill:"#FFFFFF"}),
-    h("polyline",{points:"85,185 135,145 185,165 235,105 285,75",fill:"none",stroke:"#4FAE85",strokeWidth:4,strokeLinecap:"round",strokeLinejoin:"round"}),
-    h("path",{d:"M275 75 L295 75 L295 95",fill:"none",stroke:"#4FAE85",strokeWidth:4,strokeLinecap:"round",strokeLinejoin:"round"}),
-    h("circle",{cx:335,cy:55,r:22,fill:"#FFE38A",opacity:0.9})
-  );
-}
-function ArtCode(props){
-  var uid = "c" + props.uid;
-  return h("svg",{viewBox:"0 0 400 300",preserveAspectRatio:"xMidYMid slice",xmlns:"http://www.w3.org/2000/svg"},
-    h("defs",null, h("linearGradient",{id:"grad"+uid,x1:"0",y1:"0",x2:"1",y2:"1"}, h("stop",{offset:"0%",stopColor:"#FFD966"}), h("stop",{offset:"100%",stopColor:"#FFE38A"}))),
-    h("rect",{width:400,height:300,fill:"url(#grad"+uid+")"}),
-    h("rect",{x:60,y:55,width:280,height:190,rx:16,fill:"#FFFFFF",opacity:0.92}),
-    h("rect",{x:60,y:55,width:280,height:34,rx:16,fill:"#7C3AED",opacity:0.9}),
-    h("circle",{cx:78,cy:72,r:5,fill:"#fff"}),
-    h("circle",{cx:94,cy:72,r:5,fill:"#fff"}),
-    h("circle",{cx:110,cy:72,r:5,fill:"#fff"}),
-    h("path",{d:"M115 150 L90 175 L115 200",fill:"none",stroke:"#7C3AED",strokeWidth:7,strokeLinecap:"round",strokeLinejoin:"round"}),
-    h("path",{d:"M225 150 L250 175 L225 200",fill:"none",stroke:"#7C3AED",strokeWidth:7,strokeLinecap:"round",strokeLinejoin:"round"}),
-    h("line",{x1:195,y1:140,x2:175,y2:210,stroke:"#4FAE85",strokeWidth:7,strokeLinecap:"round"})
-  );
-}
-function ArtPalette(props){
-  var uid = "p" + props.uid;
-  return h("svg",{viewBox:"0 0 400 300",preserveAspectRatio:"xMidYMid slice",xmlns:"http://www.w3.org/2000/svg"},
-    h("defs",null, h("linearGradient",{id:"grad"+uid,x1:"0",y1:"0",x2:"1",y2:"1"}, h("stop",{offset:"0%",stopColor:"#B79CF2"}), h("stop",{offset:"100%",stopColor:"#D9C7FA"}))),
-    h("rect",{width:400,height:300,fill:"url(#grad"+uid+")"}),
-    h("ellipse",{cx:190,cy:160,rx:115,ry:82,fill:"#FFFFFF",opacity:0.92}),
-    h("ellipse",{cx:250,cy:160,rx:26,ry:20,fill:"url(#grad"+uid+")"}),
-    h("circle",{cx:140,cy:120,r:14,fill:"#FFD966"}),
-    h("circle",{cx:182,cy:104,r:14,fill:"#FFE38A"}),
-    h("circle",{cx:224,cy:112,r:14,fill:"#B79CF2"}),
-    h("circle",{cx:140,cy:192,r:14,fill:"#9B6FF0"}),
-    h("circle",{cx:178,cy:208,r:14,fill:"#D9C7FA"}),
-    h("path",{d:"M300 90 L344 46",stroke:"#7C3AED",strokeWidth:11,strokeLinecap:"round"}),
-    h("path",{d:"M340 42 L358 24 L368 34 L350 52 Z",fill:"#7C3AED"})
-  );
-}
-var PLACEHOLDER_ARTS = [ArtMarket, ArtCode, ArtPalette];
-
-function CardMedia(props){
-  var item = props.item, index = props.index, onOpen = props.onOpen;
-  var state = React.useState(false), broken = state[0], setBroken = state[1];
-  if(!item.image || broken){
-    var Art = PLACEHOLDER_ARTS[index % PLACEHOLDER_ARTS.length];
-    return h("div",{className:"card-media-placeholder"}, h(Art,{uid:item.id}));
-  }
-  return h("div",{className:"card-media-wrap",onClick:function(){onOpen(item);}},
-    h("img",{className:"card-media",src:item.image,alt:item.title,loading:"lazy",onError:function(){setBroken(true);}}),
-    h("span",{className:"expand-hint"},"⤢ View full size")
-  );
-}
-
-function PortfolioCard(props){
-  var item = props.item, index = props.index, isAdmin = props.isAdmin, onEdit = props.onEdit, onDelete = props.onDelete, onOpen = props.onOpen;
-  return h("div",{className:"card glass"},
-    h(CardMedia,{item:item,index:index,onOpen:onOpen}),
-    h("div",{className:"card-body"},
-      h("h3",null,item.title),
-      h("div",{className:"card-tags"}, item.tags.map(function(t){ return h("span",{className:"tag",key:t}, t); })),
-      isAdmin && h("div",{className:"card-actions"},
-        h("button",{className:"btn btn-ghost btn-small",onClick:function(){onEdit(item);}},"Edit"),
-        h("button",{className:"btn btn-danger btn-small",onClick:function(){onDelete(item.id);}},"Delete")
-      )
-    )
-  );
-}
-
-function Lightbox(props){
-  var item = props.item, onClose = props.onClose;
-  if(!item) return null;
-  return h("div",{className:"lightbox-overlay",onClick:onClose},
-    h("div",{className:"lightbox-inner",onClick:function(e){e.stopPropagation();}},
-      h("img",{className:"lightbox-img",src:item.image,alt:item.title}),
-      h("div",{className:"lightbox-caption"}, item.title),
-      h("button",{className:"lightbox-close","aria-label":"Close",onClick:onClose},"✕")
-    )
-  );
-}
-
-function AdminForm(props){
-  var draft = props.draft, setDraft = props.setDraft, onSubmit = props.onSubmit, onCancel = props.onCancel;
-  return h("form",{className:"admin-panel glass",onSubmit:function(e){ e.preventDefault(); onSubmit(); }},
-    h("span",{className:"badge-admin"},"Admin mode"),
-    h("div",{className:"field"},
-      h("label",{htmlFor:"title"},"Title"),
-      h("input",{id:"title",required:true,value:draft.title,onChange:function(e){setDraft(Object.assign({},draft,{title:e.target.value}));},placeholder:"e.g. Rooftop Series No. 3"})
-    ),
-    h("div",{className:"field"},
-      h("label",{htmlFor:"tags"},"Tags (comma separated)"),
-      h("input",{id:"tags",value:draft.tagsInput,onChange:function(e){setDraft(Object.assign({},draft,{tagsInput:e.target.value}));},placeholder:"Illustration, Digital"})
-    ),
-    h("div",{className:"field"},
-      h("label",{htmlFor:"image"},"Google Drive image link"),
-      h("input",{id:"image",value:draft.image,onChange:function(e){setDraft(Object.assign({},draft,{image:e.target.value}));},placeholder:"https://drive.google.com/file/d/.../view"}),
-      h("small",null,'Set sharing to "Anyone with the link" — the link is converted automatically.')
-    ),
-    h("div",{className:"form-row"},
-      h("button",{type:"submit",className:"btn btn-primary"}, draft.id ? "Save changes" : "Add to portfolio"),
-      draft.id && h("button",{type:"button",className:"btn btn-ghost",onClick:onCancel},"Cancel")
-    )
-  );
-}
-
-function LoginForm(props){
-  var onLogin = props.onLogin, error = props.error;
-  var state = React.useState(""), pass = state[0], setPass = state[1];
-  return h("form",{className:"admin-panel glass login-wrap",onSubmit:function(e){ e.preventDefault(); onLogin(pass); }},
-    h("div",{className:"field"},
-      h("label",{htmlFor:"passcode"},"Admin passcode"),
-      h("input",{id:"passcode",type:"password",value:pass,onChange:function(e){setPass(e.target.value);},placeholder:"Enter passcode"}),
-      error && h("small",{style:{color:"#D97F86"}},"Incorrect passcode. Try again.")
-    ),
-    h("button",{type:"submit",className:"btn btn-primary"},"Log in")
-  );
-}
-
-function NavDropdown(props){
-  var label = props.label, items = props.items, onNavigate = props.onNavigate;
-  var st = React.useState(false), open = st[0], setOpen = st[1];
-  return h("div",{className:"nav-dropdown" + (open ? " open" : "")},
-    h("button",{type:"button",className:"nav-dropdown-trigger",onClick:function(){setOpen(!open);}}, label, h("span",{className:"caret"},"▾")),
-    h("div",{className:"nav-dropdown-menu"},
-      items.map(function(it){
-        return h("a",{key:it.href,href:it.href,onClick:function(){setOpen(false); onNavigate();}}, it.label);
-      })
-    )
-  );
-}
-
 function Nav(){
   var st = React.useState(false), open = st[0], setOpen = st[1];
   function close(){ setOpen(false); }
   return h("nav",{className:"nav"},
     h("div",{className:"nav-inner"},
-      h("div",{className:"brand"}, h("span",{className:"brand-mark"},"DR"), "Desta Riani"),
+      h("div",{className:"brand"}, h("span",{className:"brand-mark"},CONFIG.brandInitials), CONFIG.name),
       h("button",{className:"nav-toggle","aria-label":"Toggle menu",onClick:function(){setOpen(!open);}}, open ? "✕" : "☰"),
       h("div",{className:"nav-links" + (open?" open":"")},
-        h("a",{href:"#work",onClick:close},"Illustration"),
-        h(NavDropdown,{label:"Investment",onNavigate:close,items:[
-          {label:"Education Fund Calculator",href:"#calc-education"},
-          {label:"Retirement Fund Calculator",href:"#calc-retirement"}
-        ]}),
-        h(NavDropdown,{label:"Finance",onNavigate:close,items:[
-          {label:"Emergency Fund Calculator",href:"#calc-emergency"}
-        ]}),
-        h("a",{href:"#about",onClick:close},"About"),
+        h("a",{href:"#log",onClick:close},"Log"),
+        h("a",{href:"#instruments",onClick:close},"Instruments"),
+        h("a",{href:"#sketches",onClick:close},"Sketches"),
         h("a",{href:"#contact",onClick:close},"Contact"),
-        h("a",{href:"#admin",onClick:close},"Admin"),
-        h("a",{href:INSTAGRAM_URL,target:"_blank",rel:"noopener noreferrer"},"Instagram")
+        h("a",{href:CONFIG.instagramArt,target:"_blank",rel:"noopener noreferrer"},"Instagram")
       )
     )
   );
 }
 
+/* =====================================================================
+   5) APP
+   ===================================================================== */
 function App(){
-  var itemsState = React.useState(INITIAL_PORTFOLIO), items = itemsState[0], setItems = itemsState[1];
-  var adminState = React.useState(false), isAdmin = adminState[0], setIsAdmin = adminState[1];
-  var errState = React.useState(false), loginError = errState[0], setLoginError = errState[1];
-  var draftState = React.useState({id:null,title:"",tagsInput:"",image:""}), draft = draftState[0], setDraft = draftState[1];
-  var lightboxState = React.useState(null), lightboxItem = lightboxState[0], setLightboxItem = lightboxState[1];
-  var childrenState = React.useState([{id:1,name:"Child 1",cost:20000000,years:10,rate:8}]), children = childrenState[0], setChildren = childrenState[1];
+  var childrenState = React.useState([{id:1,name:"Kid 1",cost:20000000,years:10,rate:8}]), children = childrenState[0], setChildren = childrenState[1];
   var emergencyState = React.useState({monthlyExpenses:8000000,months:6,currentSavings:10000000,monthlySaving:2000000}), emergency = emergencyState[0], setEmergency = emergencyState[1];
   var retirementState = React.useState({currentAge:30,retireAge:60,monthlyExpense:10000000,lifeExpectancy:20,currentSavings:50000000,rate:8}), retirement = retirementState[0], setRetirement = retirementState[1];
   var contactState = React.useState({email:"",message:""}), contact = contactState[0], setContact = contactState[1];
   var contactStatusState = React.useState(""), contactStatus = contactStatusState[0], setContactStatus = contactStatusState[1];
-  var submissionsState = React.useState(null), submissions = submissionsState[0], setSubmissions = submissionsState[1];
-  var submissionsLoadingState = React.useState(false), submissionsLoading = submissionsLoadingState[0], setSubmissionsLoading = submissionsLoadingState[1];
-
-  React.useEffect(function(){ loadFromSheet(setItems); }, []);
-
-  function nextId(){ return items.length ? Math.max.apply(null, items.map(function(i){return i.id;})) + 1 : 1; }
-  function handleLogin(pass){ if(pass === ADMIN_PASSCODE){ setIsAdmin(true); setLoginError(false);} else setLoginError(true); }
-  function resetDraft(){ setDraft({id:null,title:"",tagsInput:"",image:""}); }
-  function handleSubmit(){
-    var tags = draft.tagsInput.split(",").map(function(t){return t.trim();}).filter(Boolean);
-    var image = normalizeDriveUrl(draft.image.trim());
-    if(draft.id){
-      setItems(items.map(function(it){ return it.id === draft.id ? Object.assign({},it,{title:draft.title,tags:tags,image:image}) : it; }));
-    } else {
-      setItems([{id:nextId(),title:draft.title,tags:tags,image:image}].concat(items));
-    }
-    resetDraft();
-  }
-  function handleEdit(item){
-    setDraft({id:item.id,title:item.title,tagsInput:item.tags.join(", "),image:item.image});
-    var el = document.getElementById("admin");
-    if(el) el.scrollIntoView({behavior:"smooth"});
-  }
-  function handleDelete(id){
-    setItems(items.filter(function(it){return it.id !== id;}));
-    if(draft.id === id) resetDraft();
-  }
 
   function addChild(){
-    setChildren(children.concat([{id:Date.now(),name:"Child "+(children.length+1),cost:20000000,years:10,rate:8}]));
+    setChildren(children.concat([{id:Date.now(),name:"Kid "+(children.length+1),cost:20000000,years:10,rate:8}]));
   }
   function updateChild(id,field,value){
     setChildren(children.map(function(c){ return c.id === id ? Object.assign({},c,{[field]:value}) : c; }));
@@ -616,24 +476,14 @@ function App(){
 
   function handleContactSubmit(e){
     e.preventDefault();
-    if(!CONTACT_FORM_ACTION_URL){ setContactStatus("sent"); setContact({email:"",message:""}); return; }
+    if(!CONFIG.contactFormActionUrl){ setContactStatus("sent"); setContact({email:"",message:""}); return; }
     var body = new URLSearchParams();
-    if(CONTACT_FORM_EMAIL_ENTRY) body.append(CONTACT_FORM_EMAIL_ENTRY, contact.email);
-    if(CONTACT_FORM_MESSAGE_ENTRY) body.append(CONTACT_FORM_MESSAGE_ENTRY, contact.message);
+    if(CONFIG.contactFormEmailEntry) body.append(CONFIG.contactFormEmailEntry, contact.email);
+    if(CONFIG.contactFormMessageEntry) body.append(CONFIG.contactFormMessageEntry, contact.message);
     setContactStatus("sending");
-    fetch(CONTACT_FORM_ACTION_URL, {method:"POST",mode:"no-cors",body:body})
+    fetch(CONFIG.contactFormActionUrl, {method:"POST",mode:"no-cors",body:body})
       .then(function(){ setContactStatus("sent"); setContact({email:"",message:""}); })
       .catch(function(){ setContactStatus("error"); });
-  }
-
-  function loadSubmissions(){
-    if(!CONTACT_SHEET_CSV_URL){ setSubmissions([]); return; }
-    setSubmissionsLoading(true);
-    fetch(CONTACT_SHEET_CSV_URL).then(function(r){ return r.text(); }).then(function(text){
-      var rows = parseCSV(text);
-      setSubmissions(rows);
-      setSubmissionsLoading(false);
-    }).catch(function(){ setSubmissions([]); setSubmissionsLoading(false); });
   }
 
   var retirementResult = computeRetirementResult(retirement);
@@ -642,225 +492,97 @@ function App(){
 
   return h(React.Fragment,null,
     h(Nav,null),
+
     h("header",{className:"hero"},
       h("div",{className:"wrap hero-grid"},
         h("div",null,
-          h("div",{className:"eyebrow"}, h("span",{className:"dot"}), " Computer Science & Management · Illustrator · Market learner"),
-          h("h1",null,"Illustration built with the same discipline as ", h("span",null,"clean code"),"."),
-          h("p",{className:"lead"},"I split my time between technology, markets, and drawing — with a habit of reading charts the way most people scroll social media. This is where the illustration work, and a few financial planning tools, live."),
+          h("div",{className:"tag-eyebrow"}, h("span",{className:"blip"}), "signal: live · learning in public"),
+          h("h1",null,"Figuring out the market, ", h("span",{className:"hl"},"one boring decision"), " at a time."),
+          h("p",{className:"lead"},"I'm not a financial advisor or someone who's cracked the code — just a person with a brokerage app, too many tabs open, and a genuine curiosity about how money actually works. This is where I think out loud about it, mostly so future-me remembers what past-me was confused about."),
           h("div",{className:"hero-cta"},
-            h("a",{className:"btn btn-primary",href:"#work"},"View portfolio"),
-            h("a",{className:"btn btn-ghost",href:INSTAGRAM_URL,target:"_blank",rel:"noopener noreferrer"},"Follow on Instagram")
+            h("a",{className:"btn btn-primary",href:"#log"},"Read the log"),
+            h("a",{className:"btn btn-ghost",href:CONFIG.instagramArt,target:"_blank",rel:"noopener noreferrer"},"See the sketches")
           )
         ),
-        h("div",{className:"hero-art glass"}, h(HeroArt,null))
+        h("div",{className:"hero-art panel"}, h(Corners,null), h("div",{className:"scanline"}), h(HeroArt,null))
       )
     ),
+
     h(Ticker,null),
 
-    h("section",{className:"section",id:"work"},
+    h("section",{className:"section",id:"log"},
       h("div",{className:"wrap"},
         h("div",{className:"section-head"},
-          h("h2",null,"Portfolio"),
-          h("p",{className:"section-sub"},"Illustrations loaded directly from Google Drive.")
+          h("div",{className:"tag-eyebrow"},"sec. 01 — field log"),
+          h("h2",null,"why i'm doing this out loud"),
+          h("p",{className:"section-sub"},"Short version: most finance content online is either \u201cbuy this now\u201d energy or a textbook nobody asked for. So this is closer to a public notes app than advice.")
         ),
-        h("div",{className:"grid"},
-          items.length === 0 && h("div",{className:"empty-state"},"No pieces yet — log in below and add the first one."),
-          items.map(function(item,i){
-            return h(PortfolioCard,{key:item.id,item:item,index:i,isAdmin:isAdmin,onEdit:handleEdit,onDelete:handleDelete,onOpen:setLightboxItem});
-          })
-        ),
-        h("p",{className:"drive-embed-label"},"Full folder, live from Google Drive:"),
-        h("div",{className:"drive-embed-wrap glass"},
-          h("iframe",{src:"https://drive.google.com/embeddedfolderview?id="+DRIVE_FOLDER_ID+"#grid",loading:"lazy",title:"Illustration folder on Google Drive"})
-        )
-      )
-    ),
-
-    h("section",{className:"section",id:"about"},
-      h("div",{className:"wrap about-grid"},
-        h("div",{className:"about-card glass"},
-          h("h2",{style:{fontSize:"1.25rem"}},"About"),
-          h("p",{style:{color:"var(--ink-soft)",marginTop:"10px",lineHeight:1.6}},"By habit, a slow, steady market learner — more index-and-patience than day-trading. By training, someone who likes taking things apart, whether it's a codebase or a chart."),
-          h("div",{className:"stat-row"},
-            h("div",{className:"stat"}, h("b",null,items.length), h("span",null,"Pieces published")),
-            h("div",{className:"stat"}, h("b",null,SKILLS.length), h("span",null,"Active skills")),
-            h("div",{className:"stat"}, h("b",null,"3"), h("span",null,"Worlds — ink, markets & spreadsheets"))
-          )
-        ),
-        h("div",{className:"bio-card glass"},
-          h("h3",{style:{fontSize:"1.05rem",marginBottom:"10px"}},"Desta Riani"),
-          h("p",{style:{color:"var(--ink-soft)",lineHeight:1.6}},"Background in Computer Science and Management, with a steady interest in technology and the stock market. Illustration sits alongside both — a slower, quieter way of thinking through ideas, sketch by sketch, the same patient way a good position gets built.")
-        )
-      ),
-      h("div",{className:"wrap"},
-        h("div",{className:"why-card glass"},
-          h("h3",{style:{fontSize:"1rem",marginBottom:"4px"}},"Why this exists"),
-          h("p",{style:{color:"var(--ink-soft)",lineHeight:1.7}},"Illustration, investing, and personal finance don't look related at first, but they run on the same instinct for me — patient, incremental progress that only shows its shape after a long stretch of small, consistent decisions. A single illustration is a hundred tiny strokes. A retirement fund is a hundred tiny monthly transfers. An emergency fund is the unglamorous discipline that makes the other two possible without panic when something goes wrong."),
-          h("p",{style:{color:"var(--ink-soft)",lineHeight:1.7}},"Keeping all three on one page isn't really about tidiness. It's closer to how I actually think about building anything worth having — and it's also why this site is built the way it is: static, no server, no hosting bill, plain HTML and JavaScript served straight from GitHub Pages. For something that mostly needs to display and occasionally update, a stateless page is simpler to reason about and cheaper to run — the same logic that favors a well-chosen index fund over a portfolio that demands constant rebalancing.")
-        )
-      )
-    ),
-
-    h("section",{className:"section",id:"calc-education"},
-      h("div",{className:"wrap"},
-        h("div",{className:"section-head"},
-          h("div",{className:"eyebrow"}, h("span",{className:"dot"}), " Investment"),
-          h("h2",null,"Education Fund Calculator"),
-          h("p",{className:"section-sub"},"Results update as you move each slider. Estimates assume 8% annual education cost inflation.")
-        ),
-        h("div",{className:"calc-card glass"},
-          h("h3",{className:"calc-subhead"},"Children"),
-          children.map(function(child){
-            return h("div",{className:"calc-row",key:child.id},
-              h("div",{className:"field"},
-                h("label",null,"Name"),
-                h("input",{value:child.name,onChange:function(e){updateChild(child.id,"name",e.target.value);}})
-              ),
-              h("div",{className:"field"},
-                h("label",null,"Current annual cost"),
-                h("input",{type:"range",className:"slider",min:5000000,max:200000000,step:1000000,value:child.cost,onChange:function(e){updateChild(child.id,"cost",e.target.value);}}),
-                h("small",null, formatRupiah(child.cost) + " / year")
-              ),
-              h("div",{className:"field"},
-                h("label",null,"Years to goal"),
-                h("input",{type:"range",className:"slider",min:1,max:20,step:1,value:child.years,onChange:function(e){updateChild(child.id,"years",e.target.value);}}),
-                h("small",null, child.years + " years")
-              ),
-              h("div",{className:"field"},
-                h("label",null,"Expected return"),
-                h("input",{type:"range",className:"slider",min:0,max:20,step:0.5,value:child.rate,onChange:function(e){updateChild(child.id,"rate",e.target.value);}}),
-                h("small",null, child.rate + "% / year")
-              ),
-              children.length > 1 && h("button",{type:"button",className:"btn btn-danger btn-small",onClick:function(){removeChild(child.id);}},"Remove")
-            );
-          }),
-          h("div",{className:"form-row"},
-            h("button",{type:"button",className:"btn btn-ghost btn-small",onClick:addChild},"+ Add another child")
+        h("div",{className:"log-grid"},
+          h("div",{className:"log-card panel"}, h(Corners,null),
+            h("p",null,"Background's in computer science and management — years of writing code and staring at spreadsheets for a living. Investing scratches the same itch: slow, incremental, weirdly satisfying once it finally clicks."),
+            h("p",null,"Drawing is the other half. Different muscle, same patience. None of this is advice, it's just notes — if it helps you feel a little less behind, great. If not, no worries, we're all winging it a bit."),
+            h("div",{className:"stat-row"},
+              h("div",{className:"stat"}, h("b",null,"2022"), h("span",null,"started actually investing")),
+              h("div",{className:"stat"}, h("b",null,"70%"), h("span",null,"of research happens past midnight")),
+              h("div",{className:"stat"}, h("b",null,"∞"), h("span",null,"tabs open about compound interest"))
+            )
           ),
+          h("div",{className:"log-card panel"}, h(Corners,null),
+            h("p",null,"Illustration, investing, and personal finance don't look related at first, but for me they run on the same instinct — patient, incremental progress that only shows its shape after a long stretch of small, unglamorous decisions."),
+            h("p",null,"A drawing is a hundred tiny strokes. A retirement fund is a hundred tiny monthly transfers. An emergency fund is the unglamorous part that lets the other two exist without panic when something breaks."),
+            h("p",null,"Keeping it all on one page isn't about tidiness — it's closer to how I actually think about building anything worth having. It's also why this whole site is static: no server, no hosting bill, plain HTML served from GitHub Pages. Less to maintain, less to worry about, same logic that favors a boring index fund over a portfolio that needs constant babysitting.")
+          )
+        )
+      )
+    ),
 
-          h("h3",{className:"calc-subhead calc-subhead-spaced"},"Projection"),
+    h("section",{className:"section",id:"instruments"},
+      h("div",{className:"wrap"},
+        h("div",{className:"section-head"},
+          h("div",{className:"tag-eyebrow"},"sec. 02 — flight instruments"),
+          h("h2",null,"tools i actually use"),
+          h("p",{className:"section-sub"},"Three calculators I built for myself, then figured I'd leave here in case they're useful to you too. All local, nothing gets sent anywhere.")
+        ),
+
+        h("div",{className:"calc-card panel",id:"calc-education"}, h(Corners,null),
+          h("div",{className:"calc-kicker"},"instrument 01"),
+          h("h3",{className:"calc-subhead"},"future cost of raising a kid (yikes)"),
+          h("p",{className:"calc-note"},"Assumes 8%/yr education inflation. Add a row per kid.")
+          ,
           children.map(function(child){
             var result = computeChildResult(child);
-            var series = buildSeries(0, result.requiredMonthly, (Number(child.rate)||0)/100/12, Number(child.years)||1);
-            return h("div",{className:"proj-card",key:"p"+child.id},
-              h("div",{className:"proj-head"},
-                h("span",{className:"proj-name"}, child.name),
-                h("span",{className:"proj-numbers"},
-                  h("span",null, "Target: ", h("b",null,formatRupiah(result.futureCost))),
-                  h("span",null, "Monthly investment: ", h("b",null,formatRupiah(result.requiredMonthly)))
-                )
-              ),
-              h("div",{className:"chart-label"},"Fund growth curve"),
-              h(GrowthChart,{points:series,uid:"edu"+child.id})
+            return h("div",{className:"calc-row",key:child.id},
+              h("div",{className:"field"}, h("label",null,"Name"), h("input",{value:child.name,onChange:function(e){updateChild(child.id,"name",e.target.value);}})),
+              h("div",{className:"field"}, h("label",null,"Today's education cost"), h("input",{type:"number",value:child.cost,onChange:function(e){updateChild(child.id,"cost",e.target.value);}}), h("small",null,formatRupiah(child.cost))),
+              h("div",{className:"field"}, h("label",null,"Years until needed"), h("input",{type:"number",value:child.years,onChange:function(e){updateChild(child.id,"years",e.target.value);}})),
+              h("div",{className:"field"}, h("label",null,"Expected return %/yr"), h("input",{type:"number",value:child.rate,onChange:function(e){updateChild(child.id,"rate",e.target.value);}})),
+              h("div",{style:{display:"flex",flexDirection:"column",gap:"4px",alignItems:"flex-end"}},
+                h("span",{className:"mono",style:{fontSize:"0.72rem",color:"var(--ink-soft)"}},"save/mo"),
+                h("b",{style:{color:"var(--cyan)"}}, formatRupiah(result.requiredMonthly)),
+                children.length > 1 && h("button",{type:"button",className:"btn btn-ghost",style:{padding:"4px 10px",fontSize:"0.72rem"},onClick:function(){removeChild(child.id);}},"Remove")
+              )
             );
           }),
-          h("div",{className:"calc-total"},
-            "Total monthly investment across all children: ",
-            h("b",null, formatRupiah(children.reduce(function(sum,c){ return sum + computeChildResult(c).requiredMonthly; },0)))
-          ),
-          h("p",{className:"calc-disclaimer"},"Estimates only, based on the inflation and return assumptions you set. Actual investment results may differ.")
-        )
-      )
-    ),
-
-    h("section",{className:"section",id:"calc-retirement"},
-      h("div",{className:"wrap"},
-        h("div",{className:"section-head"},
-          h("div",{className:"eyebrow"}, h("span",{className:"dot"}), " Investment"),
-          h("h2",null,"Retirement Fund Calculator"),
-          h("p",{className:"section-sub"},"Estimates the pot you'll need at retirement, and the monthly investment required to get there, assuming 5% annual living-cost inflation.")
+          h("div",{className:"form-row"}, h("button",{type:"button",className:"btn btn-ghost",onClick:addChild},"+ Add another kid"))
         ),
-        h("div",{className:"calc-card glass"},
-          h("div",{className:"calc-row"},
-            h("div",{className:"field"},
-              h("label",null,"Current age"),
-              h("input",{type:"range",className:"slider",min:18,max:60,step:1,value:retirement.currentAge,onChange:function(e){updateRetirement("currentAge",e.target.value);}}),
-              h("small",null, retirement.currentAge + " years old")
-            ),
-            h("div",{className:"field"},
-              h("label",null,"Retirement age"),
-              h("input",{type:"range",className:"slider",min:45,max:75,step:1,value:retirement.retireAge,onChange:function(e){updateRetirement("retireAge",e.target.value);}}),
-              h("small",null, retirement.retireAge + " years old")
-            ),
-            h("div",{className:"field"},
-              h("label",null,"Current monthly expenses"),
-              h("input",{type:"range",className:"slider",min:2000000,max:100000000,step:1000000,value:retirement.monthlyExpense,onChange:function(e){updateRetirement("monthlyExpense",e.target.value);}}),
-              h("small",null, formatRupiah(retirement.monthlyExpense) + " / month")
-            ),
-            h("div",{className:"field"},
-              h("label",null,"Years of retirement to cover"),
-              h("input",{type:"range",className:"slider",min:5,max:35,step:1,value:retirement.lifeExpectancy,onChange:function(e){updateRetirement("lifeExpectancy",e.target.value);}}),
-              h("small",null, retirement.lifeExpectancy + " years")
-            )
-          ),
-          h("div",{className:"calc-row"},
-            h("div",{className:"field"},
-              h("label",null,"Current retirement savings"),
-              h("input",{type:"range",className:"slider",min:0,max:1000000000,step:5000000,value:retirement.currentSavings,onChange:function(e){updateRetirement("currentSavings",e.target.value);}}),
-              h("small",null, formatRupiah(retirement.currentSavings))
-            ),
-            h("div",{className:"field"},
-              h("label",null,"Expected annual return"),
-              h("input",{type:"range",className:"slider",min:0,max:20,step:0.5,value:retirement.rate,onChange:function(e){updateRetirement("rate",e.target.value);}}),
-              h("small",null, retirement.rate + "% / year")
-            )
-          ),
-          h("h3",{className:"calc-subhead calc-subhead-spaced"},"Projection"),
-          h("div",{className:"proj-card"},
-            h("div",{className:"proj-head"},
-              h("span",{className:"proj-name"}, retirementResult.yearsToRetire + " years to retirement"),
-              h("span",{className:"proj-numbers"},
-                h("span",null, "Target pot: ", h("b",null,formatRupiah(retirementResult.totalPotNeeded))),
-                h("span",null, "Monthly investment needed: ", h("b",null,formatRupiah(retirementResult.requiredMonthly)))
-              )
-            ),
-            h("div",{className:"chart-label"},"Retirement fund growth curve"),
-            h(GrowthChart,{points:retirementSeries,uid:"ret1"})
-          ),
-          h("p",{className:"calc-disclaimer"},"Estimates only, based on the inflation and return assumptions you set. Actual investment results may differ.")
-        )
-      )
-    ),
 
-    h("section",{className:"section",id:"calc-emergency"},
-      h("div",{className:"wrap"},
-        h("div",{className:"section-head"},
-          h("div",{className:"eyebrow"}, h("span",{className:"dot"}), " Finance"),
-          h("h2",null,"Emergency Fund Calculator"),
-          h("p",{className:"section-sub"},"How much cash buffer you need, and how long it'll take to reach it at your current saving pace.")
-        ),
-        h("div",{className:"calc-card glass"},
-          h("div",{className:"calc-row"},
-            h("div",{className:"field"},
-              h("label",null,"Essential monthly expenses"),
-              h("input",{type:"range",className:"slider",min:1000000,max:50000000,step:500000,value:emergency.monthlyExpenses,onChange:function(e){updateEmergency("monthlyExpenses",e.target.value);}}),
-              h("small",null, formatRupiah(emergency.monthlyExpenses) + " / month")
-            ),
-            h("div",{className:"field"},
-              h("label",null,"Coverage target"),
-              h("input",{type:"range",className:"slider",min:3,max:12,step:1,value:emergency.months,onChange:function(e){updateEmergency("months",e.target.value);}}),
-              h("small",null, emergency.months + " months of expenses")
-            ),
-            h("div",{className:"field"},
-              h("label",null,"Current savings"),
-              h("input",{type:"range",className:"slider",min:0,max:500000000,step:1000000,value:emergency.currentSavings,onChange:function(e){updateEmergency("currentSavings",e.target.value);}}),
-              h("small",null, formatRupiah(emergency.currentSavings))
-            ),
-            h("div",{className:"field"},
-              h("label",null,"Monthly saving capacity"),
-              h("input",{type:"range",className:"slider",min:500000,max:50000000,step:500000,value:emergency.monthlySaving,onChange:function(e){updateEmergency("monthlySaving",e.target.value);}}),
-              h("small",null, formatRupiah(emergency.monthlySaving) + " / month")
-            )
+        h("div",{className:"calc-card panel",id:"calc-emergency"}, h(Corners,null),
+          h("div",{className:"calc-kicker"},"instrument 02"),
+          h("h3",{className:"calc-subhead"},"emergency fund, a.k.a. \u201cplease don't touch my ETFs\u201d fund"),
+          h("p",{className:"calc-note"},"How much cushion you'd need, and how far along you already are."),
+          h("div",{className:"calc-row",style:{gridTemplateColumns:"1fr 1fr 1fr 1fr"}},
+            h("div",{className:"field"}, h("label",null,"Monthly expenses"), h("input",{type:"number",value:emergency.monthlyExpenses,onChange:function(e){updateEmergency("monthlyExpenses",e.target.value);}}), h("small",null,formatRupiah(emergency.monthlyExpenses))),
+            h("div",{className:"field"}, h("label",null,"Months of buffer wanted"), h("input",{type:"number",value:emergency.months,onChange:function(e){updateEmergency("months",e.target.value);}})),
+            h("div",{className:"field"}, h("label",null,"Already saved"), h("input",{type:"number",value:emergency.currentSavings,onChange:function(e){updateEmergency("currentSavings",e.target.value);}}), h("small",null,formatRupiah(emergency.currentSavings))),
+            h("div",{className:"field"}, h("label",null,"Saving per month"), h("input",{type:"number",value:emergency.monthlySaving,onChange:function(e){updateEmergency("monthlySaving",e.target.value);}}), h("small",null,formatRupiah(emergency.monthlySaving)))
           ),
-          h("h3",{className:"calc-subhead calc-subhead-spaced"},"Projection"),
           h("div",{className:"proj-card"},
             h("div",{className:"proj-head"},
               h("span",{className:"proj-name"},"Target buffer"),
               h("span",{className:"proj-numbers"},
-                h("span",null, "Target: ", h("b",null,formatRupiah(emergencyResult.target))),
-                h("span",null, "Still needed: ", h("b",null,formatRupiah(emergencyResult.gap))),
-                h("span",null, "Time to reach it: ", h("b",null, emergencyResult.monthsToGoal === null ? "—" : Math.ceil(emergencyResult.monthsToGoal) + " months"))
+                h("span",null,"Target: ", h("b",null,formatRupiah(emergencyResult.target))),
+                h("span",null,"Still needed: ", h("b",null,formatRupiah(emergencyResult.gap))),
+                h("span",null,"Time to reach it: ", h("b",null, emergencyResult.monthsToGoal === null ? "—" : Math.ceil(emergencyResult.monthsToGoal) + " months"))
               )
             ),
             h(ProgressBar,{pct:emergencyResult.pct}),
@@ -869,7 +591,61 @@ function App(){
               h("span",null, Math.round(emergencyResult.pct) + "%")
             )
           ),
-          h("p",{className:"calc-disclaimer"},"An emergency fund is meant to stay liquid and low-risk, so this estimate does not assume investment growth.")
+          h("p",{className:"calc-disclaimer"},"An emergency fund stays liquid and low-risk on purpose — this estimate skips investment growth.")
+        ),
+
+        h("div",{className:"calc-card panel",id:"calc-retirement"}, h(Corners,null),
+          h("div",{className:"calc-kicker"},"instrument 03"),
+          h("h3",{className:"calc-subhead"},"retirement math (the scary one)"),
+          h("p",{className:"calc-note"},"Assumes 5%/yr inflation on expenses. Rough numbers, not a plan — talk to an actual advisor for that."),
+          h("div",{className:"calc-row",style:{gridTemplateColumns:"1fr 1fr 1fr"}},
+            h("div",{className:"field"}, h("label",null,"Current age"), h("input",{type:"number",value:retirement.currentAge,onChange:function(e){updateRetirement("currentAge",e.target.value);}})),
+            h("div",{className:"field"}, h("label",null,"Retirement age"), h("input",{type:"number",value:retirement.retireAge,onChange:function(e){updateRetirement("retireAge",e.target.value);}})),
+            h("div",{className:"field"}, h("label",null,"Life expectancy (yrs after retiring)"), h("input",{type:"number",value:retirement.lifeExpectancy,onChange:function(e){updateRetirement("lifeExpectancy",e.target.value);}}))
+          ),
+          h("div",{className:"calc-row",style:{gridTemplateColumns:"1fr 1fr 1fr"}},
+            h("div",{className:"field"}, h("label",null,"Monthly expenses today"), h("input",{type:"number",value:retirement.monthlyExpense,onChange:function(e){updateRetirement("monthlyExpense",e.target.value);}}), h("small",null,formatRupiah(retirement.monthlyExpense))),
+            h("div",{className:"field"}, h("label",null,"Already saved"), h("input",{type:"number",value:retirement.currentSavings,onChange:function(e){updateRetirement("currentSavings",e.target.value);}}), h("small",null,formatRupiah(retirement.currentSavings))),
+            h("div",{className:"field"}, h("label",null,"Expected return %/yr"), h("input",{type:"number",value:retirement.rate,onChange:function(e){updateRetirement("rate",e.target.value);}}))
+          ),
+          h("h3",{className:"calc-subhead",style:{marginTop:"22px",paddingTop:"20px",borderTop:"1px solid var(--line)"}},"Projection"),
+          h("div",{className:"chart-label"},"Projected balance from now to retirement"),
+          h(GrowthChart,{points:retirementSeries,uid:"ret1"}),
+          h("div",{className:"calc-total"},"Estimated monthly saving needed: ", h("b",null,formatRupiah(retirementResult.requiredMonthly)))
+        )
+      )
+    ),
+
+    h("section",{className:"section",id:"sketches"},
+      h("div",{className:"wrap"},
+        h("div",{className:"section-head"},
+          h("div",{className:"tag-eyebrow"},"sec. 03 — visual log"),
+          h("h2",null,"the other half of my brain"),
+          h("p",{className:"section-sub"},"Money's the logical side. This is the messier, more feelings-based side — the sketchbook stuff.")
+        ),
+        h("div",{className:"sketch-grid"},
+          h("div",{className:"sketch-card panel"}, h(Corners,null),
+            h("div",{className:"porthole"}, h(ArtMarkets,null)),
+            h("div",{className:"k"},"theme: markets"),
+            h("h3",null,"candlesticks, but make it a mood board"),
+            h("p",null,"charts as texture, not just data.")
+          ),
+          h("div",{className:"sketch-card panel"}, h(Corners,null),
+            h("div",{className:"porthole"}, h(ArtCraft,null)),
+            h("div",{className:"k"},"theme: craft"),
+            h("h3",null,"ink doesn't care about your allocation"),
+            h("p",null,"the one place nothing has to compound.")
+          ),
+          h("div",{className:"sketch-card panel"}, h(Corners,null),
+            h("div",{className:"porthole"}, h(ArtGrit,null)),
+            h("div",{className:"k"},"theme: grit"),
+            h("h3",null,"showing up on the boring days"),
+            h("p",null,"that's kind of the whole plot.")
+          )
+        ),
+        h("div",{className:"sketch-cta panel"}, h(Corners,null),
+          h("p",null,"Full illustration portfolio lives on Instagram — ", h("strong",null,CONFIG.instagramArtHandle),"."),
+          h("a",{className:"btn btn-primary",href:CONFIG.instagramArt,target:"_blank",rel:"noopener noreferrer"},"Open Instagram")
         )
       )
     ),
@@ -877,79 +653,36 @@ function App(){
     h("section",{className:"section",id:"contact"},
       h("div",{className:"wrap"},
         h("div",{className:"section-head"},
-          h("h2",null,"Get in touch"),
-          h("p",{className:"section-sub"},"Leave your email and I'll follow up directly.")
+          h("div",{className:"tag-eyebrow"},"sec. 04 — transmit"),
+          h("h2",null,"say hi"),
+          h("p",{className:"section-sub"},"Drop your email if you want to keep up with the log, or just say hi.")
         ),
-        h("form",{className:"contact-card glass",onSubmit:handleContactSubmit},
-          h("div",{className:"field"},
+        h("form",{className:"contact-card panel",onSubmit:handleContactSubmit}, h(Corners,null),
+          h("div",{className:"field",style:{marginBottom:"15px"}},
             h("label",{htmlFor:"contact-email"},"Email"),
             h("input",{id:"contact-email",type:"email",required:true,value:contact.email,onChange:function(e){setContact(Object.assign({},contact,{email:e.target.value}));},placeholder:"you@example.com"})
           ),
-          h("div",{className:"field"},
+          h("div",{className:"field",style:{marginBottom:"15px"}},
             h("label",{htmlFor:"contact-message"},"Message (optional)"),
-            h("textarea",{id:"contact-message",value:contact.message,onChange:function(e){setContact(Object.assign({},contact,{message:e.target.value}));},placeholder:"What would you like to talk about?"})
+            h("textarea",{id:"contact-message",value:contact.message,onChange:function(e){setContact(Object.assign({},contact,{message:e.target.value}));},placeholder:"What's on your mind?"})
           ),
           h("button",{type:"submit",className:"btn btn-primary",disabled:contactStatus==="sending"}, contactStatus==="sending" ? "Sending..." : "Send"),
-          contactStatus === "sent" && h("div",{className:"contact-status sent"},"Thanks — I'll be in touch by email soon."),
-          contactStatus === "error" && h("div",{className:"contact-status error"},"Something went wrong sending that. Please try again in a moment.")
+          contactStatus === "sent" && h("div",{className:"contact-status sent"},"Got it — I'll get back to you by email soon."),
+          contactStatus === "error" && h("div",{className:"contact-status error"},"Something didn't send. Try again in a moment.")
         )
-      )
-    ),
-
-    h("section",{className:"section",id:"admin"},
-      h("div",{className:"wrap"},
-        h("div",{className:"section-head"},
-          h("h2",null,"Admin"),
-          h("p",{className:"section-sub"},"Optional — log in to manually manage portfolio pieces or review contact submissions.")
-        ),
-        !isAdmin
-          ? h(LoginForm,{onLogin:handleLogin,error:loginError})
-          : h(React.Fragment,null,
-              h("div",{className:"admin-grid"},
-                h(AdminForm,{draft:draft,setDraft:setDraft,onSubmit:handleSubmit,onCancel:resetDraft}),
-                h("div",{className:"admin-panel glass"},
-                  h("span",{className:"badge-admin"},"Manage pieces"),
-                  items.map(function(item){
-                    return h("div",{className:"item-manage-row",key:item.id},
-                      h("span",null,item.title),
-                      h("div",{style:{display:"flex",gap:"8px"}},
-                        h("button",{className:"btn btn-ghost btn-small",onClick:function(){handleEdit(item);}},"Edit"),
-                        h("button",{className:"btn btn-danger btn-small",onClick:function(){handleDelete(item.id);}},"Delete")
-                      )
-                    );
-                  }),
-                  h("div",{style:{marginTop:"16px"}}, h("button",{className:"btn btn-ghost btn-small",onClick:function(){setIsAdmin(false);}},"Log out"))
-                )
-              ),
-              h("div",{className:"admin-panel glass",style:{marginTop:"20px"}},
-                h("span",{className:"badge-admin"},"Contact submissions"),
-                h("div",{className:"form-row",style:{marginTop:0}},
-                  h("button",{type:"button",className:"btn btn-ghost btn-small",onClick:loadSubmissions}, submissionsLoading ? "Loading..." : "Load submissions")
-                ),
-                !CONTACT_SHEET_CSV_URL && h("p",{style:{color:"var(--ink-soft)",fontSize:"0.82rem",marginTop:"10px"}},"Not connected yet — set CONTACT_SHEET_CSV_URL to the published CSV link of your response sheet."),
-                submissions && submissions.length > 0 && h("table",{className:"submissions-table"},
-                  h("thead",null, h("tr",null, submissions[0].map(function(c,i){ return h("th",{key:i},c); }))),
-                  h("tbody",null, submissions.slice(1).map(function(row,ri){
-                    return h("tr",{key:ri}, row.map(function(cell,ci){ return h("td",{key:ci},cell); }));
-                  }))
-                ),
-                submissions && submissions.length === 0 && CONTACT_SHEET_CSV_URL && h("p",{style:{color:"var(--ink-soft)",fontSize:"0.82rem",marginTop:"10px"}},"No submissions yet.")
-              )
-            )
       )
     ),
 
     h("footer",null,
       h("div",{className:"wrap footer-inner"},
-        h("span",{className:"footer-credit"},"© " + new Date().getFullYear() + " Desta Riani. All rights reserved."),
+        h("span",null,"© " + new Date().getFullYear() + " " + CONFIG.name + ". All rights reserved."),
         h("span",null,
-          h("a",{href:INSTAGRAM_URL,target:"_blank",rel:"noopener noreferrer"},"Instagram"),
+          h("a",{href:CONFIG.github,target:"_blank",rel:"noopener noreferrer"},"GitHub"),
           " · ",
-          h("a",{href:GITHUB_URL,target:"_blank",rel:"noopener noreferrer"},"GitHub")
+          h("a",{href:CONFIG.instagramArt,target:"_blank",rel:"noopener noreferrer"},"Instagram")
         )
       )
-    ),
-    h(Lightbox,{item:lightboxItem,onClose:function(){setLightboxItem(null);}})
+    )
   );
 }
 
