@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Illustration Portfolio — Desta Riani</title>
-<meta name="description" content="Illustration portfolio by Desta Riani." />
+<title>Desta Riani — Illustration, Investment & Finance</title>
+<meta name="description" content="Illustration portfolio and financial planning tools by Desta Riani." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
 <script crossorigin src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
@@ -20,7 +20,6 @@ a{color:inherit;}
 button{font-family:inherit;cursor:pointer;}
 .wrap{max-width:1120px;margin:0 auto;padding:0 20px;position:relative;z-index:1;}
 
-/* liquid glass backdrop */
 .bg-blob{position:fixed;border-radius:50%;filter:blur(95px);pointer-events:none;z-index:0;opacity:0.32;}
 .bg-blob.b1{width:440px;height:440px;background:#C4A8FA;top:-140px;right:-100px;animation:floatA 19s ease-in-out infinite;}
 .bg-blob.b2{width:400px;height:400px;background:#FFD966;top:560px;left:-160px;animation:floatB 23s ease-in-out infinite;}
@@ -37,14 +36,24 @@ button{font-family:inherit;cursor:pointer;}
 .nav-inner{position:relative;display:flex;align-items:center;justify-content:space-between;padding:14px 20px;max-width:1120px;margin:0 auto;}
 .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1rem;}
 .brand-mark{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--periwinkle),var(--blush));display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;color:#fff;font-size:0.8rem;font-weight:700;flex-shrink:0;}
-.nav-links{display:flex;align-items:center;gap:24px;font-size:0.9rem;font-weight:500;}
-.nav-links a{text-decoration:none;color:var(--ink-soft);transition:color .15s;}
-.nav-links a:hover{color:var(--ink);}
+.nav-links{display:flex;align-items:center;gap:22px;font-size:0.9rem;font-weight:500;}
+.nav-links > a{text-decoration:none;color:var(--ink-soft);transition:color .15s;}
+.nav-links > a:hover{color:var(--ink);}
 .nav-toggle{display:none;background:none;border:none;font-size:1.3rem;color:var(--ink);padding:6px;}
+.nav-dropdown{position:relative;}
+.nav-dropdown-trigger{background:none;border:none;color:var(--ink-soft);font-family:inherit;font-size:0.9rem;font-weight:500;display:flex;align-items:center;gap:5px;padding:0;}
+.nav-dropdown-trigger:hover{color:var(--ink);}
+.nav-dropdown-trigger .caret{font-size:0.65rem;transition:transform .15s;}
+.nav-dropdown.open .caret{transform:rotate(180deg);}
+.nav-dropdown-menu{display:none;position:absolute;top:calc(100% + 12px);left:0;min-width:230px;background:rgba(255,255,255,0.95);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.9);border-radius:14px;padding:8px;box-shadow:var(--shadow);flex-direction:column;gap:2px;}
+.nav-dropdown.open .nav-dropdown-menu{display:flex;}
+.nav-dropdown-menu a{padding:9px 12px;border-radius:9px;font-size:0.85rem;color:var(--ink);text-decoration:none;}
+.nav-dropdown-menu a:hover{background:var(--bg);color:var(--accent);}
 .btn{border:none;border-radius:999px;padding:10px 18px;font-weight:600;font-size:0.86rem;transition:transform .15s,box-shadow .15s;}
-.btn:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+.btn:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
 .btn-primary{background:var(--accent);color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,0.35);}
 .btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(124,111,209,0.35), inset 0 1px 0 rgba(255,255,255,0.35);}
+.btn-primary:disabled{opacity:0.6;cursor:not-allowed;transform:none;}
 .btn-ghost{background:rgba(255,255,255,0.55);color:var(--ink);border:1px solid rgba(255,255,255,0.8);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);}
 .btn-ghost:hover{border-color:var(--accent);}
 .btn-small{padding:7px 13px;font-size:0.78rem;}
@@ -73,7 +82,7 @@ button{font-family:inherit;cursor:pointer;}
 .section{padding:52px 0;position:relative;z-index:1;}
 .section-head{margin-bottom:28px;}
 .section-head h2{font-size:clamp(1.4rem,2.6vw,2rem);}
-.section-sub{color:var(--ink-soft);font-size:0.92rem;margin-top:6px;}
+.section-sub{color:var(--ink-soft);font-size:0.92rem;margin-top:6px;max-width:60ch;}
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
 .card{border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;transition:transform .2s;}
 .card:hover{transform:translateY(-3px);}
@@ -105,9 +114,10 @@ button{font-family:inherit;cursor:pointer;}
 .admin-panel{border-radius:var(--radius);padding:24px;}
 .field{margin-bottom:15px;}
 .field label{display:block;font-size:0.8rem;font-weight:600;margin-bottom:6px;}
-.field input{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--line);font-family:inherit;font-size:0.9rem;background:rgba(255,255,255,0.7);}
+.field input,.field textarea{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--line);font-family:inherit;font-size:0.9rem;background:rgba(255,255,255,0.7);}
+.field textarea{resize:vertical;min-height:90px;}
 .field small{color:var(--ink-soft);font-size:0.74rem;}
-.form-row{display:flex;gap:10px;margin-top:18px;}
+.form-row{display:flex;gap:10px;margin-top:18px;align-items:center;flex-wrap:wrap;}
 .badge-admin{background:rgba(191,232,212,0.8);color:#1F5C43;padding:5px 12px;border-radius:999px;font-size:0.74rem;font-weight:700;display:inline-block;margin-bottom:16px;}
 .item-manage-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);font-size:0.86rem;}
 .item-manage-row:last-child{border-bottom:none;}
@@ -119,6 +129,9 @@ button{font-family:inherit;cursor:pointer;}
 .stat b{display:block;font-family:'Space Grotesk',sans-serif;font-size:1.3rem;}
 .stat span{font-size:0.76rem;color:var(--ink-soft);}
 .bio-card{border-radius:var(--radius);padding:24px;}
+.why-card{border-radius:var(--radius);padding:26px;margin-top:22px;}
+.why-card p{margin:0;}
+.why-card p + p{margin-top:14px;}
 .calc-card{border-radius:var(--radius);padding:24px;}
 .calc-subhead{font-size:1rem;font-family:'Space Grotesk',sans-serif;margin-bottom:14px;}
 .calc-subhead-spaced{margin-top:28px;padding-top:24px;border-top:1px solid var(--line);}
@@ -140,21 +153,31 @@ input.slider::-moz-range-thumb{width:18px;height:18px;border-radius:50%;backgrou
 .calc-total{margin-top:18px;padding-top:16px;border-top:1px solid var(--line);font-size:1rem;color:var(--ink-soft);}
 .calc-total b{color:var(--accent);font-family:'Space Grotesk',sans-serif;font-size:1.1rem;}
 .calc-disclaimer{margin-top:12px;font-size:0.76rem;color:var(--ink-soft);}
-@media(max-width:760px){.calc-row{grid-template-columns:1fr 1fr;}}
-@media(max-width:540px){.calc-row{grid-template-columns:1fr;}}
-footer{border-top:1px solid rgba(255,255,255,0.7);padding:32px 0;color:var(--ink-soft);font-size:0.84rem;background:rgba(255,255,255,0.6);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);position:relative;z-index:1;}
-.footer-inner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
-.footer-inner a{text-decoration:none;font-weight:600;color:var(--accent);}
-.footer-credit{font-size:0.78rem;opacity:0.85;}
+.progress-track{width:100%;height:14px;border-radius:999px;background:var(--line);overflow:hidden;margin-top:6px;}
+.progress-fill{height:100%;background:linear-gradient(90deg,#7C3AED,#FFD966);border-radius:999px;transition:width .4s ease;}
+.progress-caption{display:flex;justify-content:space-between;font-size:0.78rem;color:var(--ink-soft);margin-top:6px;}
+.contact-card{border-radius:var(--radius);padding:26px;max-width:520px;}
+.contact-status{margin-top:14px;font-size:0.85rem;padding:10px 14px;border-radius:10px;}
+.contact-status.sent{background:rgba(191,232,212,0.6);color:#1F5C43;}
+.contact-status.error{background:rgba(247,201,203,0.6);color:#7A2E33;}
+.submissions-table{width:100%;border-collapse:collapse;font-size:0.8rem;margin-top:12px;}
+.submissions-table th,.submissions-table td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);}
+.submissions-table th{color:var(--ink-soft);font-weight:600;}
 @media(max-width:860px){
 .hero-grid,.about-grid{grid-template-columns:1fr;}
 .hero-art{order:-1;}
 .grid{grid-template-columns:repeat(2,1fr);}
 .nav-toggle{display:block;}
-.nav-links{display:none;position:absolute;top:56px;left:0;right:0;flex-direction:column;align-items:flex-start;gap:14px;background:rgba(255,255,255,0.85);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,0.6);padding:18px 20px;box-shadow:var(--shadow);}
+.nav-links{display:none;position:absolute;top:56px;left:0;right:0;flex-direction:column;align-items:flex-start;gap:6px;background:rgba(255,255,255,0.9);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,0.6);padding:14px 20px 18px;box-shadow:var(--shadow);}
 .nav-links.open{display:flex;}
+.nav-links > a{padding:8px 0;}
+.nav-dropdown{width:100%;}
+.nav-dropdown-trigger{padding:8px 0;width:100%;justify-content:space-between;}
+.nav-dropdown-menu{position:static;display:none;box-shadow:none;border:none;background:none;-webkit-backdrop-filter:none;backdrop-filter:none;padding:0 0 4px 10px;min-width:0;}
+.nav-dropdown.open .nav-dropdown-menu{display:flex;}
 .admin-grid{grid-template-columns:1fr;}
 .drive-embed-wrap iframe{height:420px;}
+.calc-row{grid-template-columns:1fr 1fr;}
 }
 @media(max-width:540px){
 .grid{grid-template-columns:1fr;}
@@ -162,6 +185,7 @@ footer{border-top:1px solid rgba(255,255,255,0.7);padding:32px 0;color:var(--ink
 .section{padding:40px 0;}
 .drive-embed-wrap iframe{height:360px;}
 .bg-blob{opacity:0.22;}
+.calc-row{grid-template-columns:1fr;}
 }
 </style>
 </head>
@@ -179,6 +203,10 @@ var GITHUB_URL = "https://github.com/destarianimunaf";
 var ADMIN_PASSCODE = "changeme123";
 var DRIVE_FOLDER_ID = "1ZcH24TTfnV39kNLNp00V0ATDERa1iV4M";
 var SHEET_CSV_URL = "";
+var CONTACT_FORM_ACTION_URL = "";
+var CONTACT_FORM_EMAIL_ENTRY = "";
+var CONTACT_FORM_MESSAGE_ENTRY = "";
+var CONTACT_SHEET_CSV_URL = "";
 
 var SKILLS = [
   {sym:"REACT",label:"Frontend",trend:"up",change:"+2.4%"},
@@ -248,33 +276,63 @@ function formatRupiah(n){
   return "Rp" + Math.round(n).toLocaleString("id-ID");
 }
 
+function requiredMonthlyForTarget(target, monthlyRate, months){
+  if(months <= 0) return target;
+  if(monthlyRate > 0) return target * monthlyRate / (Math.pow(1 + monthlyRate, months) - 1);
+  return target / months;
+}
+
+function buildSeries(startBalance, monthly, monthlyRate, years){
+  var balance = startBalance;
+  var series = [balance];
+  var n = Math.max(1, years);
+  for(var y = 1; y <= n; y++){
+    for(var m = 0; m < 12; m++){ balance = balance * (1 + monthlyRate) + monthly; }
+    series.push(balance);
+  }
+  return series;
+}
+
 function computeChildResult(child){
   var inflation = 0.08;
   var years = Number(child.years) || 0;
   var cost = Number(child.cost) || 0;
   var rate = Number(child.rate) || 0;
   var futureCost = cost * Math.pow(1 + inflation, years);
-  var months = years * 12;
   var monthlyRate = rate / 100 / 12;
-  var requiredMonthly;
-  if(months <= 0) requiredMonthly = futureCost;
-  else if(monthlyRate > 0) requiredMonthly = futureCost * monthlyRate / (Math.pow(1 + monthlyRate, months) - 1);
-  else requiredMonthly = futureCost / months;
-  return { futureCost: futureCost, requiredMonthly: requiredMonthly };
+  var months = years * 12;
+  return { futureCost: futureCost, requiredMonthly: requiredMonthlyForTarget(futureCost, monthlyRate, months) };
 }
 
-function buildGrowthSeries(child){
-  var years = Math.max(1, Number(child.years) || 1);
-  var rate = Number(child.rate) || 0;
+function computeEmergencyResult(e){
+  var monthlyExpenses = Number(e.monthlyExpenses) || 0;
+  var months = Number(e.months) || 0;
+  var currentSavings = Number(e.currentSavings) || 0;
+  var monthlySaving = Number(e.monthlySaving) || 0;
+  var target = monthlyExpenses * months;
+  var gap = Math.max(0, target - currentSavings);
+  var monthsToGoal = monthlySaving > 0 ? gap / monthlySaving : null;
+  var pct = target > 0 ? Math.min(100, (currentSavings / target) * 100) : 0;
+  return { target: target, gap: gap, monthsToGoal: monthsToGoal, pct: pct };
+}
+
+function computeRetirementResult(r){
+  var inflation = 0.05;
+  var currentAge = Number(r.currentAge) || 0;
+  var retireAge = Number(r.retireAge) || 0;
+  var monthlyExpense = Number(r.monthlyExpense) || 0;
+  var lifeExpectancy = Number(r.lifeExpectancy) || 0;
+  var currentSavings = Number(r.currentSavings) || 0;
+  var rate = Number(r.rate) || 0;
+  var yearsToRetire = Math.max(0, retireAge - currentAge);
+  var monthsToRetire = yearsToRetire * 12;
   var monthlyRate = rate / 100 / 12;
-  var monthly = computeChildResult(child).requiredMonthly;
-  var balance = 0;
-  var series = [0];
-  for(var y = 1; y <= years; y++){
-    for(var m = 0; m < 12; m++){ balance = balance * (1 + monthlyRate) + monthly; }
-    series.push(balance);
-  }
-  return series;
+  var inflatedMonthlyExpense = monthlyExpense * Math.pow(1 + inflation, yearsToRetire);
+  var totalPotNeeded = inflatedMonthlyExpense * 12 * lifeExpectancy;
+  var fvCurrentSavings = currentSavings * Math.pow(1 + monthlyRate, monthsToRetire);
+  var remaining = Math.max(0, totalPotNeeded - fvCurrentSavings);
+  var requiredMonthly = requiredMonthlyForTarget(remaining, monthlyRate, monthsToRetire);
+  return { yearsToRetire: yearsToRetire, inflatedMonthlyExpense: inflatedMonthlyExpense, totalPotNeeded: totalPotNeeded, requiredMonthly: requiredMonthly };
 }
 
 function GrowthChart(props){
@@ -298,6 +356,11 @@ function GrowthChart(props){
     h("polygon",{points:areaPoints,fill:"url(#" + uid + ")"}),
     h("polyline",{points:coords,fill:"none",stroke:"#7C3AED",strokeWidth:3,strokeLinecap:"round",strokeLinejoin:"round"})
   );
+}
+
+function ProgressBar(props){
+  var pct = Math.max(0, Math.min(100, props.pct || 0));
+  return h("div",{className:"progress-track"}, h("div",{className:"progress-fill",style:{width:pct + "%"}}));
 }
 
 function HeroArt(){
@@ -370,14 +433,14 @@ function ArtCode(props){
 function ArtPalette(props){
   var uid = "p" + props.uid;
   return h("svg",{viewBox:"0 0 400 300",preserveAspectRatio:"xMidYMid slice",xmlns:"http://www.w3.org/2000/svg"},
-    h("defs",null, h("linearGradient",{id:"grad"+uid,x1:"0",y1:"0",x2:"1",y2:"1"}, h("stop",{offset:"0%",stopColor:"#B79CF2"}), h("stop",{offset:"100%",stopColor:"#B79CF2"}))),
+    h("defs",null, h("linearGradient",{id:"grad"+uid,x1:"0",y1:"0",x2:"1",y2:"1"}, h("stop",{offset:"0%",stopColor:"#B79CF2"}), h("stop",{offset:"100%",stopColor:"#D9C7FA"}))),
     h("rect",{width:400,height:300,fill:"url(#grad"+uid+")"}),
     h("ellipse",{cx:190,cy:160,rx:115,ry:82,fill:"#FFFFFF",opacity:0.92}),
     h("ellipse",{cx:250,cy:160,rx:26,ry:20,fill:"url(#grad"+uid+")"}),
     h("circle",{cx:140,cy:120,r:14,fill:"#FFD966"}),
     h("circle",{cx:182,cy:104,r:14,fill:"#FFE38A"}),
     h("circle",{cx:224,cy:112,r:14,fill:"#B79CF2"}),
-    h("circle",{cx:140,cy:192,r:14,fill:"#B79CF2"}),
+    h("circle",{cx:140,cy:192,r:14,fill:"#9B6FF0"}),
     h("circle",{cx:178,cy:208,r:14,fill:"#D9C7FA"}),
     h("path",{d:"M300 90 L344 46",stroke:"#7C3AED",strokeWidth:11,strokeLinecap:"round"}),
     h("path",{d:"M340 42 L358 24 L368 34 L350 52 Z",fill:"#7C3AED"})
@@ -462,17 +525,38 @@ function LoginForm(props){
   );
 }
 
+function NavDropdown(props){
+  var label = props.label, items = props.items, onNavigate = props.onNavigate;
+  var st = React.useState(false), open = st[0], setOpen = st[1];
+  return h("div",{className:"nav-dropdown" + (open ? " open" : "")},
+    h("button",{type:"button",className:"nav-dropdown-trigger",onClick:function(){setOpen(!open);}}, label, h("span",{className:"caret"},"▾")),
+    h("div",{className:"nav-dropdown-menu"},
+      items.map(function(it){
+        return h("a",{key:it.href,href:it.href,onClick:function(){setOpen(false); onNavigate();}}, it.label);
+      })
+    )
+  );
+}
+
 function Nav(){
-  var state = React.useState(false), open = state[0], setOpen = state[1];
+  var st = React.useState(false), open = st[0], setOpen = st[1];
+  function close(){ setOpen(false); }
   return h("nav",{className:"nav"},
     h("div",{className:"nav-inner"},
       h("div",{className:"brand"}, h("span",{className:"brand-mark"},"DR"), "Desta Riani"),
       h("button",{className:"nav-toggle","aria-label":"Toggle menu",onClick:function(){setOpen(!open);}}, open ? "✕" : "☰"),
       h("div",{className:"nav-links" + (open?" open":"")},
-        h("a",{href:"#work",onClick:function(){setOpen(false);}},"Work"),
-        h("a",{href:"#about",onClick:function(){setOpen(false);}},"About"),
-        h("a",{href:"#calculator",onClick:function(){setOpen(false);}},"Kalkulator"),
-        h("a",{href:"#admin",onClick:function(){setOpen(false);}},"Admin"),
+        h("a",{href:"#work",onClick:close},"Illustration"),
+        h(NavDropdown,{label:"Investment",onNavigate:close,items:[
+          {label:"Education Fund Calculator",href:"#calc-education"},
+          {label:"Retirement Fund Calculator",href:"#calc-retirement"}
+        ]}),
+        h(NavDropdown,{label:"Finance",onNavigate:close,items:[
+          {label:"Emergency Fund Calculator",href:"#calc-emergency"}
+        ]}),
+        h("a",{href:"#about",onClick:close},"About"),
+        h("a",{href:"#contact",onClick:close},"Contact"),
+        h("a",{href:"#admin",onClick:close},"Admin"),
         h("a",{href:INSTAGRAM_URL,target:"_blank",rel:"noopener noreferrer"},"Instagram")
       )
     )
@@ -486,18 +570,14 @@ function App(){
   var draftState = React.useState({id:null,title:"",tagsInput:"",image:""}), draft = draftState[0], setDraft = draftState[1];
   var lightboxState = React.useState(null), lightboxItem = lightboxState[0], setLightboxItem = lightboxState[1];
   var childrenState = React.useState([{id:1,name:"Child 1",cost:20000000,years:10,rate:8}]), children = childrenState[0], setChildren = childrenState[1];
+  var emergencyState = React.useState({monthlyExpenses:8000000,months:6,currentSavings:10000000,monthlySaving:2000000}), emergency = emergencyState[0], setEmergency = emergencyState[1];
+  var retirementState = React.useState({currentAge:30,retireAge:60,monthlyExpense:10000000,lifeExpectancy:20,currentSavings:50000000,rate:8}), retirement = retirementState[0], setRetirement = retirementState[1];
+  var contactState = React.useState({email:"",message:""}), contact = contactState[0], setContact = contactState[1];
+  var contactStatusState = React.useState(""), contactStatus = contactStatusState[0], setContactStatus = contactStatusState[1];
+  var submissionsState = React.useState(null), submissions = submissionsState[0], setSubmissions = submissionsState[1];
+  var submissionsLoadingState = React.useState(false), submissionsLoading = submissionsLoadingState[0], setSubmissionsLoading = submissionsLoadingState[1];
 
   React.useEffect(function(){ loadFromSheet(setItems); }, []);
-
-  function addChild(){
-    setChildren(children.concat([{id:Date.now(),name:"Child "+(children.length+1),cost:20000000,years:10,rate:8}]));
-  }
-  function updateChild(id,field,value){
-    setChildren(children.map(function(c){ return c.id === id ? Object.assign({},c,{[field]:value}) : c; }));
-  }
-  function removeChild(id){
-    setChildren(children.filter(function(c){ return c.id !== id; }));
-  }
 
   function nextId(){ return items.length ? Math.max.apply(null, items.map(function(i){return i.id;})) + 1 : 1; }
   function handleLogin(pass){ if(pass === ADMIN_PASSCODE){ setIsAdmin(true); setLoginError(false);} else setLoginError(true); }
@@ -522,6 +602,44 @@ function App(){
     if(draft.id === id) resetDraft();
   }
 
+  function addChild(){
+    setChildren(children.concat([{id:Date.now(),name:"Child "+(children.length+1),cost:20000000,years:10,rate:8}]));
+  }
+  function updateChild(id,field,value){
+    setChildren(children.map(function(c){ return c.id === id ? Object.assign({},c,{[field]:value}) : c; }));
+  }
+  function removeChild(id){
+    setChildren(children.filter(function(c){ return c.id !== id; }));
+  }
+  function updateEmergency(field,value){ setEmergency(Object.assign({},emergency,{[field]:value})); }
+  function updateRetirement(field,value){ setRetirement(Object.assign({},retirement,{[field]:value})); }
+
+  function handleContactSubmit(e){
+    e.preventDefault();
+    if(!CONTACT_FORM_ACTION_URL){ setContactStatus("sent"); setContact({email:"",message:""}); return; }
+    var body = new URLSearchParams();
+    if(CONTACT_FORM_EMAIL_ENTRY) body.append(CONTACT_FORM_EMAIL_ENTRY, contact.email);
+    if(CONTACT_FORM_MESSAGE_ENTRY) body.append(CONTACT_FORM_MESSAGE_ENTRY, contact.message);
+    setContactStatus("sending");
+    fetch(CONTACT_FORM_ACTION_URL, {method:"POST",mode:"no-cors",body:body})
+      .then(function(){ setContactStatus("sent"); setContact({email:"",message:""}); })
+      .catch(function(){ setContactStatus("error"); });
+  }
+
+  function loadSubmissions(){
+    if(!CONTACT_SHEET_CSV_URL){ setSubmissions([]); return; }
+    setSubmissionsLoading(true);
+    fetch(CONTACT_SHEET_CSV_URL).then(function(r){ return r.text(); }).then(function(text){
+      var rows = parseCSV(text);
+      setSubmissions(rows);
+      setSubmissionsLoading(false);
+    }).catch(function(){ setSubmissions([]); setSubmissionsLoading(false); });
+  }
+
+  var retirementResult = computeRetirementResult(retirement);
+  var retirementSeries = buildSeries(Number(retirement.currentSavings)||0, retirementResult.requiredMonthly, (Number(retirement.rate)||0)/100/12, retirementResult.yearsToRetire);
+  var emergencyResult = computeEmergencyResult(emergency);
+
   return h(React.Fragment,null,
     h(Nav,null),
     h("header",{className:"hero"},
@@ -529,7 +647,7 @@ function App(){
         h("div",null,
           h("div",{className:"eyebrow"}, h("span",{className:"dot"}), " Computer Science & Management · Illustrator · Market learner"),
           h("h1",null,"Illustration built with the same discipline as ", h("span",null,"clean code"),"."),
-          h("p",{className:"lead"},"I split my time between technology, markets, and drawing — with a habit of reading charts the way most people scroll social media. This is where the illustration work lives."),
+          h("p",{className:"lead"},"I split my time between technology, markets, and drawing — with a habit of reading charts the way most people scroll social media. This is where the illustration work, and a few financial planning tools, live."),
           h("div",{className:"hero-cta"},
             h("a",{className:"btn btn-primary",href:"#work"},"View portfolio"),
             h("a",{className:"btn btn-ghost",href:INSTAGRAM_URL,target:"_blank",rel:"noopener noreferrer"},"Follow on Instagram")
@@ -539,6 +657,7 @@ function App(){
       )
     ),
     h(Ticker,null),
+
     h("section",{className:"section",id:"work"},
       h("div",{className:"wrap"},
         h("div",{className:"section-head"},
@@ -557,6 +676,7 @@ function App(){
         )
       )
     ),
+
     h("section",{className:"section",id:"about"},
       h("div",{className:"wrap about-grid"},
         h("div",{className:"about-card glass"},
@@ -565,7 +685,7 @@ function App(){
           h("div",{className:"stat-row"},
             h("div",{className:"stat"}, h("b",null,items.length), h("span",null,"Pieces published")),
             h("div",{className:"stat"}, h("b",null,SKILLS.length), h("span",null,"Active skills")),
-            h("div",{className:"stat"}, h("b",null,"2"), h("span",null,"Worlds — markets & ink"))
+            h("div",{className:"stat"}, h("b",null,"3"), h("span",null,"Worlds — ink, markets & spreadsheets"))
           )
         ),
         h("div",{className:"bio-card glass"},
@@ -574,102 +694,254 @@ function App(){
         )
       ),
       h("div",{className:"wrap"},
-        h("div",{className:"about-card glass",style:{marginTop:"22px"}},
-          h("h3",{style:{fontSize:"1rem",marginBottom:"8px"}},"A note on how this is built"),
-          h("p",{style:{color:"var(--ink-soft)",lineHeight:1.6}},"This portfolio is deliberately static — no server, no hosting bill, no backend to patch or keep alive. It's plain HTML, CSS, and JavaScript served directly from GitHub Pages. For a page that only needs to display and occasionally update content, a stateless build is simpler to reason about and cheaper to run — the same logic that favors a well-chosen index fund over a portfolio that demands constant rebalancing.")
+        h("div",{className:"why-card glass"},
+          h("h3",{style:{fontSize:"1rem",marginBottom:"4px"}},"Why this exists"),
+          h("p",{style:{color:"var(--ink-soft)",lineHeight:1.7}},"Illustration, investing, and personal finance don't look related at first, but they run on the same instinct for me — patient, incremental progress that only shows its shape after a long stretch of small, consistent decisions. A single illustration is a hundred tiny strokes. A retirement fund is a hundred tiny monthly transfers. An emergency fund is the unglamorous discipline that makes the other two possible without panic when something goes wrong."),
+          h("p",{style:{color:"var(--ink-soft)",lineHeight:1.7}},"Keeping all three on one page isn't really about tidiness. It's closer to how I actually think about building anything worth having — and it's also why this site is built the way it is: static, no server, no hosting bill, plain HTML and JavaScript served straight from GitHub Pages. For something that mostly needs to display and occasionally update, a stateless page is simpler to reason about and cheaper to run — the same logic that favors a well-chosen index fund over a portfolio that demands constant rebalancing.")
         )
       )
     ),
-    h("section",{className:"section",id:"calculator"},
+
+    h("section",{className:"section",id:"calc-education"},
       h("div",{className:"wrap"},
         h("div",{className:"section-head"},
-          h("div",{className:"eyebrow"}, h("span",{className:"dot"}), " Perencanaan Keuangan Keluarga"),
-          h("h2",null,"Kalkulator Dana Pendidikan"),
-          h("p",{className:"section-sub"},"Hasil terupdate otomatis setiap kamu mengubah angka — geser slider, ketik nominal, atau coba skenario imbal hasil di bawah.")
+          h("div",{className:"eyebrow"}, h("span",{className:"dot"}), " Investment"),
+          h("h2",null,"Education Fund Calculator"),
+          h("p",{className:"section-sub"},"Results update as you move each slider. Estimates assume 8% annual education cost inflation.")
         ),
         h("div",{className:"calc-card glass"},
-          h("h3",{className:"calc-subhead"},"Data anak"),
+          h("h3",{className:"calc-subhead"},"Children"),
           children.map(function(child){
             return h("div",{className:"calc-row",key:child.id},
               h("div",{className:"field"},
-                h("label",null,"Nama"),
+                h("label",null,"Name"),
                 h("input",{value:child.name,onChange:function(e){updateChild(child.id,"name",e.target.value);}})
               ),
               h("div",{className:"field"},
-                h("label",null,"Biaya tahunan saat ini"),
+                h("label",null,"Current annual cost"),
                 h("input",{type:"range",className:"slider",min:5000000,max:200000000,step:1000000,value:child.cost,onChange:function(e){updateChild(child.id,"cost",e.target.value);}}),
-                h("small",null, formatRupiah(child.cost) + " / tahun")
+                h("small",null, formatRupiah(child.cost) + " / year")
               ),
               h("div",{className:"field"},
-                h("label",null,"Jangka waktu"),
+                h("label",null,"Years to goal"),
                 h("input",{type:"range",className:"slider",min:1,max:20,step:1,value:child.years,onChange:function(e){updateChild(child.id,"years",e.target.value);}}),
-                h("small",null, child.years + " tahun")
+                h("small",null, child.years + " years")
               ),
               h("div",{className:"field"},
-                h("label",null,"Estimasi imbal hasil"),
+                h("label",null,"Expected return"),
                 h("input",{type:"range",className:"slider",min:0,max:20,step:0.5,value:child.rate,onChange:function(e){updateChild(child.id,"rate",e.target.value);}}),
-                h("small",null, child.rate + "% / tahun")
+                h("small",null, child.rate + "% / year")
               ),
-              children.length > 1 && h("button",{type:"button",className:"btn btn-danger btn-small",onClick:function(){removeChild(child.id);}},"Hapus")
+              children.length > 1 && h("button",{type:"button",className:"btn btn-danger btn-small",onClick:function(){removeChild(child.id);}},"Remove")
             );
           }),
           h("div",{className:"form-row"},
-            h("button",{type:"button",className:"btn btn-ghost btn-small",onClick:addChild},"+ Tambah")
+            h("button",{type:"button",className:"btn btn-ghost btn-small",onClick:addChild},"+ Add another child")
           ),
 
-          h("h3",{className:"calc-subhead calc-subhead-spaced"},"Proyeksi"),
+          h("h3",{className:"calc-subhead calc-subhead-spaced"},"Projection"),
           children.map(function(child){
             var result = computeChildResult(child);
-            var series = buildGrowthSeries(child);
+            var series = buildSeries(0, result.requiredMonthly, (Number(child.rate)||0)/100/12, Number(child.years)||1);
             return h("div",{className:"proj-card",key:"p"+child.id},
               h("div",{className:"proj-head"},
                 h("span",{className:"proj-name"}, child.name),
                 h("span",{className:"proj-numbers"},
                   h("span",null, "Target: ", h("b",null,formatRupiah(result.futureCost))),
-                  h("span",null, "Investasi/bulan: ", h("b",null,formatRupiah(result.requiredMonthly)))
+                  h("span",null, "Monthly investment: ", h("b",null,formatRupiah(result.requiredMonthly)))
                 )
               ),
-              h("div",{className:"chart-label"},"Kurva pertumbuhan dana"),
-              h(GrowthChart,{points:series,uid:child.id})
+              h("div",{className:"chart-label"},"Fund growth curve"),
+              h(GrowthChart,{points:series,uid:"edu"+child.id})
             );
           }),
           h("div",{className:"calc-total"},
-            "Total investasi bulanan untuk semua anak: ",
+            "Total monthly investment across all children: ",
             h("b",null, formatRupiah(children.reduce(function(sum,c){ return sum + computeChildResult(c).requiredMonthly; },0)))
           ),
-          h("p",{className:"calc-disclaimer"},"Perhitungan bersifat estimasi berdasarkan asumsi inflasi dan imbal hasil yang kamu masukkan. Hasil investasi aktual dapat berbeda.")
+          h("p",{className:"calc-disclaimer"},"Estimates only, based on the inflation and return assumptions you set. Actual investment results may differ.")
         )
       )
     ),
+
+    h("section",{className:"section",id:"calc-retirement"},
+      h("div",{className:"wrap"},
+        h("div",{className:"section-head"},
+          h("div",{className:"eyebrow"}, h("span",{className:"dot"}), " Investment"),
+          h("h2",null,"Retirement Fund Calculator"),
+          h("p",{className:"section-sub"},"Estimates the pot you'll need at retirement, and the monthly investment required to get there, assuming 5% annual living-cost inflation.")
+        ),
+        h("div",{className:"calc-card glass"},
+          h("div",{className:"calc-row"},
+            h("div",{className:"field"},
+              h("label",null,"Current age"),
+              h("input",{type:"range",className:"slider",min:18,max:60,step:1,value:retirement.currentAge,onChange:function(e){updateRetirement("currentAge",e.target.value);}}),
+              h("small",null, retirement.currentAge + " years old")
+            ),
+            h("div",{className:"field"},
+              h("label",null,"Retirement age"),
+              h("input",{type:"range",className:"slider",min:45,max:75,step:1,value:retirement.retireAge,onChange:function(e){updateRetirement("retireAge",e.target.value);}}),
+              h("small",null, retirement.retireAge + " years old")
+            ),
+            h("div",{className:"field"},
+              h("label",null,"Current monthly expenses"),
+              h("input",{type:"range",className:"slider",min:2000000,max:100000000,step:1000000,value:retirement.monthlyExpense,onChange:function(e){updateRetirement("monthlyExpense",e.target.value);}}),
+              h("small",null, formatRupiah(retirement.monthlyExpense) + " / month")
+            ),
+            h("div",{className:"field"},
+              h("label",null,"Years of retirement to cover"),
+              h("input",{type:"range",className:"slider",min:5,max:35,step:1,value:retirement.lifeExpectancy,onChange:function(e){updateRetirement("lifeExpectancy",e.target.value);}}),
+              h("small",null, retirement.lifeExpectancy + " years")
+            )
+          ),
+          h("div",{className:"calc-row"},
+            h("div",{className:"field"},
+              h("label",null,"Current retirement savings"),
+              h("input",{type:"range",className:"slider",min:0,max:1000000000,step:5000000,value:retirement.currentSavings,onChange:function(e){updateRetirement("currentSavings",e.target.value);}}),
+              h("small",null, formatRupiah(retirement.currentSavings))
+            ),
+            h("div",{className:"field"},
+              h("label",null,"Expected annual return"),
+              h("input",{type:"range",className:"slider",min:0,max:20,step:0.5,value:retirement.rate,onChange:function(e){updateRetirement("rate",e.target.value);}}),
+              h("small",null, retirement.rate + "% / year")
+            )
+          ),
+          h("h3",{className:"calc-subhead calc-subhead-spaced"},"Projection"),
+          h("div",{className:"proj-card"},
+            h("div",{className:"proj-head"},
+              h("span",{className:"proj-name"}, retirementResult.yearsToRetire + " years to retirement"),
+              h("span",{className:"proj-numbers"},
+                h("span",null, "Target pot: ", h("b",null,formatRupiah(retirementResult.totalPotNeeded))),
+                h("span",null, "Monthly investment needed: ", h("b",null,formatRupiah(retirementResult.requiredMonthly)))
+              )
+            ),
+            h("div",{className:"chart-label"},"Retirement fund growth curve"),
+            h(GrowthChart,{points:retirementSeries,uid:"ret1"})
+          ),
+          h("p",{className:"calc-disclaimer"},"Estimates only, based on the inflation and return assumptions you set. Actual investment results may differ.")
+        )
+      )
+    ),
+
+    h("section",{className:"section",id:"calc-emergency"},
+      h("div",{className:"wrap"},
+        h("div",{className:"section-head"},
+          h("div",{className:"eyebrow"}, h("span",{className:"dot"}), " Finance"),
+          h("h2",null,"Emergency Fund Calculator"),
+          h("p",{className:"section-sub"},"How much cash buffer you need, and how long it'll take to reach it at your current saving pace.")
+        ),
+        h("div",{className:"calc-card glass"},
+          h("div",{className:"calc-row"},
+            h("div",{className:"field"},
+              h("label",null,"Essential monthly expenses"),
+              h("input",{type:"range",className:"slider",min:1000000,max:50000000,step:500000,value:emergency.monthlyExpenses,onChange:function(e){updateEmergency("monthlyExpenses",e.target.value);}}),
+              h("small",null, formatRupiah(emergency.monthlyExpenses) + " / month")
+            ),
+            h("div",{className:"field"},
+              h("label",null,"Coverage target"),
+              h("input",{type:"range",className:"slider",min:3,max:12,step:1,value:emergency.months,onChange:function(e){updateEmergency("months",e.target.value);}}),
+              h("small",null, emergency.months + " months of expenses")
+            ),
+            h("div",{className:"field"},
+              h("label",null,"Current savings"),
+              h("input",{type:"range",className:"slider",min:0,max:500000000,step:1000000,value:emergency.currentSavings,onChange:function(e){updateEmergency("currentSavings",e.target.value);}}),
+              h("small",null, formatRupiah(emergency.currentSavings))
+            ),
+            h("div",{className:"field"},
+              h("label",null,"Monthly saving capacity"),
+              h("input",{type:"range",className:"slider",min:500000,max:50000000,step:500000,value:emergency.monthlySaving,onChange:function(e){updateEmergency("monthlySaving",e.target.value);}}),
+              h("small",null, formatRupiah(emergency.monthlySaving) + " / month")
+            )
+          ),
+          h("h3",{className:"calc-subhead calc-subhead-spaced"},"Projection"),
+          h("div",{className:"proj-card"},
+            h("div",{className:"proj-head"},
+              h("span",{className:"proj-name"},"Target buffer"),
+              h("span",{className:"proj-numbers"},
+                h("span",null, "Target: ", h("b",null,formatRupiah(emergencyResult.target))),
+                h("span",null, "Still needed: ", h("b",null,formatRupiah(emergencyResult.gap))),
+                h("span",null, "Time to reach it: ", h("b",null, emergencyResult.monthsToGoal === null ? "—" : Math.ceil(emergencyResult.monthsToGoal) + " months"))
+              )
+            ),
+            h(ProgressBar,{pct:emergencyResult.pct}),
+            h("div",{className:"progress-caption"},
+              h("span",null, formatRupiah(Number(emergency.currentSavings)||0) + " saved"),
+              h("span",null, Math.round(emergencyResult.pct) + "%")
+            )
+          ),
+          h("p",{className:"calc-disclaimer"},"An emergency fund is meant to stay liquid and low-risk, so this estimate does not assume investment growth.")
+        )
+      )
+    ),
+
+    h("section",{className:"section",id:"contact"},
+      h("div",{className:"wrap"},
+        h("div",{className:"section-head"},
+          h("h2",null,"Get in touch"),
+          h("p",{className:"section-sub"},"Leave your email and I'll follow up directly.")
+        ),
+        h("form",{className:"contact-card glass",onSubmit:handleContactSubmit},
+          h("div",{className:"field"},
+            h("label",{htmlFor:"contact-email"},"Email"),
+            h("input",{id:"contact-email",type:"email",required:true,value:contact.email,onChange:function(e){setContact(Object.assign({},contact,{email:e.target.value}));},placeholder:"you@example.com"})
+          ),
+          h("div",{className:"field"},
+            h("label",{htmlFor:"contact-message"},"Message (optional)"),
+            h("textarea",{id:"contact-message",value:contact.message,onChange:function(e){setContact(Object.assign({},contact,{message:e.target.value}));},placeholder:"What would you like to talk about?"})
+          ),
+          h("button",{type:"submit",className:"btn btn-primary",disabled:contactStatus==="sending"}, contactStatus==="sending" ? "Sending..." : "Send"),
+          contactStatus === "sent" && h("div",{className:"contact-status sent"},"Thanks — I'll be in touch by email soon."),
+          contactStatus === "error" && h("div",{className:"contact-status error"},"Something went wrong sending that. Please try again in a moment.")
+        )
+      )
+    ),
+
     h("section",{className:"section",id:"admin"},
       h("div",{className:"wrap"},
         h("div",{className:"section-head"},
           h("h2",null,"Admin"),
-          h("p",{className:"section-sub"},"Optional — log in if you ever want to manually add or adjust a piece.")
+          h("p",{className:"section-sub"},"Optional — log in to manually manage portfolio pieces or review contact submissions.")
         ),
         !isAdmin
           ? h(LoginForm,{onLogin:handleLogin,error:loginError})
-          : h("div",{className:"admin-grid"},
-              h(AdminForm,{draft:draft,setDraft:setDraft,onSubmit:handleSubmit,onCancel:resetDraft}),
-              h("div",{className:"admin-panel glass"},
-                h("span",{className:"badge-admin"},"Manage pieces"),
-                items.map(function(item){
-                  return h("div",{className:"item-manage-row",key:item.id},
-                    h("span",null,item.title),
-                    h("div",{style:{display:"flex",gap:"8px"}},
-                      h("button",{className:"btn btn-ghost btn-small",onClick:function(){handleEdit(item);}},"Edit"),
-                      h("button",{className:"btn btn-danger btn-small",onClick:function(){handleDelete(item.id);}},"Delete")
-                    )
-                  );
-                }),
-                h("div",{style:{marginTop:"16px"}}, h("button",{className:"btn btn-ghost btn-small",onClick:function(){setIsAdmin(false);}},"Log out"))
+          : h(React.Fragment,null,
+              h("div",{className:"admin-grid"},
+                h(AdminForm,{draft:draft,setDraft:setDraft,onSubmit:handleSubmit,onCancel:resetDraft}),
+                h("div",{className:"admin-panel glass"},
+                  h("span",{className:"badge-admin"},"Manage pieces"),
+                  items.map(function(item){
+                    return h("div",{className:"item-manage-row",key:item.id},
+                      h("span",null,item.title),
+                      h("div",{style:{display:"flex",gap:"8px"}},
+                        h("button",{className:"btn btn-ghost btn-small",onClick:function(){handleEdit(item);}},"Edit"),
+                        h("button",{className:"btn btn-danger btn-small",onClick:function(){handleDelete(item.id);}},"Delete")
+                      )
+                    );
+                  }),
+                  h("div",{style:{marginTop:"16px"}}, h("button",{className:"btn btn-ghost btn-small",onClick:function(){setIsAdmin(false);}},"Log out"))
+                )
+              ),
+              h("div",{className:"admin-panel glass",style:{marginTop:"20px"}},
+                h("span",{className:"badge-admin"},"Contact submissions"),
+                h("div",{className:"form-row",style:{marginTop:0}},
+                  h("button",{type:"button",className:"btn btn-ghost btn-small",onClick:loadSubmissions}, submissionsLoading ? "Loading..." : "Load submissions")
+                ),
+                !CONTACT_SHEET_CSV_URL && h("p",{style:{color:"var(--ink-soft)",fontSize:"0.82rem",marginTop:"10px"}},"Not connected yet — set CONTACT_SHEET_CSV_URL to the published CSV link of your response sheet."),
+                submissions && submissions.length > 0 && h("table",{className:"submissions-table"},
+                  h("thead",null, h("tr",null, submissions[0].map(function(c,i){ return h("th",{key:i},c); }))),
+                  h("tbody",null, submissions.slice(1).map(function(row,ri){
+                    return h("tr",{key:ri}, row.map(function(cell,ci){ return h("td",{key:ci},cell); }));
+                  }))
+                ),
+                submissions && submissions.length === 0 && CONTACT_SHEET_CSV_URL && h("p",{style:{color:"var(--ink-soft)",fontSize:"0.82rem",marginTop:"10px"}},"No submissions yet.")
               )
             )
       )
     ),
+
     h("footer",null,
       h("div",{className:"wrap footer-inner"},
-        h("span",{className:"footer-credit"},"Made by Desta Riani"),
+        h("span",{className:"footer-credit"},"© " + new Date().getFullYear() + " Desta Riani. All rights reserved."),
         h("span",null,
           h("a",{href:INSTAGRAM_URL,target:"_blank",rel:"noopener noreferrer"},"Instagram"),
           " · ",
