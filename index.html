@@ -77,11 +77,22 @@ button{font-family:inherit;cursor:pointer;}
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
 .card{border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;transition:transform .2s;}
 .card:hover{transform:translateY(-3px);}
-.card-media{aspect-ratio:4/3;width:100%;object-fit:cover;display:block;background:#eee;}
 .card-media,.card-media-placeholder svg{transition:transform .5s ease;}
 .card:hover .card-media,.card:hover .card-media-placeholder svg{transform:scale(1.06);}
+.card-media-wrap{position:relative;aspect-ratio:4/3;width:100%;overflow:hidden;cursor:pointer;}
+.card-media{width:100%;height:100%;object-fit:cover;display:block;background:#eee;}
+.expand-hint{position:absolute;right:10px;bottom:10px;background:rgba(46,43,69,0.55);color:#fff;font-size:0.72rem;font-weight:600;padding:5px 10px;border-radius:999px;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);opacity:0;transition:opacity .2s;}
+.card-media-wrap:hover .expand-hint{opacity:1;}
+@media(max-width:860px){.expand-hint{opacity:1;}}
 .card-media-placeholder{aspect-ratio:4/3;width:100%;overflow:hidden;display:block;}
 .card-media-placeholder svg{width:100%;height:100%;display:block;}
+.lightbox-overlay{position:fixed;inset:0;background:rgba(46,43,69,0.6);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);z-index:100;display:flex;align-items:center;justify-content:center;padding:24px;animation:fadeIn .2s ease;}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+.lightbox-inner{position:relative;max-width:min(92vw,900px);}
+.lightbox-img{display:block;width:100%;max-height:82vh;object-fit:contain;border-radius:18px;box-shadow:0 20px 60px rgba(0,0,0,0.35);}
+.lightbox-caption{color:#fff;text-align:center;margin-top:14px;font-weight:600;font-size:0.95rem;}
+.lightbox-close{position:absolute;top:-46px;right:0;background:rgba(255,255,255,0.85);border:none;width:36px;height:36px;border-radius:50%;font-size:1rem;color:var(--ink);}
+@media(max-width:540px){.lightbox-close{top:-40px;}}
 .card-body{padding:15px 16px 16px;display:flex;flex-direction:column;gap:8px;flex:1;}
 .card-body h3{font-size:1rem;}
 .card-tags{display:flex;gap:6px;flex-wrap:wrap;}
@@ -256,19 +267,22 @@ function ArtPalette(props){
 var PLACEHOLDER_ARTS = [ArtMarket, ArtCode, ArtPalette];
 
 function CardMedia(props){
-  var item = props.item, index = props.index;
+  var item = props.item, index = props.index, onOpen = props.onOpen;
   var state = React.useState(false), broken = state[0], setBroken = state[1];
   if(!item.image || broken){
     var Art = PLACEHOLDER_ARTS[index % PLACEHOLDER_ARTS.length];
     return h("div",{className:"card-media-placeholder"}, h(Art,{uid:item.id}));
   }
-  return h("img",{className:"card-media",src:item.image,alt:item.title,loading:"lazy",onError:function(){setBroken(true);}});
+  return h("div",{className:"card-media-wrap",onClick:function(){onOpen(item);}},
+    h("img",{className:"card-media",src:item.image,alt:item.title,loading:"lazy",onError:function(){setBroken(true);}}),
+    h("span",{className:"expand-hint"},"⤢ View full size")
+  );
 }
 
 function PortfolioCard(props){
-  var item = props.item, index = props.index, isAdmin = props.isAdmin, onEdit = props.onEdit, onDelete = props.onDelete;
+  var item = props.item, index = props.index, isAdmin = props.isAdmin, onEdit = props.onEdit, onDelete = props.onDelete, onOpen = props.onOpen;
   return h("div",{className:"card glass"},
-    h(CardMedia,{item:item,index:index}),
+    h(CardMedia,{item:item,index:index,onOpen:onOpen}),
     h("div",{className:"card-body"},
       h("h3",null,item.title),
       h("div",{className:"card-tags"}, item.tags.map(function(t){ return h("span",{className:"tag",key:t}, t); })),
@@ -276,6 +290,18 @@ function PortfolioCard(props){
         h("button",{className:"btn btn-ghost btn-small",onClick:function(){onEdit(item);}},"Edit"),
         h("button",{className:"btn btn-danger btn-small",onClick:function(){onDelete(item.id);}},"Delete")
       )
+    )
+  );
+}
+
+function Lightbox(props){
+  var item = props.item, onClose = props.onClose;
+  if(!item) return null;
+  return h("div",{className:"lightbox-overlay",onClick:onClose},
+    h("div",{className:"lightbox-inner",onClick:function(e){e.stopPropagation();}},
+      h("img",{className:"lightbox-img",src:item.image,alt:item.title}),
+      h("div",{className:"lightbox-caption"}, item.title),
+      h("button",{className:"lightbox-close","aria-label":"Close",onClick:onClose},"✕")
     )
   );
 }
@@ -338,6 +364,7 @@ function App(){
   var adminState = React.useState(false), isAdmin = adminState[0], setIsAdmin = adminState[1];
   var errState = React.useState(false), loginError = errState[0], setLoginError = errState[1];
   var draftState = React.useState({id:null,title:"",tagsInput:"",image:""}), draft = draftState[0], setDraft = draftState[1];
+  var lightboxState = React.useState(null), lightboxItem = lightboxState[0], setLightboxItem = lightboxState[1];
 
   function nextId(){ return items.length ? Math.max.apply(null, items.map(function(i){return i.id;})) + 1 : 1; }
   function handleLogin(pass){ if(pass === ADMIN_PASSCODE){ setIsAdmin(true); setLoginError(false);} else setLoginError(true); }
@@ -388,7 +415,7 @@ function App(){
         h("div",{className:"grid"},
           items.length === 0 && h("div",{className:"empty-state"},"No pieces yet — log in below and add the first one."),
           items.map(function(item,i){
-            return h(PortfolioCard,{key:item.id,item:item,index:i,isAdmin:isAdmin,onEdit:handleEdit,onDelete:handleDelete});
+            return h(PortfolioCard,{key:item.id,item:item,index:i,isAdmin:isAdmin,onEdit:handleEdit,onDelete:handleDelete,onOpen:setLightboxItem});
           })
         ),
         h("p",{className:"drive-embed-label"},"Full folder, live from Google Drive:"),
@@ -449,7 +476,8 @@ function App(){
           h("a",{href:GITHUB_URL,target:"_blank",rel:"noopener noreferrer"},"GitHub")
         )
       )
-    )
+    ),
+    h(Lightbox,{item:lightboxItem,onClose:function(){setLightboxItem(null);}})
   );
 }
 
