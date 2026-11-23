@@ -19,7 +19,6 @@ const tiles = [...world.querySelectorAll(".logo-tile")];
 const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
 let time = 0;
 let playing = false;
-let visible = false;
 let manuallyPaused = false;
 let ready = false;
 let request = 0;
@@ -87,8 +86,16 @@ function tick(now) {
   } else request = requestAnimationFrame(tick);
 }
 
+function studioIsVisible() {
+  const bounds = studio.getBoundingClientRect();
+  const visibleWidth = Math.max(0, Math.min(bounds.right, innerWidth) - Math.max(bounds.left, 0));
+  const visibleHeight = Math.max(0, Math.min(bounds.bottom, innerHeight) - Math.max(bounds.top, 0));
+  return bounds.width > 0 && bounds.height > 0 &&
+    visibleWidth * visibleHeight >= .15 * bounds.width * bounds.height;
+}
+
 function syncPlayback() {
-  const shouldPlay = ready && !reduced && !manuallyPaused && visible && !document.hidden && time < DURATION;
+  const shouldPlay = ready && !reduced && !manuallyPaused && !document.hidden && time < DURATION && studioIsVisible();
   if (shouldPlay === playing) return;
   playing = shouldPlay;
   last = null;
@@ -124,7 +131,7 @@ function applyPreference() {
 play.addEventListener("click", () => {
   if (time >= DURATION) time = 0;
   manuallyPaused = playing;
-  if (!manuallyPaused && !visible) {
+  if (!manuallyPaused && !studioIsVisible()) {
     status.textContent = "Moving to the fly-over.";
     studio.scrollIntoView({ block: "center", behavior: "smooth" });
   } else if (manuallyPaused) status.textContent = "Fly-over paused.";
@@ -138,10 +145,7 @@ document.querySelectorAll('a[href="#karya"]').forEach(link => link.addEventListe
 document.addEventListener("visibilitychange", syncPlayback);
 reducedMotion.addEventListener("change", applyPreference);
 new ResizeObserver(resize).observe(studio);
-new IntersectionObserver(entries => {
-  visible = entries[0].isIntersecting && entries[0].intersectionRatio >= .15;
-  syncPlayback();
-}, { threshold: .15 }).observe(studio);
+new IntersectionObserver(syncPlayback, { threshold: .15 }).observe(studio);
 
 // Never autoplay a half-loaded scene. Static previews stay visible if setup fails.
 Promise.all([
