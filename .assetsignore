@@ -1,0 +1,6 @@
+# Only the public portfolio belongs in the Workers asset manifest.
+**
+!index.html
+!main.js
+!assets/
+!assets/**

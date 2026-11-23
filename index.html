@@ -3,136 +3,124 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Desta Riani Munaf's personal site. Web projects, IT background, and an interest in stock investing.">
-  <meta name="theme-color" content="#f5f3ec">
-  <title>Desta Riani Munaf | Personal Portfolio</title>
+  <meta name="description" content="Destalabs: web projects by Desta Riani Munaf. Explore SIMPATIK, IQROQU, and Jawara through real views of each app.">
+  <meta name="theme-color" content="#e9e9e9">
+  <title>Destalabs | Web projects by Desta</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="preload" href="assets/dm-serif-display-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="preload" href="assets/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/site.css">
   <script src="main.js" defer></script>
+  <script src="assets/interactions.js" defer></script>
+  <script type="module" src="assets/flyover.js"></script>
 </head>
 <body>
   <a class="skip-link" href="#main-content">Skip to content</a>
   <header class="site-header" id="home">
     <div class="wrap header-inner">
-      <a class="wordmark" href="#home" aria-label="Desta, home">desta<span aria-hidden="true">.</span></a>
+      <a class="wordmark" href="#home" aria-label="Destalabs, home"><span class="brand-symbol" aria-hidden="true">d<span>.</span></span>Destalabs</a>
       <nav class="navigation" aria-label="Main navigation" id="navigation">
-        <a href="#karya">Work</a>
-        <a href="#about">About</a>
-        <a href="#skills">Toolkit</a>
-        <a href="#contact">Contact <span aria-hidden="true">↗</span></a>
+        <a href="#karya">Projects</a><a href="#about">About</a><a href="#skills">Skills</a><a href="#contact">Contact <span aria-hidden="true">↗</span></a>
       </nav>
-      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="navigation" hidden>
-        <span class="menu-label">Menu</span><span class="menu-icon" aria-hidden="true"></span>
-      </button>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="navigation" hidden><span class="menu-label">Menu</span><span class="menu-icon" aria-hidden="true"></span></button>
     </div>
   </header>
-
   <main id="main-content">
     <section class="hero wrap" aria-labelledby="hero-title">
-      <div class="hero-copy">
-        <p class="eyebrow"><span class="small-rule" aria-hidden="true"></span> IT &amp; investing</p>
-        <h1 id="hero-title">Desta Riani<br><em>Munaf.</em></h1>
-        <p class="hero-role">IT enthusiast. Stock investor.<br>Curious about how things work.</p>
-        <p class="hero-intro">I build web apps for everyday work. Outside of IT, I spend time researching stocks and investing.</p>
-        <a class="text-link hero-link" href="#karya">Explore my work <span aria-hidden="true">↘</span></a>
+      <div class="hero-heading">
+        <div><p class="label">Web projects by Desta Riani Munaf</p><h1 id="hero-title">Destalabs<span>.</span></h1></div>
+        <div class="hero-bottom"><p>Office admin, learning, and small business.<br>A closer look at three apps I've built.</p><a class="text-link" href="#karya">Explore the projects <span aria-hidden="true">↘</span></a></div>
       </div>
-      <figure class="portrait">
-        <div class="portrait-frame">
-          <span class="portrait-note" aria-hidden="true">THE PERSON BEHIND THE PROJECTS</span>
-          <img src="assets/desta.jpg" width="441" height="491" alt="Illustrated portrait of Desta Riani Munaf" fetchpriority="high">
-          <span class="portrait-mark" aria-hidden="true">dm.</span>
+      <div class="studio" role="img" aria-label="A fly-over of the Destalabs project showcase. The same project screenshots and links are available below.">
+        <div class="static-preview" aria-hidden="true"><span class="static-title">A few things I've built.</span><div class="static-screens"><img src="assets/iqroqu-preview.webp" alt="" width="1440" height="1000"><img src="assets/simpatik-preview.webp" alt="" width="1440" height="1000" fetchpriority="high"><img src="assets/jawara-preview.webp" alt="" width="1440" height="1000"></div><span class="static-caption">SIMPATIK / IQROQU / JAWARA</span></div>
+        <div class="film-frame" aria-hidden="true">
+          <div class="film-camera">
+            <div class="film-world">
+              <div class="sheet-floor"></div>
+              <div class="sheet-paper">
+              <div class="sheet-hero">
+                <div class="sheet-nav"><span class="sheet-wordmark">d. / Destalabs</span><span>Projects &nbsp;&nbsp; About &nbsp;&nbsp; Contact ↗</span></div>
+                <p class="sheet-eyebrow">WEB APPS BY DESTA RIANI MUNAF</p>
+                <h2>Web apps for<br>everyday tasks.</h2>
+                <div class="sheet-hero-meta"><span>Three projects. One small lab.</span><span class="sheet-button">See the projects ↘</span></div>
+                <div class="hero-browser layer-shadow"></div>
+                <div class="hero-browser sheet-browser" data-layer="560"><div class="browser-bar"><i></i><i></i><i></i><span>simpatik.destarianimunaf.workers.dev</span></div><img src="assets/simpatik-preview.webp" alt="" width="1440" height="1000"></div>
+              </div>
+              <div class="sheet-sections">
+                <div class="sheet-project">
+                  <div class="sheet-project-meta"><span>01 / OFFICE ADMIN</span><span>LIVE WEB APP ↗</span></div><h3>SIMPATIK</h3><p>Letter numbering &amp; meeting-room booking.</p>
+                  <div class="sheet-project-screen layer-shadow"></div><div class="sheet-project-screen sheet-browser" data-layer="1530"><div class="browser-bar"><i></i><i></i><i></i><span>simpatik.destarianimunaf.workers.dev</span></div><img src="assets/simpatik-preview.webp" alt="" width="1440" height="1000"></div>
+                  <div class="sheet-tags"><span>Correspondence</span><span>Room availability</span><span>Meeting calendar</span></div>
+                </div>
+                <div class="sheet-project">
+                  <div class="sheet-project-meta"><span>02 / LEARNING</span><span>LIVE WEB APP ↗</span></div><h3>IQROQU</h3><p>An interactive way to learn to read the Qur'an.</p>
+                  <div class="sheet-project-screen layer-shadow"></div><div class="sheet-project-screen sheet-browser" data-layer="2780"><div class="browser-bar"><i></i><i></i><i></i><span>iqroqu.destarianimunaf.workers.dev</span></div><img src="assets/iqroqu-preview.webp" alt="" width="1440" height="1000"></div>
+                  <div class="sheet-tags"><span>Hijaiyah letters</span><span>Guided lessons</span><span>For children</span></div>
+                </div>
+                <div class="sheet-project">
+                  <div class="sheet-project-meta"><span>03 / SMALL BUSINESS</span><span>OPEN DEMO ↗</span></div><h3>Jawara</h3><p>Sales, stock, and reports in one place.</p>
+                  <div class="sheet-project-screen layer-shadow"></div><div class="sheet-project-screen sheet-browser" data-layer="4030"><div class="browser-bar"><i></i><i></i><i></i><span>destarianimunaf.github.io/jawara_demo</span></div><img src="assets/jawara-preview.webp" alt="" width="1440" height="1000"></div>
+                  <div class="sheet-tags"><span>Point of sale</span><span>Inventory</span><span>Reports</span></div>
+                </div>
+                <div class="sheet-about"><p class="sheet-eyebrow">THE PERSON BEHIND THE PROJECTS</p><h3>Built by Desta.</h3><p>Computer Science &amp; Management.<br>Web development, data, and a curiosity for how things work.</p><span>Desta Riani Munaf / Indonesia</span></div>
+                <div class="sheet-footer"><p>HAVE SOMETHING IN MIND?</p><h3>Let's talk.</h3><span>destarianimunaf@gmail.com ↗</span><div>Destalabs / desta.cloud</div></div>
+              </div>
+              </div>
+              <span class="logo-tile">d.</span><span class="logo-tile">d.</span><span class="logo-tile">d.</span><span class="logo-tile">d.</span>
+            </div>
+          </div>
+          <div class="end-title"><span class="end-badge">d. &nbsp; Destalabs</span><p class="end-line">Web apps by Desta.</p><p class="end-line end-tail">Take a closer look.</p></div>
         </div>
-        <figcaption><span>Desta Riani Munaf</span><span>Personal portfolio</span></figcaption>
-      </figure>
-      <div class="hero-footnote">
-        <span>Building since <strong>2014</strong></span>
-        <span>Investing since <strong>2019</strong></span>
-        <a href="#karya">Scroll to discover <span aria-hidden="true">↓</span></a>
       </div>
+      <div class="studio-footer">
+        <p class="motion-note">Three projects. Real interfaces.</p>
+        <div class="film-controls" hidden><button class="playback" type="button" aria-label="Play fly-over"><span>Play</span><i aria-hidden="true"></i></button><progress max="14.5" value="0" aria-label="Fly-over progress"></progress><span class="film-clock">00 / 14s</span></div>
+        <a class="skip-film" href="#karya">Skip to projects <span aria-hidden="true">↓</span></a>
+      </div>
+      <p class="film-status sr-only" aria-live="polite"></p>
     </section>
-
     <section class="work-section wrap" id="karya" aria-labelledby="work-title">
-      <div class="section-heading">
-        <div><p class="eyebrow">01 / Selected work</p><h2 id="work-title">Web <em>projects.</em></h2></div>
-        <p>Apps for office admin,<br>learning, and small businesses.</p>
+      <div class="section-heading"><div><p class="label">The projects</p><h2 id="work-title">Open one. Have a look.<span class="count">03</span></h2></div><p class="label">Real screens, linked to the real apps</p></div>
+      <div class="project-grid">
+        <article class="project">
+          <a class="project-cover" href="https://simpatik.destarianimunaf.workers.dev" target="_blank" rel="noopener noreferrer" aria-label="Open SIMPATIK (opens in a new tab)"><img src="assets/simpatik-preview.webp" alt="SIMPATIK live home page showing room availability and its meeting calendar" width="1440" height="1000" loading="lazy"><span class="cover-link" aria-hidden="true">↗</span></a>
+          <div class="project-meta label"><span>01 / Administration</span><span>Web app</span></div>
+          <h3><a href="https://simpatik.destarianimunaf.workers.dev" target="_blank" rel="noopener noreferrer">SIMPATIK <span aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span></a></h3>
+          <p>Letter numbering and meeting-room booking for everyday office work.</p>
+        </article>
+        <article class="project">
+          <a class="project-cover" href="https://iqroqu.destarianimunaf.workers.dev" target="_blank" rel="noopener noreferrer" aria-label="Open IQROQU (opens in a new tab)"><img src="assets/iqroqu-preview.webp" alt="IQROQU live home page with its illustrated learning map and lesson choices" width="1440" height="1000" loading="lazy"><span class="cover-link" aria-hidden="true">↗</span></a>
+          <div class="project-meta label"><span>02 / Education</span><span>Web app</span></div>
+          <h3><a href="https://iqroqu.destarianimunaf.workers.dev" target="_blank" rel="noopener noreferrer">IQROQU <span aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span></a></h3>
+          <p>An interactive way for children to learn to read the Qur'an.</p>
+        </article>
+        <article class="project">
+          <a class="project-cover" href="https://jawara-pos.pages.dev" target="_blank" rel="noopener noreferrer" aria-label="Open Jawara POS (opens in a new tab)"><img src="assets/jawara-preview.webp" alt="Jawara demo landing page with its point-of-sale dashboard preview" width="1440" height="1000" loading="lazy"><span class="cover-link" aria-hidden="true">↗</span></a>
+          <div class="project-meta label"><span>03 / Small business</span><span>Web app</span></div>
+          <h3><a href="https://jawara-pos.pages.dev" target="_blank" rel="noopener noreferrer">Jawara POS <span aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span></a></h3>
+          <p>Sales, stock, and reports for small businesses. Preview from the original demo.</p>
+          <div class="project-destinations"><a href="https://jawara-pos.pages.dev" target="_blank" rel="noopener noreferrer">jawara-pos.pages.dev<span class="sr-only"> (opens in a new tab)</span></a><a href="https://destarianimunaf.github.io/jawara_demo/" target="_blank" rel="noopener noreferrer">Original demo<span class="sr-only"> (opens in a new tab)</span></a></div>
+        </article>
       </div>
-
-      <article class="project">
-        <a class="project-image" href="https://simpatik.destarianimunaf.workers.dev" target="_blank" rel="noopener noreferrer" aria-label="Open SIMPATIK (opens in a new tab)">
-          <img src="assets/simpatik.jpg" alt="SIMPATIK project artwork showing the correspondence dashboard" width="760" height="760" loading="lazy">
-          <span class="image-link" aria-hidden="true">↗</span>
-        </a>
-        <div class="project-copy">
-          <p class="eyebrow project-category"><span>01</span> Administration / Web system</p>
-          <h3>SIMPATIK</h3>
-          <p>A web app for automatic letter numbering, replacing a manual process in everyday correspondence.</p>
-          <a class="text-link" href="https://simpatik.destarianimunaf.workers.dev" target="_blank" rel="noopener noreferrer">View project <span class="sr-only">SIMPATIK (opens in a new tab)</span><span aria-hidden="true">↗</span></a>
-        </div>
-      </article>
-
-      <article class="project">
-        <a class="project-image" href="https://iqroqu.destarianimunaf.workers.dev" target="_blank" rel="noopener noreferrer" aria-label="Open IQROQU (opens in a new tab)">
-          <img src="assets/iqroqu.jpg" alt="IQROQU project artwork with interactive Qur'an learning activities for children" width="760" height="760" loading="lazy">
-          <span class="image-link" aria-hidden="true">↗</span>
-        </a>
-        <div class="project-copy">
-          <p class="eyebrow project-category"><span>02</span> Education / Interactive learning</p>
-          <h3>IQROQU</h3>
-          <p>An interactive app for children learning to read the Qur'an, with a playful visual style.</p>
-          <a class="text-link" href="https://iqroqu.destarianimunaf.workers.dev" target="_blank" rel="noopener noreferrer">Visit website <span class="sr-only">IQROQU (opens in a new tab)</span><span aria-hidden="true">↗</span></a>
-        </div>
-      </article>
-
-      <article class="project">
-        <a class="project-image" href="https://destarianimunaf.github.io/jawara_demo/" target="_blank" rel="noopener noreferrer" aria-label="Open Jawara (opens in a new tab)">
-          <img src="assets/jawara.jpg" alt="Jawara project artwork showing its point-of-sale dashboard" width="760" height="760" loading="lazy">
-          <span class="image-link" aria-hidden="true">↗</span>
-        </a>
-        <div class="project-copy">
-          <p class="eyebrow project-category"><span>03</span> Small business / Point of sale</p>
-          <h3>Jawara</h3>
-          <p>A point-of-sale demo for small businesses, with sales, stock, and reports in one dashboard.</p>
-          <a class="text-link" href="https://destarianimunaf.github.io/jawara_demo/" target="_blank" rel="noopener noreferrer">View project <span class="sr-only">Jawara (opens in a new tab)</span><span aria-hidden="true">↗</span></a>
-        </div>
-      </article>
     </section>
-
     <section class="about-section" id="about" aria-labelledby="about-title">
       <div class="wrap about-grid">
-        <div class="about-heading"><p class="eyebrow">02 / Background</p><h2 id="about-title">A bit<br><em>about me.</em></h2><span class="about-monogram" aria-hidden="true">dm.</span></div>
-        <div class="about-copy">
-          <p class="large-copy">I studied Computer Science and have a Master's in Management, with a focus on HR.</p>
-          <p>I've been interested in IT since college and active in stock research and investing since 2019.</p>
-          <div class="education" id="education">
-            <h3 class="eyebrow">Education</h3>
-            <div class="education-row"><div><h4>Master's in Management</h4><p>HR Management Track</p></div><span>2023–2025</span></div>
-            <div class="education-row"><div><h4>Bachelor's in Computer Science</h4><p>Software &amp; systems development</p></div><span>2014–2018</span></div>
-          </div>
-        </div>
+        <div class="section-intro"><p class="label">A little background</p><h2 id="about-title">Hi, I'm Desta<span>.</span></h2><p>I've been interested in IT since college. I build web apps, and I've been researching stocks and investing since 2019.</p><p>I studied Computer Science and have a Master's in Management, with a focus on HR.</p><a class="inline-link" href="#contact">Get in touch <span aria-hidden="true">↗</span></a></div>
+        <div class="education" id="education"><h3 class="label">Education</h3><div class="education-row"><span class="label">2023–2025</span><div><h4>Master's in Management</h4><p>HR Management Track</p></div></div><div class="education-row"><span class="label">2014–2018</span><div><h4>Bachelor's in Computer Science</h4><p>Software &amp; systems development</p></div></div></div>
       </div>
     </section>
-
-    <section class="toolkit-section wrap" id="skills" aria-labelledby="skills-title">
-      <div class="section-heading"><div><p class="eyebrow">03 / Skills</p><h2 id="skills-title">Tools I <em>use.</em></h2></div></div>
-      <div class="toolkit-grid">
-        <div class="toolkit-group"><span class="toolkit-number" aria-hidden="true">/ 01</span><h3>Development</h3><ul><li>React.js &amp; JavaScript</li><li>Laravel &amp; PHP</li><li>MySQL &amp; databases</li><li>System analysis</li></ul></div>
-        <div class="toolkit-group"><span class="toolkit-number" aria-hidden="true">/ 02</span><h3>Stocks &amp; investing</h3><ul><li>Fundamental analysis</li><li>Technical analysis</li><li>Stock research &amp; portfolios</li><li>Value investing</li></ul></div>
-        <div class="toolkit-group"><span class="toolkit-number" aria-hidden="true">/ 03</span><h3>Data &amp; productivity</h3><ul><li>Microsoft Excel &amp; SPSS</li><li>Power BI</li><li>Google Workspace</li><li>Data analysis</li></ul></div>
+    <section class="skills-section wrap" id="skills" aria-labelledby="skills-title">
+      <div class="section-heading"><h2 id="skills-title">What I work with</h2><p class="label">Tools &amp; interests</p></div>
+      <div class="skills-grid">
+        <div class="skill-group"><span class="label skill-number">01</span><h3>Development</h3><ul><li>React.js &amp; JavaScript</li><li>Laravel &amp; PHP</li><li>MySQL &amp; databases</li><li>System analysis</li></ul></div>
+        <div class="skill-group"><span class="label skill-number">02</span><h3>Stocks &amp; investing</h3><ul><li>Fundamental analysis</li><li>Technical analysis</li><li>Stock research &amp; portfolios</li><li>Value investing</li></ul></div>
+        <div class="skill-group"><span class="label skill-number">03</span><h3>Data &amp; productivity</h3><ul><li>Microsoft Excel &amp; SPSS</li><li>Power BI</li><li>Google Workspace</li><li>Data analysis</li></ul></div>
       </div>
-      <div class="working-style"><span class="eyebrow">How I work</span><p>Problem solving <span aria-hidden="true">/</span> Analytical thinking <span aria-hidden="true">/</span> Time management <span aria-hidden="true">/</span> Collaboration</p></div>
+      <p class="working-style"><span class="label">How I work</span>Problem solving · Analytical thinking · Time management · Collaboration</p>
     </section>
-
     <section class="contact-section" id="contact" aria-labelledby="contact-title">
-      <div class="wrap">
-        <p class="eyebrow">04 / Get in touch</p>
-        <div class="contact-heading"><h2 id="contact-title">Get in <em>touch.</em></h2><span aria-hidden="true">↗</span></div>
-        <div class="contact-bottom"><div><p>Want to talk about a project?<br>You can reach me here.</p><a class="email-link" href="mailto:destarianimunaf@gmail.com">destarianimunaf@gmail.com</a></div>
-          <nav class="social-links" aria-label="Social links"><a href="https://github.com/destarianimunaf" target="_blank" rel="noopener noreferrer">GitHub <span class="sr-only">(opens in a new tab)</span><span aria-hidden="true">↗</span></a><a href="https://linkedin.com/in/destarianimunaf" target="_blank" rel="noopener noreferrer">LinkedIn <span class="sr-only">(opens in a new tab)</span><span aria-hidden="true">↗</span></a><a href="https://instagram.com/destarianimunaf" target="_blank" rel="noopener noreferrer">Instagram <span class="sr-only">(opens in a new tab)</span><span aria-hidden="true">↗</span></a></nav>
-        </div>
-      </div>
+      <div class="wrap contact-inner"><p class="label">Have something in mind?</p><a class="contact-title" href="mailto:destarianimunaf@gmail.com"><h2 id="contact-title">Let's talk<span>.</span></h2><span class="contact-arrow" aria-hidden="true">↗</span></a><div class="contact-bottom"><a class="email-link" href="mailto:destarianimunaf@gmail.com">destarianimunaf@gmail.com</a><nav class="social-links" aria-label="Social links"><a href="https://github.com/destarianimunaf" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span></a><a href="https://linkedin.com/in/destarianimunaf" target="_blank" rel="noopener noreferrer">LinkedIn <span aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span></a><a href="https://instagram.com/destarianimunaf" target="_blank" rel="noopener noreferrer">Instagram <span aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span></a></nav></div></div>
     </section>
   </main>
-  <footer class="site-footer"><div class="wrap footer-inner"><a class="wordmark" href="#home" aria-label="Desta, back to top">desta<span aria-hidden="true">.</span></a><p>© 2026 Desta Riani Munaf</p><a class="back-top" href="#home">Back to top <span aria-hidden="true">↑</span></a></div></footer>
+  <footer class="site-footer wrap"><a class="footer-brand" href="#home">Destalabs / desta.cloud</a><p>© 2026 Desta Riani Munaf</p><a class="back-top" href="#home">Back to top <span aria-hidden="true">↑</span></a></footer>
 </body>
 </html>
