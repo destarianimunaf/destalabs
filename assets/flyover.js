@@ -5,6 +5,8 @@ const frame = studio.querySelector(".film-frame");
 const camera = studio.querySelector(".film-camera");
 const world = studio.querySelector(".film-world");
 const floor = studio.querySelector(".sheet-floor");
+const paper = studio.querySelector(".sheet-paper");
+const sections = studio.querySelector(".sheet-sections");
 const play = document.querySelector(".playback");
 const playLabel = play.querySelector("span");
 const progress = document.querySelector(".film-controls progress");
@@ -32,19 +34,15 @@ function render() {
   const dive = smooth((time - 9.47) / .5);
   const cardHeight = mix(PAGE_HEIGHT, 900, dive);
   floor.style.height = cardHeight + "px";
-  world.style.clipPath = time < 9.47 ? "none" : "inset(0 0 " + (PAGE_HEIGHT - cardHeight) + "px round " + mix(24, 38, dive) + "px)";
-  world.querySelector(".sheet-sections").style.opacity = 1 - smooth((time - 9.47) / .28);
+  floor.style.borderRadius = mix(24, 38, dive) + "px";
+  paper.style.clipPath = time < 9.47 ? "none" : "inset(0 0 " + (PAGE_HEIGHT - cardHeight) + "px round " + mix(24, 38, dive) + "px)";
+  sections.style.opacity = 1 - smooth((time - 9.47) / .28);
   for (const layer of layers) {
     const center = Number(layer.dataset.layer);
     const poseLayer = layerAt(time, center, pose);
     layer.style.transform = "translateZ(" + poseLayer.z + "px) rotateX(" + poseLayer.rotation + "deg)";
     layer.style.filter = "blur(" + poseLayer.blur + "px)";
     layer.style.opacity = poseLayer.opacity;
-    const shadow = layer.previousElementSibling;
-    if (shadow?.classList.contains("layer-shadow")) {
-      shadow.style.transform = "translate(" + .1 * poseLayer.z + "px," + (4 + .36 * poseLayer.z) + "px)";
-      shadow.style.filter = "blur(" + (7 + .5 * poseLayer.z) + "px)";
-    }
   }
   tiles.forEach((tile, index) => {
     const lift = smooth((time - .1) / 1.25);

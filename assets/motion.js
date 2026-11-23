@@ -25,7 +25,7 @@ export function cameraAt(time, width, height) {
   const t = clamp(time, 0, DURATION);
   const cruise = (5650 - 560) / speedIntegral(8.3);
   let focus = 560 + cruise * speedIntegral(Math.min(t, 8.3));
-  let distance = mix(1360, 1700, smooth(t / 8.2));
+  let distance = mix(2000, 2400, smooth(t / 8.2));
   let tilt = 56;
   const overviewScale = Math.max(.05, (height - 100) / PAGE_HEIGHT);
   const overviewDistance = FOCAL_LENGTH / overviewScale;
@@ -64,7 +64,7 @@ export function layerAt(time, center, camera) {
   const angle = camera.tilt * Math.PI / 180;
   const passed = smooth((camera.focus + 700 - center) / 700);
   const end = 1 - smooth((time - 8.15) / 1.1);
-  const lift = passed * end;
+  const lift = passed * end * (center < 900 ? smooth((time - .1) / 1.5) : 1);
   const z = lift * 110;
   const depth = camera.distance - Math.sin(angle) * (center - camera.focus) - Math.cos(angle) * z;
   const delta = camera.distance - depth;
