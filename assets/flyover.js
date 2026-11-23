@@ -96,6 +96,7 @@ function syncPlayback() {
   last = null;
   if (request) cancelAnimationFrame(request);
   request = playing ? requestAnimationFrame(tick) : 0;
+  status.textContent = playing ? "Fly-over playing." : "Fly-over paused.";
   updateControl();
 }
 
@@ -125,7 +126,10 @@ function applyPreference() {
 play.addEventListener("click", () => {
   if (time >= DURATION) time = 0;
   manuallyPaused = playing;
-  status.textContent = manuallyPaused ? "Fly-over paused." : "Fly-over playing.";
+  if (!manuallyPaused && !visible) {
+    status.textContent = "Moving to the fly-over.";
+    studio.scrollIntoView({ block: "center", behavior: "smooth" });
+  } else if (manuallyPaused) status.textContent = "Fly-over paused.";
   syncPlayback();
   render();
 });
@@ -137,7 +141,7 @@ document.addEventListener("visibilitychange", syncPlayback);
 reducedMotion.addEventListener("change", applyPreference);
 new ResizeObserver(resize).observe(studio);
 new IntersectionObserver(entries => {
-  visible = entries[0].isIntersecting;
+  visible = entries[0].isIntersecting && entries[0].intersectionRatio >= .15;
   syncPlayback();
 }, { threshold: .15 }).observe(studio);
 
