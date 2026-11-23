@@ -18,7 +18,22 @@ test("integrated cruise is constant, not a set of position keys", () => {
   }
 });
 
-for (const [width, height] of [[1440, 800], [1440, 1100], [900, 1130]]) {
+for (const [width, height] of [[1440, 800], [1440, 1100], [900, 680], [900, 1130], [900, 1415]]) {
+  test("the flying page fits horizontally at " + width + " by " + height, () => {
+    for (let t = 0; t <= 7.75; t += 1 / 30) {
+      const pose = cameraAt(t, width, height);
+      const angle = pose.tilt * Math.PI / 180;
+      for (let y = 0; y <= 6000; y += 25) {
+        const delta = y - pose.focus;
+        const depth = pose.distance - Math.sin(angle) * delta;
+        if (depth <= 0) continue;
+        const scale = FOCAL_LENGTH / depth;
+        const screenY = height / 2 + Math.cos(angle) * delta * scale;
+        if (screenY < 0 || screenY > height) continue;
+        assert.ok(1200 * scale <= width + .001, "page edge clipped at " + t + "s, y=" + y);
+      }
+    }
+  });
   test("camera joins are continuous at " + width + " by " + height, () => {
     for (const t of [7.75, 8.15, 8.3, 8.95, 9.25, 9.47, 9.7, 9.97]) {
       const before = cameraAt(t - .00001, width, height);

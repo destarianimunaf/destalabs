@@ -25,8 +25,11 @@ export function cameraAt(time, width, height) {
   const t = clamp(time, 0, DURATION);
   const cruise = (5650 - 560) / speedIntegral(8.3);
   let focus = 560 + cruise * speedIntegral(Math.min(t, 8.3));
-  let distance = mix(2000, 2400, smooth(t / 8.2));
   let tilt = 56;
+  // Keep the full page width inside the frustum, including its nearer edge.
+  // Tall mobile frames need more distance than the wide desktop studio.
+  const framingDistance = 1200 / width * (FOCAL_LENGTH + height / 2 * Math.tan(tilt * Math.PI / 180));
+  let distance = mix(2000, 2400, smooth(t / 8.2)) + Math.max(0, framingDistance - 2000);
   const overviewScale = Math.max(.05, (height - 100) / PAGE_HEIGHT);
   const overviewDistance = FOCAL_LENGTH / overviewScale;
   const bottom = height / 2 - 42;
