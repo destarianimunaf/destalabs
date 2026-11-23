@@ -1,0 +1,49 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import { cameraAt, speedIntegral, layerAt, FOCAL_LENGTH } from "../assets/motion.js";
+
+test("the flight never reverses or zooms inward", () => {
+  let previous = cameraAt(0, 1440, 800);
+  for (let t = 1 / 120; t <= 7.75; t += 1 / 120) {
+    const pose = cameraAt(t, 1440, 800);
+    assert.ok(pose.focus >= previous.focus);
+    assert.ok(pose.distance >= previous.distance);
+    previous = pose;
+  }
+});
+
+test("integrated cruise is constant, not a set of position keys", () => {
+  for (let t = 1.7; t < 7.1; t += .1) {
+    assert.ok(Math.abs(speedIntegral(t + .1) - speedIntegral(t) - .1) < 1e-10);
+  }
+});
+
+for (const [width, height] of [[1440, 800], [1440, 1100], [900, 1130]]) {
+  test("camera joins are continuous at " + width + " by " + height, () => {
+    for (const t of [7.75, 8.15, 8.3, 8.95, 9.25, 9.47, 9.7, 9.97]) {
+      const before = cameraAt(t - .00001, width, height);
+      const after = cameraAt(t + .00001, width, height);
+      for (const key of ["focus", "distance", "tilt"]) assert.ok(Math.abs(before[key] - after[key]) < 5, key + " at " + t);
+    }
+  });
+  test("the final hero fits the viewport at " + width + " by " + height, () => {
+    const pose = cameraAt(14.5, width, height);
+    const scale = FOCAL_LENGTH / pose.distance;
+    const top = height / 2 - pose.focus * scale;
+    assert.ok(top >= 265);
+    assert.ok(top + 900 * scale <= height);
+    assert.ok(1200 * scale <= width);
+  });
+  test("all layer and camera values stay finite at " + width + " by " + height, () => {
+    for (let t = 0; t <= 14.5; t += 1 / 60) {
+      const pose = cameraAt(t, width, height);
+      assert.ok(Object.values(pose).every(Number.isFinite));
+      for (const y of [560, 1530, 2780, 4030]) {
+        const layer = layerAt(t, y, pose);
+        assert.ok(Object.values(layer).every(Number.isFinite));
+        assert.ok(layer.opacity >= 0 && layer.opacity <= 1);
+        assert.ok(layer.blur >= 0 && layer.blur <= 18);
+      }
+    }
+  });
+}

@@ -4,12 +4,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Destalabs: web projects by Desta Riani Munaf. Explore SIMPATIK, IQROQU, and Jawara through real views of each app.">
-  <meta name="theme-color" content="#131514">
+  <meta name="theme-color" content="#f8f9fa">
   <title>Destalabs | Web projects by Desta</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="preload" href="assets/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="preload" href="assets/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/site.css">
   <script src="main.js" defer></script>
+  <script type="module" src="assets/flyover.js"></script>
 </head>
 <body>
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -24,16 +25,58 @@
   </header>
   <main id="main-content">
     <section class="hero wrap" aria-labelledby="hero-title">
-      <div class="hero-kicker"><p class="label">Web projects by Desta</p><span class="label hero-index">desta.cloud / 01</span></div>
-      <h1 id="hero-title">Projects by<br><span>Destalabs.</span></h1>
-      <div class="hero-bottom">
-        <p>Office admin, learning, and small business.<br>A closer look at three apps I've built.</p>
-        <a class="button" href="#karya">See my projects <span aria-hidden="true">↓</span></a>
+      <div class="hero-heading">
+        <div><p class="label">Web projects by Desta Riani Munaf</p><h1 id="hero-title">Destalabs<span>.</span></h1></div>
+        <div class="hero-bottom"><p>Office admin, learning, and small business.<br>A closer look at three apps I've built.</p><a class="text-link" href="#karya">Explore the projects <span aria-hidden="true">↘</span></a></div>
       </div>
-      <div class="hero-rule" aria-hidden="true"><span>SIMPATIK</span><span>IQROQU</span><span>Jawara</span><span class="rule-end">Scroll to explore ↓</span></div>
+      <div class="studio" role="img" aria-label="A fly-over of the Destalabs project showcase. The same project screenshots and links are available below.">
+        <div class="static-preview" aria-hidden="true"><span class="static-title">A few things I've built.</span><div class="static-screens"><img src="assets/iqroqu-preview.webp" alt="" width="1440" height="1000"><img src="assets/simpatik-preview.webp" alt="" width="1440" height="1000" fetchpriority="high"><img src="assets/jawara-preview.webp" alt="" width="1440" height="1000"></div><span class="static-caption">SIMPATIK / IQROQU / JAWARA</span></div>
+        <div class="film-frame" aria-hidden="true">
+          <div class="film-camera">
+            <div class="film-world">
+              <div class="sheet-floor"></div>
+              <div class="sheet-hero">
+                <div class="sheet-nav"><span class="sheet-wordmark">d. / Destalabs</span><span>Projects &nbsp;&nbsp; About &nbsp;&nbsp; Contact ↗</span></div>
+                <p class="sheet-eyebrow">WEB APPS BY DESTA RIANI MUNAF</p>
+                <h2>Web apps for<br>everyday tasks.</h2>
+                <div class="sheet-hero-meta"><span>Three projects. One small lab.</span><span class="sheet-button">See the projects ↘</span></div>
+                <div class="hero-browser layer-shadow"></div>
+                <div class="hero-browser sheet-browser" data-layer="560"><div class="browser-bar"><i></i><i></i><i></i><span>simpatik.destarianimunaf.workers.dev</span></div><img src="assets/simpatik-preview.webp" alt="" width="1440" height="1000"></div>
+              </div>
+              <div class="sheet-sections">
+                <div class="sheet-project">
+                  <div class="sheet-project-meta"><span>01 / OFFICE ADMIN</span><span>LIVE WEB APP ↗</span></div><h3>SIMPATIK</h3><p>Letter numbering &amp; meeting-room booking.</p>
+                  <div class="sheet-project-screen layer-shadow"></div><div class="sheet-project-screen sheet-browser" data-layer="1530"><div class="browser-bar"><i></i><i></i><i></i><span>simpatik.destarianimunaf.workers.dev</span></div><img src="assets/simpatik-preview.webp" alt="" width="1440" height="1000"></div>
+                  <div class="sheet-tags"><span>Correspondence</span><span>Room availability</span><span>Meeting calendar</span></div>
+                </div>
+                <div class="sheet-project">
+                  <div class="sheet-project-meta"><span>02 / LEARNING</span><span>LIVE WEB APP ↗</span></div><h3>IQROQU</h3><p>An interactive way to learn to read the Qur'an.</p>
+                  <div class="sheet-project-screen layer-shadow"></div><div class="sheet-project-screen sheet-browser" data-layer="2780"><div class="browser-bar"><i></i><i></i><i></i><span>iqroqu.destarianimunaf.workers.dev</span></div><img src="assets/iqroqu-preview.webp" alt="" width="1440" height="1000"></div>
+                  <div class="sheet-tags"><span>Hijaiyah letters</span><span>Guided lessons</span><span>For children</span></div>
+                </div>
+                <div class="sheet-project">
+                  <div class="sheet-project-meta"><span>03 / SMALL BUSINESS</span><span>OPEN DEMO ↗</span></div><h3>Jawara</h3><p>Sales, stock, and reports in one place.</p>
+                  <div class="sheet-project-screen layer-shadow"></div><div class="sheet-project-screen sheet-browser" data-layer="4030"><div class="browser-bar"><i></i><i></i><i></i><span>destarianimunaf.github.io/jawara_demo</span></div><img src="assets/jawara-preview.webp" alt="" width="1440" height="1000"></div>
+                  <div class="sheet-tags"><span>Point of sale</span><span>Inventory</span><span>Reports</span></div>
+                </div>
+                <div class="sheet-about"><p class="sheet-eyebrow">THE PERSON BEHIND THE PROJECTS</p><h3>Built by Desta.</h3><p>Computer Science &amp; Management.<br>Web development, data, and a curiosity for how things work.</p><span>Desta Riani Munaf / Indonesia</span></div>
+                <div class="sheet-footer"><p>HAVE SOMETHING IN MIND?</p><h3>Let's talk.</h3><span>destarianimunaf@gmail.com ↗</span><div>Destalabs / desta.cloud</div></div>
+              </div>
+              <span class="logo-tile">d.</span><span class="logo-tile">d.</span><span class="logo-tile">d.</span><span class="logo-tile">d.</span>
+            </div>
+          </div>
+          <div class="end-title"><span class="end-badge">d. &nbsp; Destalabs</span><p class="end-line">Web apps by Desta.</p><p class="end-line end-tail">Take a closer look.</p></div>
+        </div>
+      </div>
+      <div class="studio-footer">
+        <p class="motion-note">Three projects. Real interfaces.</p>
+        <div class="film-controls" hidden><button class="playback" type="button" aria-label="Play fly-over"><span>Play</span><i aria-hidden="true"></i></button><progress max="14.5" value="0" aria-label="Fly-over progress"></progress><span class="film-clock">00 / 14s</span></div>
+        <a class="skip-film" href="#karya">Skip to projects <span aria-hidden="true">↓</span></a>
+      </div>
+      <p class="film-status sr-only" aria-live="polite"></p>
     </section>
     <section class="work-section wrap" id="karya" aria-labelledby="work-title">
-      <div class="section-heading"><h2 id="work-title">Selected projects<span class="count">03</span></h2><p class="label">A few things I've built</p></div>
+      <div class="section-heading"><div><p class="label">The projects</p><h2 id="work-title">Open one. Have a look.<span class="count">03</span></h2></div><p class="label">Real screens, linked to the real apps</p></div>
       <div class="project-grid">
         <article class="project">
           <a class="project-cover" href="https://simpatik.destarianimunaf.workers.dev" target="_blank" rel="noopener noreferrer" aria-label="Open SIMPATIK (opens in a new tab)"><img src="assets/simpatik-preview.webp" alt="SIMPATIK live home page showing room availability and its meeting calendar" width="1440" height="1000" loading="lazy"><span class="cover-link" aria-hidden="true">↗</span></a>
