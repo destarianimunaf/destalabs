@@ -1,158 +1,147 @@
-import { DURATION, PAGE_HEIGHT, FOCAL_LENGTH, clamp, mix, smooth, cameraAt, layerAt } from "./motion.js";
-
+// Native decoding avoids compositing a 6,000px CSS 3D page on visitors' devices.
+// Playback and sound both wait for an explicit user gesture.
 const studio = document.querySelector(".studio");
-const frame = studio.querySelector(".film-frame");
-const camera = studio.querySelector(".film-camera");
-const world = studio.querySelector(".film-world");
-const floor = studio.querySelector(".sheet-floor");
-const paper = studio.querySelector(".sheet-paper");
-const sections = studio.querySelector(".sheet-sections");
+const video = studio.querySelector("video");
+const start = studio.querySelector(".film-start");
 const play = document.querySelector(".playback");
 const playLabel = play.querySelector("span");
+const sound = document.querySelector(".film-sound");
 const progress = document.querySelector(".film-controls progress");
 const clock = document.querySelector(".film-clock");
 const status = document.querySelector(".film-status");
-const controls = document.querySelector(".film-controls");
-const title = studio.querySelector(".end-title");
-const layers = [...world.querySelectorAll("[data-layer]")];
-const tiles = [...world.querySelectorAll(".logo-tile")];
-const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
-let time = 0;
-let playing = false;
-let manuallyPaused = false;
-let ready = false;
-let request = 0;
-let last = null;
-let width = 1440;
-let height = 920;
-let reduced = reducedMotion.matches;
+const motion = matchMedia("(prefers-reduced-motion: reduce)");
+const narrow = matchMedia("(max-width: 700px)");
+let intentToPlay = false;
+let pending = false;
+let failed = false;
+let started = false;
+let attempt = 0;
 
-function render() {
-  const pose = cameraAt(time, width, height);
-  world.style.transform = "translateX(-50%) translateZ(" + pose.z + "px) rotateX(" + pose.tilt + "deg) translateY(" + -pose.focus + "px)";
-  const dive = smooth((time - 9.47) / .5);
-  const cardHeight = mix(PAGE_HEIGHT, 900, dive);
-  floor.style.height = cardHeight + "px";
-  floor.style.borderRadius = mix(24, 38, dive) + "px";
-  paper.style.clipPath = time < 9.47 ? "none" : "inset(0 0 " + (PAGE_HEIGHT - cardHeight) + "px round " + mix(24, 38, dive) + "px)";
-  sections.style.opacity = 1 - smooth((time - 9.47) / .28);
-  for (const layer of layers) {
-    const center = Number(layer.dataset.layer);
-    const poseLayer = layerAt(time, center, pose);
-    layer.style.transform = "translateZ(" + poseLayer.z + "px) rotateX(" + poseLayer.rotation + "deg)";
-    layer.style.filter = "blur(" + poseLayer.blur + "px)";
-    layer.style.opacity = poseLayer.opacity;
+function chooseFilm() {
+  if (started) return;
+  const variant = narrow.matches ? "mobile" : "desktop";
+  video.src = "assets/flyover-" + variant + ".mp4";
+  video.poster = "assets/flyover-" + variant + "-poster.webp";
+}
+
+function visible() {
+  const box = studio.getBoundingClientRect();
+  const width = Math.max(0, Math.min(box.right, innerWidth) - Math.max(box.left, 0));
+  const height = Math.max(0, Math.min(box.bottom, innerHeight) - Math.max(box.top, 0));
+  return box.width > 0 && box.height > 0 && width * height >= .15 * box.width * box.height;
+}
+
+function update() {
+  const active = intentToPlay && (pending || !video.paused);
+  const label = active ? "Pause" : failed ? "Retry" : video.ended ? "Replay" : "Play";
+  playLabel.textContent = label;
+  play.setAttribute("aria-label", label + " fly-over");
+  play.dataset.playing = String(active);
+  sound.textContent = video.muted ? "Sound off" : "Sound on";
+  sound.setAttribute("aria-pressed", String(!video.muted));
+  sound.setAttribute("aria-label", video.muted ? "Unmute fly-over" : "Mute fly-over");
+  start.hidden = started && !failed;
+  start.textContent = failed ? "Retry tour" : video.muted ? "Play tour" : "Play with sound";
+  progress.max = Number.isFinite(video.duration) ? video.duration : 14.5;
+  progress.value = video.currentTime || 0;
+  clock.textContent = String(Math.floor(video.currentTime || 0)).padStart(2, "0") + " / 14.5s";
+}
+
+function pause() {
+  attempt++;
+  pending = false;
+  video.pause();
+  update();
+}
+
+function unavailable() {
+  intentToPlay = false;
+  pending = false;
+  failed = true;
+  pause();
+  video.hidden = true;
+  status.textContent = "The tour could not load. Try again, or explore the project previews below.";
+  update();
+}
+
+function begin() {
+  if (pending) return;
+  if (video.ended) video.currentTime = 0;
+  if (failed) {
+    failed = false;
+    video.hidden = false;
+    video.load();
   }
-  tiles.forEach((tile, index) => {
-    const lift = smooth((time - .1) / 1.25);
-    const startX = [155, 940, 90, 1020][index];
-    const endX = [-70, 1080, -100, 1120][index];
-    let y = [380, 300, 700, 780][index] + Math.min(300, Math.max(0, pose.focus - 330));
-    if (index === 2) y = mix(y, pose.focus + 380, smooth((time - 5.1) / .3)) - 1700 * smooth((time - 5.5) / .8);
-    y = mix(y, [10, 50, 730, 780][index], smooth((time - 8.2) / 1.77));
-    tile.style.left = mix(startX, endX, lift) + "px";
-    tile.style.top = y + "px";
-    tile.style.transform = "translateZ(" + mix(10, [150, 110, 210, 170][index], lift) + "px) rotateX(" + (-30 * lift * (1 - dive)) + "deg) scale(" + mix(.25, 1, lift) + ")";
-    tile.style.filter = "blur(" + ([0, 0, 8, 11][index] * dive) + "px)";
+  pending = true;
+  const currentAttempt = ++attempt;
+  status.textContent = "Loading the tour.";
+  // Preserve mobile audio permission by calling play inside the click handler.
+  const result = video.play();
+  update();
+  if (result) result.catch(() => {
+    if (currentAttempt !== attempt) return;
+    intentToPlay = false;
+    pending = false;
+    status.textContent = "Playback did not start. Press Play to try again.";
+    update();
   });
-  title.style.opacity = smooth((time - 10.02) / .35);
-  for (const [index, line] of [...title.querySelectorAll(".end-line")].entries()) {
-    const p = smooth((time - 10.12 - index * .24) / .34);
-    line.style.opacity = p;
-    line.style.transform = "translateY(" + (16 * (1 - p)) + "px)";
-    line.style.filter = "blur(" + 12 * (1 - p) + "px)";
+}
+
+function toggle() {
+  if (intentToPlay && (pending || !video.paused)) {
+    intentToPlay = false;
+    pause();
+    status.textContent = "Fly-over paused.";
+    return;
   }
-  progress.value = time;
-  clock.textContent = String(Math.floor(time)).padStart(2, "0") + " / 14s";
+  intentToPlay = true;
+  if (!visible()) studio.scrollIntoView({ block: "center", behavior: motion.matches ? "instant" : "smooth" });
+  begin();
 }
 
-function updateControl() {
-  playLabel.textContent = playing ? "Pause" : time >= DURATION ? "Replay" : "Play";
-  play.setAttribute("aria-label", playing ? "Pause fly-over" : time >= DURATION ? "Replay fly-over" : "Play fly-over");
-  play.dataset.playing = String(playing);
+function syncVisibility() {
+  if (document.hidden || !visible()) pause();
+  else if (intentToPlay && video.paused && !video.ended) begin();
 }
 
-function tick(now) {
-  request = 0;
-  if (!playing) return;
-  if (last !== null) time = Math.min(DURATION, time + (now - last) / 1000);
-  last = now;
-  render();
-  if (time >= DURATION) {
-    playing = false;
-    last = null;
-    status.textContent = "Fly-over complete. Explore the projects below.";
-    updateControl();
-  } else request = requestAnimationFrame(tick);
-}
-
-function studioIsVisible() {
-  const bounds = studio.getBoundingClientRect();
-  const visibleWidth = Math.max(0, Math.min(bounds.right, innerWidth) - Math.max(bounds.left, 0));
-  const visibleHeight = Math.max(0, Math.min(bounds.bottom, innerHeight) - Math.max(bounds.top, 0));
-  return bounds.width > 0 && bounds.height > 0 &&
-    visibleWidth * visibleHeight >= .15 * bounds.width * bounds.height;
-}
-
-function syncPlayback() {
-  const shouldPlay = ready && !reduced && !manuallyPaused && !document.hidden && time < DURATION && studioIsVisible();
-  if (shouldPlay === playing) return;
-  playing = shouldPlay;
-  last = null;
-  if (request) cancelAnimationFrame(request);
-  request = playing ? requestAnimationFrame(tick) : 0;
-  status.textContent = playing ? "Fly-over playing." : "Fly-over paused.";
-  updateControl();
-}
-
-function resize() {
-  const bounds = studio.getBoundingClientRect();
-  width = bounds.width < 700 ? 900 : 1440;
-  const scale = bounds.width / width;
-  height = bounds.height / scale;
-  frame.style.width = width + "px";
-  frame.style.height = height + "px";
-  frame.style.transform = "scale(" + scale + ")";
-  camera.style.perspective = FOCAL_LENGTH + "px";
-  render();
-}
-
-function applyPreference() {
-  reduced = reducedMotion.matches;
-  studio.classList.toggle("film-ready", ready && !reduced);
-  controls.hidden = reduced || !ready;
-  document.querySelector(".motion-note").textContent = reduced ? "Static previews · reduced motion" : "A short tour of the projects";
-  time = 0;
-  manuallyPaused = false;
-  syncPlayback();
-  render();
-}
-
-play.addEventListener("click", () => {
-  if (time >= DURATION) time = 0;
-  manuallyPaused = playing;
-  if (!manuallyPaused && !studioIsVisible()) {
-    status.textContent = "Moving to the fly-over.";
-    studio.scrollIntoView({ block: "center", behavior: "smooth" });
-  } else if (manuallyPaused) status.textContent = "Fly-over paused.";
-  syncPlayback();
-  render();
+chooseFilm();
+video.controls = false;
+video.volume = .65;
+start.hidden = false;
+document.querySelector(".film-controls").hidden = false;
+start.addEventListener("click", toggle);
+play.addEventListener("click", toggle);
+video.addEventListener("click", toggle);
+sound.addEventListener("click", () => { video.muted = !video.muted; update(); });
+video.addEventListener("playing", () => {
+  pending = false;
+  started = true;
+  status.textContent = "Fly-over playing.";
+  update();
 });
+video.addEventListener("pause", update);
+video.addEventListener("timeupdate", update);
+video.addEventListener("volumechange", update);
+video.addEventListener("ended", () => {
+  intentToPlay = false;
+  status.textContent = "Fly-over complete. Explore the projects below.";
+  update();
+});
+video.addEventListener("error", unavailable);
 document.querySelectorAll('a[href="#karya"]').forEach(link => link.addEventListener("click", () => {
-  manuallyPaused = true;
-  syncPlayback();
+  intentToPlay = false;
+  pause();
 }));
-document.addEventListener("visibilitychange", syncPlayback);
-reducedMotion.addEventListener("change", applyPreference);
-new ResizeObserver(resize).observe(studio);
-new IntersectionObserver(syncPlayback, { threshold: .15 }).observe(studio);
-
-// Never autoplay a half-loaded scene. Static previews stay visible if setup fails.
-Promise.all([
-  document.fonts.ready,
-  ...[...studio.querySelectorAll("img")].map(img => img.decode().catch(() => {}))
-]).then(() => {
-  ready = true;
-  resize();
-  applyPreference();
-}).catch(() => {});
+document.addEventListener("visibilitychange", syncVisibility);
+new IntersectionObserver(syncVisibility, { threshold: .15 }).observe(studio);
+motion.addEventListener("change", () => {
+  intentToPlay = false;
+  pause();
+  updateNote();
+});
+function updateNote() {
+  document.querySelector(".motion-note").textContent = motion.matches ? "Static preview · press Play for the tour" : "A short tour · sound starts with Play";
+}
+narrow.addEventListener("change", chooseFilm);
+updateNote();
+update();
